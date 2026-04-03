@@ -7,6 +7,7 @@ import ContactPage from "@/pages/ContactPage.vue";
 import NotFoundPage from "@/pages/NotFoundPage.vue";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import EmptyLayout from "@/Layouts/EmptyLayout.vue";
+import AboutPage from "@/pages/AboutPage.vue";
 
 Vue.use(VueRouter);
 
@@ -26,6 +27,7 @@ const routes = [
         name: "product",
         component: ProductDetailsPage,
       },
+      { path: "about", name: "about", component: AboutPage },
       { path: "contact", name: "contact", component: ContactPage },
     ],
   },
