@@ -44,6 +44,7 @@ c6.074-6.075,6.074-15.909,0-21.986L285.08,230.397z"
           :key="link.id"
           class="header__mobile-link"
           :to="link.to"
+          :exact="link.exact"
           >{{ link.name }}</RouterLink
         >
       </div>
@@ -51,9 +52,12 @@ c6.074-6.075,6.074-15.909,0-21.986L285.08,230.397z"
         <h1 class="header__logo">Exclusive</h1>
         <ul class="header__nav-links">
           <li v-for="link in navLinks" :key="link.id" class="header__nav-item">
-            <RouterLink class="header__nav-link" :to="link.to">{{
-              link.name
-            }}</RouterLink>
+            <RouterLink
+              class="header__nav-link"
+              :to="link.to"
+              :exact="link.exact"
+              >{{ link.name }}</RouterLink
+            >
           </li>
         </ul>
         <div class="header__actions">
@@ -145,6 +149,7 @@ export default {
           id: 1,
           to: "/",
           name: "Home",
+          exact: true,
         },
         {
           id: 2,
@@ -153,6 +158,11 @@ export default {
         },
         {
           id: 3,
+          to: "/products",
+          name: "Products",
+        },
+        {
+          id: 4,
           to: "/about",
           name: "About",
         },
@@ -214,7 +224,7 @@ export default {
   color: inherit;
 }
 
-.header__nav-link.router-link-exact-active {
+.header__nav-link.router-link-active {
   border-bottom: 1px solid #7b7b7b;
 }
 
