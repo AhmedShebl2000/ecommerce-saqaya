@@ -1,5 +1,5 @@
-import { getAllProducts } from "@/api/products";
-import { shuffle } from "@/helpers/shuffle";
+import { getAllProducts } from "@/services/product.service";
+import { shuffle } from "@/mixins/shuffle";
 import { ActionContext } from "vuex";
 
 export interface ProductType {

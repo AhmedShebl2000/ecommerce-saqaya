@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { slugify } from "@/helpers/slugify";
+import { slugify } from "@/mixins/slugify";
 
 export default {
   props: ["id", "images", "title", "price", "rating", "ratingCount"],

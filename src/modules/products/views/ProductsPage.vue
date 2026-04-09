@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import ProductItem from "@/components/Products/ProductItem.vue";
+import ProductItem from "@/modules/products/components/ProductItem.vue";
 export default {
   components: { ProductItem },
   data() {

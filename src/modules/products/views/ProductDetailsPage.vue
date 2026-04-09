@@ -198,7 +198,7 @@
 </template>
 
 <script>
-import BaseButton from "@/components/UI/BaseButton.vue";
+import BaseButton from "@/modules/shared/components/BaseButton.vue";
 export default {
   components: { BaseButton },
   created() {

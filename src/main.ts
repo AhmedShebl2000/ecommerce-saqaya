@@ -2,10 +2,10 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router/index";
 import store from "./store";
-import BaseArrow from "./components/UI/BaseArrow.vue";
-import BaseProductCard from "./components/UI/BaseProductCard.vue";
-import BaseRatingComponent from "./components/UI/BaseRatingComponent.vue";
-import BaseButton from "./components/UI/BaseButton.vue";
+import BaseArrow from "./modules/shared/components/BaseArrow.vue";
+import BaseProductCard from "./modules/shared/components/BaseProductCard.vue";
+import BaseRatingComponent from "./modules/shared/components/BaseRatingComponent.vue";
+import BaseButton from "./modules/shared/components/BaseButton.vue";
 
 Vue.config.productionTip = false;
 
