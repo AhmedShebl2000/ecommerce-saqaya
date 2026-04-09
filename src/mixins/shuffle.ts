@@ -1,4 +1,4 @@
-import { ProductType } from "@/modules/products/store/products";
+import { ProductType } from "@/types";
 
 export function shuffle(array: ProductType[]) {
   const arr = [...array];

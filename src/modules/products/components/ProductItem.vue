@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     handleOpenProduct() {
-      this.$store.commit("products/setSelectedProduct", this.id);
+      this.$store.commit("products/SET_SELECTED_PRODUCT", this.id);
       this.$router.push(`/products/${this.slug}`);
     },
   },

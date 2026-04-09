@@ -1,52 +1,13 @@
 import { getAllProducts } from "@/services/product.service";
 import { shuffle } from "@/mixins/shuffle";
 import { ActionContext } from "vuex";
-
-export interface ProductType {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  tags: string[];
-  brand: string;
-  sku: string;
-  weight: number;
-  dimensions: {
-    width: number;
-    height: number;
-    depth: number;
-  };
-  warrantyInformation: string;
-  shippingInformation: string;
-  availabilityStatus: string;
-  reviews: {
-    rating: number;
-    comment: string;
-    date: string;
-    reviewerName: string;
-    reviewerEmail: string;
-  }[];
-  returnPolicy: string;
-  minimumOrderQuantity: number;
-  meta: {
-    createdAt: string;
-    updatedAt: string;
-    barcode: string;
-    qrCode: string;
-  };
-  thumbnail: string;
-  images: string[];
-}
+import { ProductType } from "@/types";
 
 interface ProductsState {
   products: ProductType[];
   flashSalesProducts: ProductType[];
   totalProducts: number;
-  selectedProduct: ProductType;
+  selectedProduct: ProductType | null;
 }
 
 interface FetchProductsPayload {
@@ -111,28 +72,22 @@ export const productsStore = {
     },
   },
   mutations: {
-    setProducts(state: ProductsState, currentProducts: ProductType[]) {
+    SET_PRODUCTS(state: ProductsState, currentProducts: ProductType[]) {
       state.products = currentProducts;
-
-      console.log("products: ", currentProducts);
     },
-    appendProducts(
+    APPEND_PRODUCTS(
       state: ProductsState,
-      payload: any
-      // currentProducts: ProductType[],
-      // total: number
+      payload: { currentProducts: ProductType[]; total: number }
     ) {
       state.products = [...state.products, ...payload.currentProducts];
       if (payload.total !== undefined) {
-        console.log("HEREEEE", payload.total);
         state.totalProducts = payload.total;
       }
     },
-    setFlashSale(state: ProductsState, currentProducts: ProductType[]) {
+    SET_FLASH_SALE(state: ProductsState, currentProducts: ProductType[]) {
       state.flashSalesProducts = currentProducts;
-      console.log("flash sale products: ", currentProducts);
     },
-    setSelectedProduct(state: ProductsState, id: number) {
+    SET_SELECTED_PRODUCT(state: ProductsState, id: number) {
       if (state.products.length === 0) return {};
       const product = state.products.find((product) => product.id === id);
       if (product) {
@@ -151,10 +106,9 @@ export const productsStore = {
           payload.skip
         );
         if (payload.skip !== 0 && payload.limit !== 50) {
-          console.log("TOTAL NUMBER OF PRODUCTS: ", total);
-          context.commit("appendProducts", { currentProducts, total });
+          context.commit("APPEND_PRODUCTS", { currentProducts, total });
         } else {
-          context.commit("setProducts", currentProducts);
+          context.commit("SET_PRODUCTS", currentProducts);
         }
       } catch (error) {
         throw new Error("Something went wrong fetching the products!");
@@ -165,18 +119,14 @@ export const productsStore = {
       state,
       commit,
       dispatch,
-    }: {
-      state: ProductsState;
-      commit: (type: string, payload?: any) => void;
-      dispatch: (type: string, payload?: any) => Promise<any>;
-    }) {
+    }: ActionContext<ProductsState, any>) {
       if (state.products.length === 0) {
         await dispatch("fetchProducts", { limit: 50, skip: 0 });
       }
 
       const shuffledArr = shuffle(state.products);
       const randomProducts = shuffledArr.slice(0, 10);
-      commit("setFlashSale", randomProducts);
+      commit("SET_FLASH_SALE", randomProducts);
     },
   },
 };
