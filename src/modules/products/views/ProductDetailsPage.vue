@@ -49,9 +49,9 @@
         </p>
         <div class="product__cart-selection">
           <div class="product__cart-count">
-            <div class="product__cart-deduct">-</div>
-            <p class="product__cart-items-count">2</p>
-            <div class="product__cart-increase">+</div>
+            <div class="product__cart-deduct" @click="decreaseItemQty">-</div>
+            <p class="product__cart-items-count">{{ itemQty }}</p>
+            <div class="product__cart-increase" @click="increaseItemQty">+</div>
           </div>
           <div class="product__cart-btn">
             <base-button>Buy now</base-button>
@@ -217,6 +217,23 @@ export default {
     },
     hasDiscountPercentage() {
       return this.selectedProduct.discountPercentage > 0;
+    },
+    cartItems() {
+      return this.$store.getters["cart/cartItems"];
+    },
+    itemQty() {
+      const item = this.cartItems.find(
+        (item) => item.product.id === this.selectedProduct.id
+      );
+      return item ? item.qty : 0;
+    },
+  },
+  methods: {
+    decreaseItemQty() {
+      this.$store.commit("cart/DECREASE_QUANTITY", this.selectedProduct.id);
+    },
+    increaseItemQty() {
+      this.$store.commit("cart/ADD_TO_CART", this.selectedProduct);
     },
   },
 };

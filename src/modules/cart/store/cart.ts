@@ -1,4 +1,4 @@
-import { CartItem, CartType, ProductType } from "@/types";
+import { CartType, ProductType } from "@/types";
 
 interface CartState {
   cart: CartType;
