@@ -44,7 +44,9 @@ export default {
       offset: 0,
     };
   },
+
   created() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     this.getProducts({ limit: 12, skip: 0 });
   },
   computed: {
