@@ -3,15 +3,14 @@
     <div class="explore-header">
       <h2 class="explore-header-font">Explore our products</h2>
       <div class="filter">
-        <!-- FILTER -->
         <p>Sort by</p>
-        <select>
-          <option>Highest Rating</option>
-          <option>Price: Low to high</option>
-          <option>Price: High to low</option>
-          <option>Discount percentage</option>
-          <option>Brand</option>
-          <option>Category</option>
+        <select v-model="sortBy" @change="handleFetchSortedProducts">
+          <option value="Highest Rating">Highest Rating</option>
+          <option value="Low to high">Price: Low to high</option>
+          <option value="High to low">Price: High to low</option>
+          <option value="discount">Discount percentage</option>
+          <option value="brand">Brand</option>
+          <option value="category">Category</option>
         </select>
       </div>
     </div>
@@ -42,6 +41,7 @@ export default {
   data() {
     return {
       offset: 0,
+      sortBy: "",
     };
   },
 
@@ -57,13 +57,67 @@ export default {
   watch: {
     "$route.query.category"(newCategory) {
       this.offset = 0;
+      this.sortBy = "";
       window.scrollTo({ top: 0, behavior: "smooth" });
       this.getProducts({ limit: 12, skip: 0, category: newCategory });
     },
   },
   computed: {
     products() {
-      return this.$store.getters["products/products"];
+      const products = this.$store.getters["products/products"];
+
+      console.log(products);
+
+      let filteredProducts;
+      switch (this.sortBy) {
+        case "Highest Rating": {
+          filteredProducts = products
+            .slice()
+            .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+          break;
+        }
+        case "Low to high": {
+          filteredProducts = products
+            .slice()
+            .sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+          break;
+        }
+        case "High to low": {
+          filteredProducts = products
+            .slice()
+            .sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+          break;
+        }
+        case "discount": {
+          filteredProducts = products
+            .slice()
+            .sort(
+              (a, b) =>
+                (b.discountPercentage ?? 0) - (a.discountPercentage ?? 0)
+            );
+          break;
+        }
+        case "brand": {
+          filteredProducts = products.slice().sort((a, b) => {
+            const brandA = a.brand ?? "";
+            const brandB = b.brand ?? "";
+            return brandA.localeCompare(brandB);
+          });
+          break;
+        }
+        case "category": {
+          filteredProducts = products.slice().sort((a, b) => {
+            const categoryA = a.category ?? "";
+            const categoryB = b.category ?? "";
+            return categoryA.localeCompare(categoryB);
+          });
+          break;
+        }
+        default:
+          filteredProducts = products;
+      }
+
+      return filteredProducts;
     },
     totalProducts() {
       return this.$store.getters["products/totalProducts"];
@@ -86,6 +140,10 @@ export default {
         skip: 12 * this.offset,
         category,
       });
+    },
+    handleFetchSortedProducts() {
+      const category = this.$route.query.category;
+      this.getProducts({ limit: 0, skip: 0, category });
     },
   },
 };
