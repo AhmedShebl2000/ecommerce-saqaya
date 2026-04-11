@@ -2,6 +2,7 @@ import { CartType, ProductType } from "@/types";
 
 interface CartState {
   cart: CartType;
+  isOpen: boolean;
 }
 
 export const cartStore = {
@@ -11,6 +12,7 @@ export const cartStore = {
       cart: {
         items: [],
       },
+      isOpen: false,
     };
   },
   getters: {
@@ -28,6 +30,9 @@ export const cartStore = {
         (sum, item) => sum + item.product.price * item.qty,
         0
       );
+    },
+    isCartOpen(state: CartState) {
+      return state.isOpen;
     },
   },
   mutations: {
@@ -63,6 +68,15 @@ export const cartStore = {
     },
     CLEAR_CART(state: CartState) {
       state.cart.items = [];
+    },
+    TOGGLE_CART(state: CartState) {
+      state.isOpen = !state.isOpen;
+    },
+    OPEN_CART(state: CartState) {
+      state.isOpen = true;
+    },
+    CLOSE_CART(state: CartState) {
+      state.isOpen = false;
     },
   },
   actions: {},

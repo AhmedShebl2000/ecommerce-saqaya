@@ -19,6 +19,7 @@
             :images="product.images"
             :title="product.title"
             :price="product.price"
+            :discountPercentage="product.discountPercentage"
             :rating="product.rating"
             :ratingCount="product.reviews?.length || 0"
           ></product-item>
@@ -202,7 +203,7 @@ export default {
   align-items: center;
   gap: 120px;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   margin-top: 30px;
@@ -235,7 +236,7 @@ export default {
 li {
   list-style: none;
   scroll-snap-align: start;
-  height: 322px;
+  height: auto;
   min-width: 270px;
 }
 

@@ -69,7 +69,9 @@ export const productsStore = {
     },
     SET_SELECTED_PRODUCT(state: ProductsState, id: number) {
       if (state.products.length === 0) return;
-      const product = state.products.find((product) => product.id === id);
+      const product =
+        state.products.find((product) => product.id === id) ||
+        state.flashSalesProducts.find((product) => product.id === id);
       if (product) {
         state.selectedProduct = product;
       }

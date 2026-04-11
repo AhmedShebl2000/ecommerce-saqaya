@@ -105,9 +105,7 @@ import CartPayment from "./CartPayment.vue";
 export default {
   components: { CartItem, CartPayment },
   data() {
-    return {
-      isCartOpen: false,
-    };
+    return {};
   },
   computed: {
     cartQuantity() {
@@ -116,13 +114,16 @@ export default {
     cartItems() {
       return this.$store.getters["cart/cartItems"];
     },
+    isCartOpen() {
+      return this.$store.getters["cart/isCartOpen"];
+    },
   },
   methods: {
     toggleCart() {
-      this.isCartOpen = !this.isCartOpen;
+      this.$store.commit("cart/TOGGLE_CART");
     },
     closeCart() {
-      this.isCartOpen = false;
+      this.$store.commit("cart/CLOSE_CART");
     },
   },
 };
@@ -133,6 +134,7 @@ export default {
   position: relative;
   cursor: pointer;
   margin-left: 10px;
+  z-index: 100000;
 }
 
 .header__cart-container {
