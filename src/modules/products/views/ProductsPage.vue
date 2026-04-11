@@ -47,7 +47,19 @@ export default {
 
   created() {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    this.getProducts({ limit: 12, skip: 0 });
+
+    const category = this.$route.query.category;
+    this.getProducts({ limit: 12, skip: 0, category });
+  },
+  mounted() {
+    console.log(this.products);
+  },
+  watch: {
+    "$route.query.category"(newCategory) {
+      this.offset = 0;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      this.getProducts({ limit: 12, skip: 0, category: newCategory });
+    },
   },
   computed: {
     products() {
@@ -62,18 +74,18 @@ export default {
     },
   },
   methods: {
-    getProducts({ limit, skip }) {
-      this.$store.dispatch("products/fetchProducts", { limit, skip });
+    getProducts({ limit, skip, category }) {
+      this.$store.dispatch("products/fetchProducts", { limit, skip, category });
     },
     handleLoadMore() {
-      console.log(this.offset);
-      console.log("products length:", this.products.length);
-      console.log("total products:", this.totalProducts);
+      const category = this.$route.query.category;
+
+      this.offset++;
       this.getProducts({
         limit: 12,
-        skip: 12 * this.offset + 12,
+        skip: 12 * this.offset,
+        category,
       });
-      this.offset++;
     },
   },
 };

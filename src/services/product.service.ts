@@ -1,15 +1,32 @@
-const BASE_URL = "https://dummyjson.com/products";
+import { ProductsResponse } from "@/types";
+import api from "./http";
 
 export async function getAllProducts(limit = 0, skip = 0) {
   try {
-    const res = await fetch(`${BASE_URL}?limit=${limit}&skip=${skip}`);
+    const res = await api.get<ProductsResponse>("/products", {
+      params: { limit, skip },
+    });
 
-    if (!res.ok) {
-      throw new Error("There was an error fetching products.");
-    }
+    return { currentProducts: res.data.products, total: res.data.total };
+  } catch (error) {
+    throw new Error("Something went wrong fetching the products!");
+  }
+}
 
-    const data = await res.json();
-    return { currentProducts: data.products, total: data.total };
+export async function getProductsByCategory(
+  limit = 0,
+  skip = 0,
+  category: string
+) {
+  try {
+    const res = await api.get<ProductsResponse>(
+      `/products/category/${category}`,
+      {
+        params: { limit, skip },
+      }
+    );
+
+    return { currentProducts: res.data.products, total: res.data.total };
   } catch (error) {
     throw new Error("Something went wrong fetching the products!");
   }

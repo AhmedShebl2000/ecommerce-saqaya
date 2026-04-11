@@ -43,3 +43,8 @@ export interface ProductType {
   thumbnail: string;
   images: string[];
 }
+
+export type ProductsResponse = {
+  products: ProductType[];
+  total: number;
+};
