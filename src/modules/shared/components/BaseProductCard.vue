@@ -118,6 +118,9 @@ export default {
         price: this.price,
       };
       this.$store.commit("cart/ADD_TO_CART", product);
+      this.$toast.success(`${this.title} has been added to cart`, {
+        position: "top-left",
+      });
       this.$store.commit("cart/OPEN_CART");
     },
   },

@@ -1,10 +1,14 @@
 <template>
-  <section id="explore-out-products">
+  <section id="explore-out-products" class="explore">
     <div class="explore-header">
-      <h2 class="explore-header-font">Explore our products</h2>
-      <div class="filter">
-        <p>Sort by</p>
-        <select v-model="sortBy" @change="handleFetchSortedProducts">
+      <h2 class="explore__title">Explore our products</h2>
+      <div class="explore__filter">
+        <p class="explore__filter-label">Sort by</p>
+        <select
+          class="explore__filter-select"
+          v-model="sortBy"
+          @change="handleFetchSortedProducts"
+        >
           <option value="Highest Rating">Highest Rating</option>
           <option value="Low to high">Price: Low to high</option>
           <option value="High to low">Price: High to low</option>
@@ -15,7 +19,7 @@
       </div>
     </div>
     <ul class="explore-grid">
-      <li v-for="product in products" :key="product.id">
+      <li v-for="product in products" :key="product.id" class="explore__item">
         <product-item
           :id="product.id"
           :images="product.images"
@@ -26,7 +30,7 @@
         ></product-item>
       </li>
     </ul>
-    <div class="btn-container">
+    <div class="explore__button-container">
       <base-button v-if="!disabled" :link="false" @click="handleLoadMore">
         Load more...
       </base-button>
@@ -150,7 +154,7 @@ export default {
 </script>
 
 <style scoped>
-.btn-container {
+.explore__button-container {
   text-align: center;
   padding-top: 60px;
   margin-bottom: 30px;
@@ -165,7 +169,7 @@ export default {
   margin-top: 30px;
 }
 
-li {
+.explore__item {
   list-style: none;
   scroll-snap-align: start;
   height: 322px;
@@ -178,25 +182,19 @@ li {
   align-items: center;
 }
 
-.explore-header-font {
+.explore__title {
   font-weight: bold;
   font-size: 36px;
 }
 
-.arrows {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.filter {
+.explore__filter {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 12px;
 }
 
-.filter select {
+.explore__filter-select {
   background-color: #423840;
   color: #fafafa;
   border: 1px solid #423840;

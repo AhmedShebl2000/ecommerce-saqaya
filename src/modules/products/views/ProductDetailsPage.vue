@@ -400,7 +400,6 @@ export default {
   overflow: hidden;
 }
 
-/* Each row */
 .product__delivery-row {
   display: flex;
   align-items: center;
@@ -408,20 +407,17 @@ export default {
   padding: 16px;
 }
 
-/* Divider line */
 .divider {
   height: 1px;
   background-color: black;
   width: 100%;
 }
 
-/* Icon */
 .product__delivery-icon svg {
   width: 40px;
   height: 40px;
 }
 
-/* Text */
 .product__delivery-text .product__delivery-title {
   font-weight: 600;
   font-size: 16px;

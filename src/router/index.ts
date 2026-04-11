@@ -34,16 +34,16 @@ const routes = [
       },
       { path: "about", name: "about", component: AboutPage },
       { path: "contact", name: "contact", component: ContactPage },
-    ],
-  },
-  {
-    path: "*",
-    component: EmptyLayout,
-    children: [
       {
-        path: "",
-        name: "notFound",
-        component: NotFoundPage,
+        path: "*",
+        component: EmptyLayout,
+        children: [
+          {
+            path: "",
+            name: "notFound",
+            component: NotFoundPage,
+          },
+        ],
       },
     ],
   },

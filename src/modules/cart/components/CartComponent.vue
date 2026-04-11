@@ -82,6 +82,9 @@
         </div>
       </div>
       <div class="header__cart-items-grid">
+        <div v-if="cartQuantity === 0" class="header__cart--empty">
+          <p>You currently have no items in cart</p>
+        </div>
         <div class="header__cart-items">
           <cart-item
             v-for="cartItem in cartItems"
@@ -92,9 +95,11 @@
             :price="cartItem.product.price"
           ></cart-item>
         </div>
-        <cart-payment></cart-payment>
+        <cart-payment v-if="cartQuantity !== 0"></cart-payment>
       </div>
-      <base-button>Place Order</base-button>
+      <div v-if="cartQuantity !== 0">
+        <base-button>Place Order</base-button>
+      </div>
     </div>
   </div>
 </template>
@@ -135,6 +140,13 @@ export default {
   cursor: pointer;
   margin-left: 10px;
   z-index: 100000;
+}
+
+.header__cart--empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
 }
 
 .header__cart-container {
