@@ -5,6 +5,7 @@ import {
 import { shuffle } from "@/mixins/shuffle";
 import { ActionContext } from "vuex";
 import { ProductType } from "@/types";
+import { getItem, removeItem, setItem } from "@/modules/shared/utils/storage";
 
 interface ProductsState {
   products: ProductType[];
@@ -28,7 +29,7 @@ export const productsStore = {
       homeProducts: [],
       flashSalesProducts: [],
       totalProducts: 0,
-      selectedProduct: null,
+      selectedProduct: getItem("selectedProduct"),
     };
   },
   getters: {
@@ -68,12 +69,17 @@ export const productsStore = {
       state.flashSalesProducts = currentProducts;
     },
     SET_SELECTED_PRODUCT(state: ProductsState, id: number) {
-      if (state.products.length === 0) return;
       const product =
         state.products.find((product) => product.id === id) ||
-        state.flashSalesProducts.find((product) => product.id === id);
+        state.homeProducts.find((product) => product.id === id) ||
+        state.flashSalesProducts.find((product) => product.id === id) ||
+        null;
+
       if (product) {
         state.selectedProduct = product;
+        setItem("selectedProduct", product);
+      } else {
+        removeItem("selectedProduct");
       }
     },
   },
