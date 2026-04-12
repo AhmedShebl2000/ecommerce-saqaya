@@ -2,11 +2,11 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import ProductDetailsPage from "@/modules/products/views/ProductDetailsPage.vue";
-import ContactPage from "@/modules/home/views/ContactPage.vue";
-import NotFoundPage from "@/modules/home/views/NotFoundPage.vue";
+import ContactPage from "@/views/ContactPage.vue";
+import NotFoundPage from "@/views/NotFoundPage.vue";
 import DefaultLayout from "@/modules/shared/layout/DefaultLayout.vue";
 import EmptyLayout from "@/modules/shared/layout/EmptyLayout.vue";
-import AboutPage from "@/modules/home/views/AboutPage.vue";
+import AboutPage from "@/views/AboutPage.vue";
 import HomePage from "@/modules/home/views/HomePage.vue";
 import ProductsPage from "@/modules/products/views/ProductsPage.vue";
 

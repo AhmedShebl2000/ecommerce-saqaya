@@ -1,5 +1,52 @@
 <template>
   <div class="header">
+    <div
+      v-if="isSearchOpen"
+      class="header__search-overlay"
+      @click.self="closeSearch"
+    >
+      <div class="header__search-overlay-inner">
+        <input
+          ref="mobileSearch"
+          class="header__search-overlay-input"
+          type="text"
+          placeholder="What are you looking for?"
+          v-model="searchQuery"
+          @input="handleSearchInput"
+          @keyup.enter="handleSearch"
+        />
+        <div class="header__search-overlay-icon" @click="handleSearch">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z"
+            />
+          </svg>
+        </div>
+        <div v-if="searchResults.length > 0" class="header__search-dropdown">
+          <div
+            v-for="result in searchResults"
+            :key="result.id"
+            class="header__search-dropdown-item"
+            @click="handleSelectResult(result)"
+          >
+            <img :src="result.thumbnail" :alt="result.title" />
+            <div class="header__search-dropdown-info">
+              <p class="header__search-dropdown-title">{{ result.title }}</p>
+              <p class="header__search-dropdown-price">${{ result.price }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <header class="header__inner">
       <div
         :class="[
@@ -34,6 +81,9 @@
               class="header__search-input"
               type="text"
               placeholder="What are you looking for?"
+              v-model="searchQuery"
+              @input="handleSearchInput"
+              @keyup.enter="handleSearch"
             />
             <div class="header__search-icon">
               <svg
@@ -51,7 +101,45 @@
                 />
               </svg>
             </div>
+            <div
+              v-if="searchResults.length > 0"
+              class="header__search-dropdown"
+            >
+              <div
+                v-for="result in searchResults"
+                :key="result.id"
+                class="header__search-dropdown-item"
+                @click="handleSelectResult(result)"
+              >
+                <img :src="result.thumbnail" :alt="result.title" />
+                <div class="header__search-dropdown-info">
+                  <p class="header__search-dropdown-title">
+                    {{ result.title }}
+                  </p>
+                  <p class="header__search-dropdown-price">
+                    ${{ result.price }}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <div class="header__search-mobile-icon" @click="openSearch">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z"
+              />
+            </svg>
+          </div>
+
           <cart-component></cart-component>
           <div class="header__hamburger" @click="toggleMenu">☰</div>
         </div>
@@ -61,7 +149,9 @@
 </template>
 
 <script>
+import { slugify } from "@/mixins/slugify";
 import CartComponent from "@/modules/cart/components/CartComponent.vue";
+import { getProductBySearchQuery } from "@/services/product.service";
 import { RouterLink } from "vue-router";
 
 export default {
@@ -95,17 +185,72 @@ export default {
         },
       ],
       isMenuOpen: false,
+      isSearchOpen: false,
+      searchQuery: "",
+      searchResults: [],
+      searchTimeout: null,
     };
   },
   watch: {
     $route() {
       this.isMenuOpen = false;
+      this.isSearchOpen = false;
+      this.searchQuery = "";
+      this.searchResults = [];
     },
   },
 
   methods: {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
+    },
+    openSearch() {
+      this.isSearchOpen = true;
+      this.$nextTick(() => {
+        this.$refs.mobileSearch?.focus();
+      });
+    },
+    closeSearch() {
+      this.isSearchOpen = false;
+      this.searchQuery = "";
+    },
+    handleSearchInput() {
+      console.log("typing:", this.searchQuery);
+      clearTimeout(this.searchTimeout);
+
+      if (!this.searchQuery.trim()) {
+        this.searchResults = [];
+        return;
+      }
+
+      this.searchTimeout = setTimeout(async () => {
+        try {
+          const { currentProducts } = await getProductBySearchQuery(
+            this.searchQuery
+          );
+          console.log("results:", currentProducts);
+
+          this.searchResults = currentProducts.slice(0, 6);
+        } catch (error) {
+          console.log("search error:", error);
+
+          this.searchResults = [];
+        }
+      }, 300);
+    },
+    handleSearch() {
+      if (this.searchResults.length > 0) {
+        this.handleSelectResult(this.searchResults[0]);
+      }
+    },
+    handleSelectResult(product) {
+      this.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
+      const slug = slugify(product.title);
+      this.$router.push(`/products/${slug}`);
+
+      this.searchQuery = "";
+      this.searchResults = [];
+      this.isSearchOpen = false;
     },
   },
 };
@@ -115,7 +260,7 @@ export default {
 .header {
   padding: 0 20px;
   border-bottom: 1px solid black;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .header__nav {
@@ -169,6 +314,16 @@ export default {
   outline: none;
 }
 
+.header__search-overlay-input {
+  width: 100%;
+  padding: 14px 50px 14px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  background: white;
+}
+
 .header__search-input::placeholder {
   color: #7b7b7b;
 }
@@ -189,6 +344,74 @@ export default {
 
 .header__mobile-menu {
   display: none;
+}
+
+.header__search {
+  position: relative;
+}
+
+.header__search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 300;
+  overflow: hidden;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.header__search-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.header__search-dropdown-item:hover {
+  background: #f5f5f5;
+}
+
+.header__search-dropdown-item img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 4px;
+  background: #f5f5f5;
+}
+
+.header__search-dropdown-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.header__search-dropdown-title {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.header__search-dropdown-price {
+  font-size: 13px;
+  color: #db4444;
+}
+
+.header__search-overlay-inner .header__search-dropdown {
+  position: static;
+  margin-top: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
 /* MEDIA QUERIES */
@@ -262,6 +485,49 @@ export default {
 
   .header__mobile-link:first-child {
     border-top: 1px solid #333;
+  }
+}
+
+.header__search-mobile-icon {
+  display: none;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.header__search-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 80px;
+}
+
+.header__search-overlay-inner {
+  position: relative;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.header__search-overlay-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .header__search-mobile-icon {
+    display: block;
+  }
+
+  .header__search {
+    display: none;
   }
 }
 

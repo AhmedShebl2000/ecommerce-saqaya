@@ -2,16 +2,7 @@
   <div v-if="selectedProduct">
     <div class="product__details-grid">
       <div class="product_side-photos-grid">
-        <div class="product__side-image">
-          <img :src="selectedProduct.images[0]" />
-        </div>
-        <div class="product__side-image">
-          <img :src="selectedProduct.images[0]" />
-        </div>
-        <div class="product__side-image">
-          <img :src="selectedProduct.images[0]" />
-        </div>
-        <div class="product__side-image">
+        <div v-for="index in 4" :key="index" class="product__side-image">
           <img :src="selectedProduct.images[0]" />
         </div>
       </div>

@@ -31,3 +31,15 @@ export async function getProductsByCategory(
     throw new Error("Something went wrong fetching the products!");
   }
 }
+
+export async function getProductBySearchQuery(search: string) {
+  try {
+    const res = await api.get<ProductsResponse>("/products/search", {
+      params: { q: search },
+    });
+
+    return { currentProducts: res.data.products, total: res.data.total };
+  } catch (error) {
+    throw new Error("Something went wrong fetching the products!");
+  }
+}

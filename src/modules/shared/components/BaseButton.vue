@@ -1,5 +1,10 @@
 <template>
-  <button v-if="!link" @click="$emit('click')" :disabled="disabled">
+  <button
+    v-if="!link"
+    @click="$emit('click')"
+    :disabled="disabled"
+    :class="type"
+  >
     <slot></slot>
   </button>
   <router-link v-else :to="to">
@@ -24,6 +29,11 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+    type: {
+      type: String,
+      required: false,
+      default: "normal",
     },
   },
 };
@@ -58,5 +68,11 @@ button {
 
 .disabled {
   background-color: #fff;
+}
+
+.outline {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
 }
 </style>

@@ -1,5 +1,6 @@
 import {
   getAllProducts,
+  getProductBySearchQuery,
   getProductsByCategory,
 } from "@/services/product.service";
 import { shuffle } from "@/mixins/shuffle";
@@ -13,6 +14,7 @@ interface ProductsState {
   flashSalesProducts: ProductType[];
   totalProducts: number;
   selectedProduct: ProductType | null;
+  searchedProducts: ProductType[];
 }
 
 interface FetchProductsPayload {
@@ -30,6 +32,7 @@ export const productsStore = {
       flashSalesProducts: [],
       totalProducts: 0,
       selectedProduct: getItem("selectedProduct"),
+      searchedProducts: [],
     };
   },
   getters: {
@@ -47,6 +50,9 @@ export const productsStore = {
     },
     selectedProduct(state: ProductsState) {
       return state.selectedProduct;
+    },
+    searchedProducts(state: ProductsState) {
+      return state.searchedProducts;
     },
   },
   mutations: {
@@ -81,6 +87,20 @@ export const productsStore = {
       } else {
         removeItem("selectedProduct");
       }
+    },
+    SET_SELECTED_PRODUCT_DIRECT(state: ProductsState, product: ProductType) {
+      if (product) {
+        state.selectedProduct = product;
+        setItem("selectedProduct", product);
+      } else {
+        removeItem("selectedProduct");
+      }
+    },
+    SET_SEARCHED_PRODUCTS(
+      state: ProductsState,
+      currentProducts: ProductType[]
+    ) {
+      state.searchedProducts = currentProducts;
     },
   },
   actions: {
@@ -125,6 +145,19 @@ export const productsStore = {
         commit("SET_FLASH_SALE", randomProducts);
       } catch (error) {
         throw new Error("Something went wrong fetching flash sale products!");
+      }
+    },
+    async fetchSearchedProduct(
+      { commit }: ActionContext<ProductsState, any>,
+      payload: { searchQuery: string }
+    ) {
+      try {
+        const { currentProducts } = await getProductBySearchQuery(
+          payload.searchQuery
+        );
+        commit("SET_SEARCHED_PRODUCTS", currentProducts);
+      } catch (error) {
+        throw new Error("Something went wrong fetching searched products!");
       }
     },
   },

@@ -121,7 +121,6 @@ export default {
       this.$toast.success(`${this.title} has been added to cart`, {
         position: "top-left",
       });
-      this.$store.commit("cart/OPEN_CART");
     },
   },
 };

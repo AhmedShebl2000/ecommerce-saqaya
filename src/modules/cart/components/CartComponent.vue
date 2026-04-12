@@ -41,11 +41,19 @@
         <p class="header__cart-count">{{ cartQuantity }}</p>
       </div>
     </div>
+
+    <div
+      v-if="isCartOpen"
+      class="header__cart-overlay"
+      @click="closeCart"
+    ></div>
+
     <div
       :class="[
         'header__cart--open',
         { 'header__cart-panel--visible': isCartOpen },
       ]"
+      @click.stop
     >
       <div class="header__cart-container">
         <h3 class="header__cart-review">Shopping Cart</h3>
@@ -97,8 +105,9 @@
         </div>
         <cart-payment v-if="cartQuantity !== 0"></cart-payment>
       </div>
-      <div v-if="cartQuantity !== 0">
+      <div v-if="cartQuantity !== 0" class="header__cart-items-buttons">
         <base-button>Place Order</base-button>
+        <base-button type="outline" @click="clearCart">Clear Cart</base-button>
       </div>
     </div>
   </div>
@@ -111,6 +120,12 @@ export default {
   components: { CartItem, CartPayment },
   data() {
     return {};
+  },
+  mounted() {
+    window.addEventListener("keydown", this.handleEscape);
+  },
+  beforeDestroy() {
+    window.removeEventListener("keydown", this.handleEscape);
   },
   computed: {
     cartQuantity() {
@@ -129,6 +144,14 @@ export default {
     },
     closeCart() {
       this.$store.commit("cart/CLOSE_CART");
+    },
+    clearCart() {
+      this.$store.commit("cart/CLEAR_CART");
+    },
+    handleEscape(event) {
+      if (event.key === "Escape" && this.isCartOpen === true) {
+        this.closeCart();
+      }
     },
   },
 };
@@ -222,6 +245,19 @@ export default {
 .header__cart-count {
   font-size: 10px;
   color: white;
+}
+
+.header__cart-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 111;
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+.header__cart-items-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* MEDIA QUERIES */
