@@ -1,6 +1,6 @@
 <template>
   <div class="card" @click="$emit('click')">
-    <div v-if="discountPercentage" class="card__discount">-{{ discount }}%</div>
+    <div v-if="discount > 0" class="card__discount">-{{ discount }}%</div>
     <div class="card__wishlist">
       <svg
         width="34"
@@ -153,6 +153,7 @@ export default {
   justify-content: center;
   align-items: center;
   color: white;
+  z-index: 10000;
 }
 
 .card__wishlist {

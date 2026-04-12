@@ -78,6 +78,9 @@
         </base-button>
       </div>
     </section>
+    <section class="home__service-features">
+      <base-service-features :features="features"></base-service-features>
+    </section>
   </div>
 </template>
 
@@ -85,6 +88,9 @@
 import ProductItem from "@/modules/products/components/ProductItem.vue";
 import BaseCategoryCard from "../components/BaseCategoryCard.vue";
 import HeroComponent from "../components/HeroComponent.vue";
+import BaseIconDelivery from "@/modules/shared/components/icons/BaseIconDelivery.vue";
+import BaseIconSupport from "@/modules/shared/components/icons/BaseIconSupport.vue";
+import BaseIconGuarantee from "@/modules/shared/components/icons/BaseIconGuarantee.vue";
 
 export default {
   components: { ProductItem, BaseCategoryCard, HeroComponent },
@@ -152,6 +158,26 @@ export default {
 </svg>`,
           title: "Home Accessories",
           category: "home-decoration",
+        },
+      ],
+      features: [
+        {
+          id: 1,
+          icon: BaseIconDelivery,
+          title: "FREE AND FAST DELIVERY",
+          subtitle: "Free delivery for all orders over $140",
+        },
+        {
+          id: 2,
+          icon: BaseIconSupport,
+          title: "24/7 CUSTOMER SERVICE",
+          subtitle: "Friendly 24/7 customer support",
+        },
+        {
+          id: 3,
+          icon: BaseIconGuarantee,
+          title: "MONEY BACK GUARANTEE",
+          subtitle: "We return money within 30 days",
         },
       ],
     };
@@ -275,5 +301,9 @@ li {
   width: 100%;
   margin-top: 60px;
   margin-bottom: 60px;
+}
+
+.home__service-features {
+  margin: 80px 0;
 }
 </style>

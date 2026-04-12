@@ -190,16 +190,35 @@
         </div>
       </div>
     </div>
+    <div>
+      <base-header>More of this category</base-header>
+      <div class="product__same-category">
+        <div v-for="product in sameCategoryProducts" :key="product.id">
+          <product-item
+            :id="product.id"
+            :images="product.images"
+            :title="product.title"
+            :price="product.price"
+            :discountPercentage="product.discountPercentage"
+            :rating="product.rating"
+            :ratingCount="product.reviews?.length || 0"
+          ></product-item>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import BaseButton from "@/modules/shared/components/BaseButton.vue";
+import ProductItem from "../components/ProductItem.vue";
 export default {
-  components: { BaseButton },
+  components: { BaseButton, ProductItem },
   created() {
     window.scrollTo({ top: 0, behavior: "smooth" });
     console.log(this.selectedProduct);
+    this.getProductsOfSameCategory();
+    console.log(this.sameCategoryProducts);
   },
   computed: {
     selectedProduct() {
@@ -212,7 +231,7 @@ export default {
       return this.selectedProduct.stock > 0;
     },
     hasDiscountPercentage() {
-      return this.selectedProduct.discountPercentage > 0;
+      return (this.selectedProduct.discountPercentage || 0) > 0;
     },
     cartItems() {
       return this.$store.getters["cart/cartItems"];
@@ -223,6 +242,9 @@ export default {
       );
       return item ? item.qty : 0;
     },
+    sameCategoryProducts() {
+      return this.$store.getters["products/products"];
+    },
   },
   methods: {
     decreaseItemQty() {
@@ -230,6 +252,14 @@ export default {
     },
     increaseItemQty() {
       this.$store.commit("cart/ADD_TO_CART", this.selectedProduct);
+    },
+    getProductsOfSameCategory() {
+      const category = this.selectedProduct.category;
+      this.$store.dispatch("products/fetchProducts", {
+        limit: 4,
+        skip: 0,
+        category,
+      });
     },
   },
 };
@@ -422,5 +452,13 @@ export default {
 .link {
   text-decoration: underline;
   cursor: pointer;
+}
+
+.product__same-category {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 20px;
+  margin-bottom: 80px;
+  margin-top: 40px;
 }
 </style>
