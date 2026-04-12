@@ -18,8 +18,8 @@
           </p>
         </div>
       </div>
-      <div>
-        <img src="/contactImage.png" />
+      <div class="about__image-container">
+        <img class="about__image" src="/contactImage.png" />
       </div>
     </div>
     <div class="about__cards-container">
@@ -156,12 +156,14 @@ export default {
 .about {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 48px;
 }
 
 .about__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: center;
 }
 
 .about__text-container {
@@ -180,11 +182,23 @@ export default {
   font-weight: 600;
   font-size: 54px;
   letter-spacing: 6%;
+  line-height: 1.1;
+}
+
+.about__image-container {
+  width: 100%;
+}
+
+.about__image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 4px;
 }
 
 .about__cards-container {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 25px;
 }
 
@@ -194,5 +208,59 @@ export default {
 
 .about__service-features {
   margin-bottom: 40px;
+}
+
+@media (max-width: 992px) {
+  .about__grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .about__text-heading {
+    font-size: 42px;
+  }
+
+  .about__cards-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    place-items: center;
+  }
+
+  .about__carousel-container {
+    margin-bottom: 24px;
+  }
+
+  .about__service-features {
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about {
+    gap: 32px;
+  }
+
+  .about__text {
+    gap: 20px;
+  }
+
+  .about__text-heading {
+    font-size: 32px;
+  }
+
+  .about__cards-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about__text-heading {
+    font-size: 28px;
+  }
+
+  .about__grid {
+    gap: 20px;
+  }
 }
 </style>

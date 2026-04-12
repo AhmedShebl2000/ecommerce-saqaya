@@ -59,6 +59,7 @@ export default {
 .hero-carousel {
   position: relative;
   width: 100%;
+  height: 400px;
   max-width: 1440px;
   margin: 0 auto;
   background: black;
@@ -72,7 +73,8 @@ export default {
 .hero-carousel__image {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
 }
 
 .hero-carousel__dots {
@@ -99,5 +101,17 @@ export default {
 .hero-carousel__dot--active {
   background: #db4444;
   box-shadow: 0 0 0 2px white;
+}
+
+@media (max-width: 768px) {
+  .hero-carousel {
+    height: 260px;
+    padding: 30px 10px;
+  }
+}
+@media (max-width: 642px) {
+  .hero-carousel {
+    height: 180px;
+  }
 }
 </style>

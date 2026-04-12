@@ -267,18 +267,12 @@ export default {
   }
 }
 
-@media (max-width: 425px) {
+@media (max-width: 450px) {
   .header__cart--open {
-    width: 260px;
+    width: 100%;
   }
   .header__cart-review {
-    font-size: 16px;
-  }
-}
-
-@media (max-width: 320px) {
-  .header__cart--open {
-    width: 260px;
+    font-size: 24px;
   }
 }
 </style>

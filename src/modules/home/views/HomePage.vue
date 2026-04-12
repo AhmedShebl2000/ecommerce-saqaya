@@ -1,19 +1,23 @@
 <template>
-  <div>
+  <div class="home">
     <hero-component></hero-component>
 
-    <section id="flash-sales">
+    <section id="flash-sales" class="home__section home__section--flash-sales">
       <base-header>Today's</base-header>
-      <div class="explore-header">
-        <h2 class="explore-header-font">Flash Sales</h2>
-        <div class="arrows">
+      <div class="home__section-header">
+        <h2 class="home__section-title">Flash Sales</h2>
+        <div class="home__section-arrows">
           <base-arrow type="left" @click="scrollLeft"></base-arrow>
           <base-arrow type="right" @click="scrollRight"></base-arrow>
         </div>
       </div>
 
-      <ul class="flash-sale-items" ref="slider">
-        <li v-for="product in flashSaleProducts" :key="product.id">
+      <ul class="home__flash-sale-list" ref="slider">
+        <li
+          v-for="product in flashSaleProducts"
+          :key="product.id"
+          class="home__flash-sale-item"
+        >
           <product-item
             :id="product.id"
             :images="product.images"
@@ -26,7 +30,7 @@
         </li>
       </ul>
 
-      <div class="btn-container">
+      <div class="home__button-container">
         <base-button :link="true" to="/products">
           View All Products
         </base-button>
@@ -35,10 +39,11 @@
 
     <div class="home__divider"></div>
 
-    <section id="categories">
+    <section id="categories" class="home__section home__section--categories">
       <base-header>Categories</base-header>
-      <h2 class="categories__browse-header">Browse By Category</h2>
-      <div class="categories__items-container">
+      <h2 class="home__section-title">Browse By Category</h2>
+
+      <div class="home__categories-list">
         <base-category-card
           v-for="card in cards"
           :key="card.id"
@@ -51,17 +56,24 @@
 
     <div class="home__divider"></div>
 
-    <section id="explore-out-products">
+    <section
+      id="explore-our-products"
+      class="home__section home__section--products"
+    >
       <base-header>Our Products</base-header>
-      <div class="explore-header">
-        <h2 class="explore-header-font">Explore our products</h2>
-        <div class="arrows">
+      <div class="home__section-header">
+        <h2 class="home__section-title">Explore our products</h2>
+        <div class="home__section-arrows">
           <base-arrow type="left"></base-arrow>
           <base-arrow type="right"></base-arrow>
         </div>
       </div>
-      <ul class="explore-grid">
-        <li v-for="product in products" :key="product.id">
+      <ul class="home__products-grid">
+        <li
+          v-for="product in products"
+          :key="product.id"
+          class="home__products-item"
+        >
           <product-item
             :id="product.id"
             :images="product.images"
@@ -72,7 +84,7 @@
           ></product-item>
         </li>
       </ul>
-      <div class="btn-container">
+      <div class="home__button-container">
         <base-button :link="true" to="/products">
           View All Products
         </base-button>
@@ -206,15 +218,13 @@ export default {
     },
     scrollLeft() {
       this.$refs.slider.scrollBy({
-        left: -390,
+        left: window.innerWidth <= 480 ? -290 : -390,
         behavior: "smooth",
       });
     },
     scrollRight() {
-      console.log(this.$refs.slider.scrollWidth);
-      console.log(this.$refs.slider.scrollLeft + this.$refs.slider.clientWidth);
       this.$refs.slider.scrollBy({
-        left: 390,
+        left: window.innerWidth <= 480 ? 290 : 390,
         behavior: "smooth",
       });
     },
@@ -223,10 +233,16 @@ export default {
 </script>
 
 <style scoped>
-.flash-sale-items {
+.home {
+  width: 100%;
+}
+
+.home__section {
+  width: 100%;
+}
+
+.home__flash-sale-list {
   display: flex;
-  justify-content: start;
-  align-items: center;
   gap: 120px;
   overflow-x: auto;
   overflow-y: visible;
@@ -234,23 +250,24 @@ export default {
   scroll-snap-type: x mandatory;
   margin-top: 30px;
   margin-bottom: 30px;
+  padding-bottom: 8px;
 }
 
-.flash-sale-items::-webkit-scrollbar {
+.home__flash-sale-list::-webkit-scrollbar {
   display: none;
 }
-.flash-sale-items {
+.home__flash-sale-list {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-.btn-container {
+.home__button-container {
   text-align: center;
   padding-top: 30px;
   margin-bottom: 30px;
 }
 
-.explore-grid {
+.home__products-grid {
   display: grid;
   grid-template-columns: repeat(4, 270px);
   align-content: center;
@@ -266,32 +283,36 @@ li {
   min-width: 270px;
 }
 
-.explore-header {
+.home__section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
+  margin-top: 12px;
 }
 
-.explore-header-font {
-  font-weight: bold;
+.home__section-title {
+  font-weight: 700;
   font-size: 36px;
+  line-height: 1.2;
 }
 
-.arrows {
+.home__section-arrows {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
-.categories__browse-header {
+.home__section-title {
   font-weight: bold;
   font-size: 36px;
 }
 
-.categories__items-container {
+.home__categories-list {
   margin-top: 40px;
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 25px;
 }
 
@@ -305,5 +326,106 @@ li {
 
 .home__service-features {
   margin: 80px 0;
+}
+
+/*MEDIA QUERIES */
+@media (max-width: 1200px) {
+  .home__products-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .home__categories-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .home__flash-sale-list {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 992px) {
+  .home__section-title {
+    font-size: 30px;
+  }
+
+  .home__products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    place-items: center;
+    gap: 40px 20px;
+  }
+
+  .home__categories-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    place-items: center;
+    gap: 20px;
+  }
+
+  .home__divider {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .home__service-features {
+    margin: 60px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .home__section-header {
+    align-items: flex-start;
+  }
+
+  .home__section-title {
+    font-size: 26px;
+  }
+
+  .home__section-arrows {
+    align-self: flex-end;
+  }
+
+  .home__flash-sale-list {
+    gap: 20px;
+    margin-top: 24px;
+  }
+
+  .home__products-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .home__categories-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .home__button-container {
+    padding-top: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home__section-title {
+    font-size: 22px;
+  }
+
+  .home__flash-sale-item {
+    min-width: 240px;
+  }
+
+  .home__categories-list {
+    grid-template-columns: 1fr;
+  }
+
+  .home__divider {
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+
+  .home__service-features {
+    margin: 48px 0;
+  }
+
+  .home__flash-sale-list {
+    gap: 48px;
+  }
 }
 </style>

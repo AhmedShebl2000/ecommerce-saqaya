@@ -1,11 +1,11 @@
 <template>
-  <section id="explore-out-products" class="explore">
-    <div class="explore-header">
-      <h2 class="explore__title">Explore our products</h2>
-      <div class="explore__filter">
-        <p class="explore__filter-label">Sort by</p>
+  <section id="explore-out-products" class="products-page">
+    <div class="products-page__header">
+      <h2 class="products-page__title">Explore our products</h2>
+      <div class="products-page__filter">
+        <p class="products-page__filter-label">Sort by</p>
         <select
-          class="explore__filter-select"
+          class="products-page__filter-select"
           v-model="sortBy"
           @change="handleFetchSortedProducts"
         >
@@ -18,8 +18,12 @@
         </select>
       </div>
     </div>
-    <ul class="explore-grid">
-      <li v-for="product in products" :key="product.id" class="explore__item">
+    <ul class="products-page__grid">
+      <li
+        v-for="product in products"
+        :key="product.id"
+        class="products-page__item"
+      >
         <product-item
           :id="product.id"
           :images="product.images"
@@ -30,7 +34,7 @@
         ></product-item>
       </li>
     </ul>
-    <div class="explore__button-container">
+    <div class="products-page__button-container">
       <base-button v-if="!disabled" :link="false" @click="handleLoadMore">
         Load more...
       </base-button>
@@ -154,13 +158,13 @@ export default {
 </script>
 
 <style scoped>
-.explore__button-container {
+.products-page__button-container {
   text-align: center;
   padding-top: 60px;
   margin-bottom: 30px;
 }
 
-.explore-grid {
+.products-page__grid {
   display: grid;
   grid-template-columns: repeat(4, 270px);
   align-content: center;
@@ -169,37 +173,115 @@ export default {
   margin-top: 30px;
 }
 
-.explore__item {
+.products-page__item {
   list-style: none;
   scroll-snap-align: start;
-  height: 322px;
-  min-width: 270px;
+  height: auto;
+  min-width: 0;
 }
 
-.explore-header {
+.products-page__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
 }
 
-.explore__title {
+.products-page__title {
   font-weight: bold;
   font-size: 36px;
+  line-height: 1.2;
 }
 
-.explore__filter {
+.products-page__filter {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
-.explore__filter-select {
+.products-page__filter-label {
+  margin: 0;
+}
+
+.products-page__filter-select {
   background-color: #423840;
   color: #fafafa;
   border: 1px solid #423840;
-  padding: 4px;
+  padding: 6px 10px;
   border-radius: 4px;
   font-size: 14px;
+  max-width: 100%;
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 1200px) {
+  .products-page__title {
+    margin-left: 50px;
+  }
+  .products-page__filter {
+    margin-right: 55px;
+  }
+
+  .products-page__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    place-items: center;
+  }
+}
+
+@media (max-width: 992px) {
+  .products-page__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 20px;
+  }
+
+  .products-page__title {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .products-page__title {
+    margin-left: 30px;
+    font-size: 24px;
+  }
+  .products-page__header {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .products-page__filter {
+    width: 100%;
+  }
+
+  .products-page__filter-select {
+    width: 100%;
+    max-width: 160px;
+  }
+
+  .products-page__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .products-page__button-container {
+    padding-top: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-page__title {
+    font-size: 22px;
+  }
+
+  .products-page__filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .products-page__filter-select {
+    max-width: 100%;
+  }
 }
 </style>

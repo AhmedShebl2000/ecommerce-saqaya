@@ -246,6 +246,9 @@ export default {
     handleSelectResult(product) {
       this.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
       const slug = slugify(product.title);
+
+      const targetPath = `/products/${slug}`;
+      if (this.$route.path === targetPath) return;
       this.$router.push(`/products/${slug}`);
 
       this.searchQuery = "";
@@ -260,7 +263,6 @@ export default {
 .header {
   padding: 0 20px;
   border-bottom: 1px solid black;
-  /* overflow: hidden; */
 }
 
 .header__nav {

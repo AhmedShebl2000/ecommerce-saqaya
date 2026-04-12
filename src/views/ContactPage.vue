@@ -1,7 +1,7 @@
 <template>
   <div class="contact-container">
-    <div class="contact-container__image">
-      <img src="/contact.png" />
+    <div class="contact-container__image-container">
+      <img class="contact-container__image" src="/contact.png" />
     </div>
 
     <div class="contact-container__call-write-section">
@@ -212,10 +212,22 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 20px;
+  row-gap: 24px;
+}
+
+.contact-container__image-container {
+  width: 100%;
+}
+
+.contact-container__image {
+  width: 100%;
 }
 
 .contact-container__image img {
   border-radius: 4px;
+  width: 100%;
+  display: block;
+  height: auto;
 }
 
 .contact-container__call-write-section {
@@ -267,6 +279,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 0;
 }
 
 .contact-container__field--full {
@@ -320,5 +333,65 @@ export default {
   grid-column: 2 / -1;
   justify-self: end;
   margin-right: -8px;
+}
+
+/*MEDIA QUERIES*/
+@media (max-width: 1200px) {
+  .contact-container__half-container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 992px) {
+  .contact-container {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-container__call-us,
+  .contact-container__write-us {
+    padding: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-container__form {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-container__field--full {
+    grid-column: auto;
+  }
+
+  .contact-container__submit-button {
+    grid-column: auto;
+    justify-self: stretch;
+    margin-right: 0;
+  }
+
+  .contact-container__call-us,
+  .contact-container__write-us {
+    padding: 20px;
+  }
+
+  .contact-container__call-logo,
+  .contact-container__write-logo {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-container__call-us,
+  .contact-container__write-us {
+    padding: 16px;
+  }
+
+  .contact-container__form input,
+  .contact-container__form textarea {
+    padding: 12px;
+  }
+
+  .contact-container__divider {
+    margin: 16px 0 24px 0;
+  }
 }
 </style>

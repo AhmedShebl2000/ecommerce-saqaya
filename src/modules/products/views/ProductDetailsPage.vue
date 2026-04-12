@@ -1,7 +1,7 @@
 <template>
-  <div v-if="selectedProduct">
+  <div class="product" v-if="selectedProduct">
     <div class="product__details-grid">
-      <div class="product_side-photos-grid">
+      <div class="product__side-photos-grid">
         <div v-for="index in 4" :key="index" class="product__side-image">
           <img :src="selectedProduct.images[0]" />
         </div>
@@ -9,10 +9,10 @@
       <div class="product__main-photo">
         <img :src="selectedProduct.images[0]" />
       </div>
-      <div class="product-description">
+      <div class="product__description">
         <div class="product__top-description">
-          <h2 class="product-title">{{ selectedProduct.title }}</h2>
-          <div class="product-stars-rating-stock">
+          <h2 class="product__title">{{ selectedProduct.title }}</h2>
+          <div class="product__rating-stock">
             <div>
               <base-rating-component
                 :rating="selectedProduct.rating"
@@ -273,7 +273,7 @@ export default {
   margin-bottom: 60px;
 }
 
-.product_side-photos-grid {
+.product__side-photos-grid {
   display: grid;
   grid-template-rows: repeat(4, 138px);
   row-gap: 30px;
@@ -285,8 +285,9 @@ export default {
 }
 
 .product__side-image img {
-  max-width: 121px;
-  max-height: 114px;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
 }
 
 .product__side-image,
@@ -299,17 +300,18 @@ export default {
 }
 
 .product__main-photo img {
+  width: 100%;
   max-width: 446px;
-  max-height: 315px;
+  height: auto;
 }
 
-.product-title {
+.product__title {
   font-weight: 600;
   font-size: 24px;
   letter-spacing: 3%;
 }
 
-.product-stars-rating-stock {
+.product__rating-stock {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -333,6 +335,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .product__discount {
@@ -460,5 +463,116 @@ export default {
   column-gap: 20px;
   margin-bottom: 80px;
   margin-top: 40px;
+}
+
+@media (max-width: 1200px) {
+  .product__details-grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+  }
+
+  .product__side-photos-grid {
+    grid-column: 1 /-1;
+    gap: 10px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: none;
+    margin-bottom: 50px;
+  }
+}
+
+@media (max-width: 992px) {
+  .product__details-grid {
+    grid-template-columns: 1fr;
+    row-gap: 24px;
+    column-gap: 0;
+  }
+
+  .product__main-photo {
+    order: -2;
+  }
+
+  .product__side-photos-grid {
+    order: -1;
+    grid-column: auto;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .product__main-photo img {
+    max-width: 100%;
+  }
+
+  .product__description {
+    width: 100%;
+  }
+
+  .product__top-description {
+    max-width: 100%;
+  }
+
+  .product__bottom-description {
+    max-width: 50%;
+  }
+
+  .product__same-category {
+    grid-template-columns: repeat(2, 1fr);
+    place-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .product__title {
+    font-size: 20px;
+  }
+
+  .product__side-photos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    place-items: center;
+  }
+
+  .product__side-image {
+    height: 110px;
+  }
+
+  .product__bottom-description {
+    max-width: 100%;
+  }
+
+  .product__cart-selection {
+    width: 100%;
+  }
+
+  .product__cart-btn {
+    width: 100%;
+  }
+
+  .product__same-category {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .product__cart-selection {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+  }
+
+  .product__cart-btn :deep(button) {
+    width: 100%;
+  }
+
+  .product__cart-count {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .product__cart-btn {
+    width: 100%;
+  }
+
+  .product__wishlist-logo {
+    width: 44px;
+    height: 44px;
+  }
 }
 </style>
