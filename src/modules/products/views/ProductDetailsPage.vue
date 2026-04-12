@@ -192,7 +192,16 @@
     </div>
     <div>
       <base-header>More of this category</base-header>
-      <div class="product__same-category">
+      <div v-if="loading" class="product__loading">
+        <base-loader size="56px"></base-loader>
+      </div>
+
+      <base-error
+        v-else-if="error"
+        :message="error"
+        @retry="getProductsOfSameCategory"
+      ></base-error>
+      <div v-else class="product__same-category">
         <div v-for="product in sameCategoryProducts" :key="product.id">
           <product-item
             :id="product.id"
@@ -210,10 +219,15 @@
 </template>
 
 <script>
-import BaseButton from "@/modules/shared/components/BaseButton.vue";
 import ProductItem from "../components/ProductItem.vue";
 export default {
-  components: { BaseButton, ProductItem },
+  components: { ProductItem },
+  data() {
+    return {
+      loading: false,
+      error: null,
+    };
+  },
   created() {
     window.scrollTo({ top: 0, behavior: "smooth" });
     console.log(this.selectedProduct);
@@ -253,13 +267,21 @@ export default {
     increaseItemQty() {
       this.$store.commit("cart/ADD_TO_CART", this.selectedProduct);
     },
-    getProductsOfSameCategory() {
+    async getProductsOfSameCategory() {
       const category = this.selectedProduct.category;
-      this.$store.dispatch("products/fetchProducts", {
-        limit: 4,
-        skip: 0,
-        category,
-      });
+      try {
+        this.loading = true;
+        this.error = null;
+        await this.$store.dispatch("products/fetchProducts", {
+          limit: 4,
+          skip: 0,
+          category,
+        });
+      } catch (error) {
+        this.error = "Failed to load related products.";
+      } finally {
+        this.loading = false;
+      }
     },
   },
 };
@@ -315,6 +337,12 @@ export default {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.product__loading {
+  display: flex;
+  justify-content: center;
+  padding: 120px 0;
 }
 
 .in-stock {

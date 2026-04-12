@@ -12,7 +12,17 @@
         </div>
       </div>
 
-      <ul class="home__flash-sale-list" ref="slider">
+      <div v-if="flashLoading" class="home__loading-container">
+        <base-loader size="48px"></base-loader>
+      </div>
+
+      <base-error
+        v-else-if="flashError"
+        :message="flashError"
+        @retry="getFlashSaleProducts"
+      ></base-error>
+
+      <ul v-else class="home__flash-sale-list" ref="slider">
         <li
           v-for="product in flashSaleProducts"
           :key="product.id"
@@ -68,7 +78,18 @@
           <base-arrow type="right"></base-arrow>
         </div>
       </div>
-      <ul class="home__products-grid">
+
+      <div v-if="homeLoading" class="home__loading-container">
+        <base-loader size="48px"></base-loader>
+      </div>
+
+      <base-error
+        v-else-if="homeError"
+        :message="homeError"
+        @retry="getHomeProducts"
+      ></base-error>
+
+      <ul v-else class="home__products-grid">
         <li
           v-for="product in products"
           :key="product.id"
@@ -108,6 +129,10 @@ export default {
   components: { ProductItem, BaseCategoryCard, HeroComponent },
   data() {
     return {
+      flashLoading: false,
+      homeLoading: false,
+      flashError: null,
+      homeError: null,
       cards: [
         {
           id: 1,
@@ -210,11 +235,27 @@ export default {
     getProducts({ limit, skip }) {
       this.$store.dispatch("products/fetchProducts", { limit, skip });
     },
-    getHomeProducts() {
-      this.$store.dispatch("products/fetchHomeProducts");
+    async getHomeProducts() {
+      this.homeLoading = true;
+      this.homeError = null;
+      try {
+        await this.$store.dispatch("products/fetchHomeProducts");
+      } catch (error) {
+        this.homeError = "Failed to load products. Please try again.";
+      } finally {
+        this.homeLoading = false;
+      }
     },
-    getFlashSaleProducts() {
-      this.$store.dispatch("products/fetchFlashSaleProducts");
+    async getFlashSaleProducts() {
+      this.flashLoading = true;
+      this.flashError = null;
+      try {
+        await this.$store.dispatch("products/fetchFlashSaleProducts");
+      } catch (error) {
+        this.flashError = "Failed to load flash sales. Please try again.";
+      } finally {
+        this.flashLoading = false;
+      }
     },
     scrollLeft() {
       this.$refs.slider.scrollBy({
@@ -239,6 +280,12 @@ export default {
 
 .home__section {
   width: 100%;
+}
+
+.home__loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
 }
 
 .home__flash-sale-list {

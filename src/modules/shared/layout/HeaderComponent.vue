@@ -6,32 +6,41 @@
       @click.self="closeSearch"
     >
       <div class="header__search-overlay-inner">
-        <input
-          ref="mobileSearch"
-          class="header__search-overlay-input"
-          type="text"
-          placeholder="What are you looking for?"
-          v-model="searchQuery"
-          @input="handleSearchInput"
-          @keyup.enter="handleSearch"
-        />
-        <div class="header__search-overlay-icon" @click="handleSearch">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z"
-            />
-          </svg>
+        <div class="header__search-overlay-input-wrapper">
+          <input
+            ref="mobileSearch"
+            class="header__search-overlay-input"
+            type="text"
+            placeholder="What are you looking for?"
+            v-model="searchQuery"
+            @input="handleSearchInput"
+            @keyup.enter="handleSearch"
+          />
+          <div class="header__search-overlay-icon" @click="handleSearch">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z"
+              />
+            </svg>
+          </div>
         </div>
-        <div v-if="searchResults.length > 0" class="header__search-dropdown">
+        <div
+          v-if="searchResults.length > 0 || searchLoading || showNoResults"
+          class="header__search-dropdown"
+        >
+          <div v-if="searchLoading" class="header__search-dropdown-loading">
+            <base-loader size="24px"></base-loader>
+          </div>
           <div
+            v-else-if="searchResults.length > 0"
             v-for="result in searchResults"
             :key="result.id"
             class="header__search-dropdown-item"
@@ -42,6 +51,9 @@
               <p class="header__search-dropdown-title">{{ result.title }}</p>
               <p class="header__search-dropdown-price">${{ result.price }}</p>
             </div>
+          </div>
+          <div v-else class="header__search-dropdown-empty">
+            No products found
           </div>
         </div>
       </div>
@@ -102,10 +114,14 @@
               </svg>
             </div>
             <div
-              v-if="searchResults.length > 0"
+              v-if="searchResults.length > 0 || searchLoading || showNoResults"
               class="header__search-dropdown"
             >
+              <div v-if="searchLoading" class="header__search-dropdown-loading">
+                <base-loader size="24px"></base-loader>
+              </div>
               <div
+                v-else-if="searchResults.length > 0"
                 v-for="result in searchResults"
                 :key="result.id"
                 class="header__search-dropdown-item"
@@ -120,6 +136,9 @@
                     ${{ result.price }}
                   </p>
                 </div>
+              </div>
+              <div v-else class="header__search-dropdown-empty">
+                No products found
               </div>
             </div>
           </div>
@@ -161,6 +180,7 @@ export default {
   },
   data() {
     return {
+      searchLoading: false,
       navLinks: [
         {
           id: 1,
@@ -199,7 +219,15 @@ export default {
       this.searchResults = [];
     },
   },
-
+  computed: {
+    showNoResults() {
+      return (
+        this.searchQuery.trim().length > 0 &&
+        !this.searchLoading &&
+        this.searchResults.length === 0
+      );
+    },
+  },
   methods: {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
@@ -215,7 +243,6 @@ export default {
       this.searchQuery = "";
     },
     handleSearchInput() {
-      console.log("typing:", this.searchQuery);
       clearTimeout(this.searchTimeout);
 
       if (!this.searchQuery.trim()) {
@@ -224,6 +251,7 @@ export default {
       }
 
       this.searchTimeout = setTimeout(async () => {
+        this.searchLoading = true;
         try {
           const { currentProducts } = await getProductBySearchQuery(
             this.searchQuery
@@ -232,9 +260,9 @@ export default {
 
           this.searchResults = currentProducts.slice(0, 6);
         } catch (error) {
-          console.log("search error:", error);
-
           this.searchResults = [];
+        } finally {
+          this.searchLoading = false;
         }
       }, 300);
     },
@@ -338,6 +366,19 @@ export default {
   cursor: pointer;
 }
 
+.header__search-dropdown-loading {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
+.header__search-dropdown-empty {
+  padding: 16px;
+  text-align: center;
+  color: #7b7b7b;
+  font-size: 14px;
+}
+
 .header__hamburger {
   display: none;
   font-size: 24px;
@@ -405,6 +446,10 @@ export default {
 .header__search-dropdown-price {
   font-size: 13px;
   color: #db4444;
+}
+
+.header__search-overlay-input-wrapper {
+  position: relative;
 }
 
 .header__search-overlay-inner .header__search-dropdown {
@@ -508,7 +553,6 @@ export default {
 }
 
 .header__search-overlay-inner {
-  position: relative;
   width: 90%;
   margin: 0 auto;
 }

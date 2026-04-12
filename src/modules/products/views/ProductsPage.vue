@@ -18,7 +18,20 @@
         </select>
       </div>
     </div>
-    <ul class="products-page__grid">
+
+    <div v-if="loading" class="products-page__loading">
+      <base-loader size="48px"></base-loader>
+    </div>
+
+    <base-error
+      v-else-if="error"
+      :message="error"
+      @retry="
+        getProducts({ limit: 12, skip: 0, category: $route.query.category })
+      "
+    ></base-error>
+
+    <ul v-else class="products-page__grid">
       <li
         v-for="product in products"
         :key="product.id"
@@ -35,6 +48,9 @@
       </li>
     </ul>
     <div class="products-page__button-container">
+      <div class="products-page__load-more">
+        <base-loader v-if="loadingMore" size="32px"></base-loader>
+      </div>
       <base-button v-if="!disabled" :link="false" @click="handleLoadMore">
         Load more...
       </base-button>
@@ -50,6 +66,9 @@ export default {
     return {
       offset: 0,
       sortBy: "",
+      loading: false,
+      loadingMore: false,
+      error: null,
     };
   },
 
@@ -136,8 +155,25 @@ export default {
     },
   },
   methods: {
-    getProducts({ limit, skip, category }) {
-      this.$store.dispatch("products/fetchProducts", { limit, skip, category });
+    async getProducts({ limit, skip, category }) {
+      if (skip === 0) {
+        this.loading = true;
+        this.error = null;
+      } else {
+        this.loadingMore = true;
+      }
+      try {
+        await this.$store.dispatch("products/fetchProducts", {
+          limit,
+          skip,
+          category,
+        });
+      } catch (error) {
+        this.error = "Failed to load products. Please try again.";
+      } finally {
+        this.loading = false;
+        this.loadingMore = false;
+      }
     },
     handleLoadMore() {
       const category = this.$route.query.category;
@@ -213,6 +249,18 @@ export default {
   border-radius: 4px;
   font-size: 14px;
   max-width: 100%;
+}
+
+.products-page__loading {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+.products-page__load-more {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
 }
 
 /* MEDIA QUERIES */

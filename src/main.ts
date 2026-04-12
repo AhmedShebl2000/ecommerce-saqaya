@@ -14,6 +14,8 @@ import BaseHeader from "./modules/shared/components/BaseHeader.vue";
 import BaseSalesCard from "./modules/shared/components/BaseSalesCard.vue";
 import BaseServiceFeatures from "./modules/shared/components/BaseServiceFeatures.vue";
 import BaseTeamCarousel from "./modules/shared/components/BaseTeamCarousel.vue";
+import BaseLoader from "./modules/shared/components/BaseLoader.vue";
+import BaseError from "./modules/shared/components/BaseError.vue";
 
 Vue.config.productionTip = false;
 
@@ -25,6 +27,8 @@ Vue.component("base-header", BaseHeader);
 Vue.component("base-sales-card", BaseSalesCard);
 Vue.component("base-team-carousel", BaseTeamCarousel);
 Vue.component("base-service-features", BaseServiceFeatures);
+Vue.component("base-loader", BaseLoader);
+Vue.component("base-error", BaseError);
 
 Vue.use(Toast, {
   position: "top-right",
