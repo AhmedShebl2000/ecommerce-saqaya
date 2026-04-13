@@ -1,6 +1,12 @@
 <template>
-  <div class="card" @click="$emit('click')">
-    <div v-if="discount > 0" class="card__discount">-{{ discount }}%</div>
+  <div class="card" data-test="product-card" @click="$emit('click')">
+    <div
+      v-if="discount > 0"
+      class="card__discount"
+      data-test="product-discount"
+    >
+      -{{ discount }}%
+    </div>
     <div class="card__wishlist">
       <svg
         width="34"
@@ -50,9 +56,9 @@
         Add To Cart
       </div>
     </div>
-    <p class="card__text">{{ title }}</p>
+    <p class="card__text" data-test="product-title">{{ title }}</p>
     <div class="card__price-rating">
-      <span class="card__price">${{ price }}</span>
+      <span class="card__price" data-test="product-price">${{ price }}</span>
       <span v-if="discountPercentage" class="card__previous-price"
         >${{ previousPrice }}</span
       >

@@ -1,19 +1,19 @@
 <template>
-  <div class="header__cart-total-details">
-    <div class="header__cart-total-fields">
+  <div class="header__cart-total-details" data-test="cart-payment">
+    <div class="header__cart-total-fields" data-test="cart-subtotal-row">
       <p>Subtotal:</p>
-      <span>${{ cartTotal }}</span>
+      <span data-test="cart-subtotal">${{ cartTotal }}</span>
     </div>
 
     <div class="header__cart-divider"></div>
-    <div class="header__cart-total-fields">
+    <div class="header__cart-total-fields" data-test="cart-shipping-row">
       <p>Shipping:</p>
-      <span>Free</span>
+      <span data-test="cart-shipping">Free</span>
     </div>
     <div class="header__cart-divider"></div>
-    <div class="header__cart-total-fields">
+    <div class="header__cart-total-fields" data-test="cart-total-row">
       <p>Total:</p>
-      <span>${{ cartTotal }}</span>
+      <span data-test="cart-total">${{ cartTotal }}</span>
     </div>
   </div>
 </template>

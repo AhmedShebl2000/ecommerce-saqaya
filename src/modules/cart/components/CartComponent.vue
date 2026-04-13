@@ -1,6 +1,6 @@
 <template>
-  <div class="header__cart">
-    <div class="header__cart-icon" @click="toggleCart">
+  <div class="header__cart" data-test="cart-component">
+    <div class="header__cart-icon" data-test="cart-icon" @click="toggleCart">
       <svg
         width="24"
         height="24"
@@ -44,6 +44,7 @@
 
     <div
       v-if="isCartOpen"
+      data-test="cart-overlay"
       class="header__cart-overlay"
       @click="closeCart"
     ></div>
@@ -56,8 +57,14 @@
       @click.stop
     >
       <div class="header__cart-container">
-        <h3 class="header__cart-review">Shopping Cart</h3>
-        <div class="header__cart-close" @click="closeCart">
+        <h3 class="header__cart-review" data-test="cart-title">
+          Shopping Cart
+        </h3>
+        <div
+          class="header__cart-close"
+          data-test="cart-close"
+          @click="closeCart"
+        >
           <svg
             width="24"
             height="24"
@@ -90,10 +97,14 @@
         </div>
       </div>
       <div class="header__cart-items-grid">
-        <div v-if="cartQuantity === 0" class="header__cart--empty">
+        <div
+          v-if="cartQuantity === 0"
+          data-test="cart-empty"
+          class="header__cart--empty"
+        >
           <p>You currently have no items in cart</p>
         </div>
-        <div class="header__cart-items">
+        <div class="header__cart-items" data-test="cart-items">
           <cart-item
             v-for="cartItem in cartItems"
             :key="cartItem.product.id"
@@ -105,9 +116,17 @@
         </div>
         <cart-payment v-if="cartQuantity !== 0"></cart-payment>
       </div>
-      <div v-if="cartQuantity !== 0" class="header__cart-items-buttons">
+      <div
+        v-if="cartQuantity !== 0"
+        class="header__cart-items-buttons"
+        data-test="cart-actions"
+      >
         <base-button>Place Order</base-button>
-        <base-button type="outline" @click="clearCart">Clear Cart</base-button>
+        <div data-test="clear-cart">
+          <base-button type="outline" @click="clearCart"
+            >Clear Cart</base-button
+          >
+        </div>
       </div>
     </div>
   </div>

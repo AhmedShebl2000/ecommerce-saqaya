@@ -4,18 +4,11 @@
       <h2 class="products-page__title">Explore our products</h2>
       <div class="products-page__filter">
         <p class="products-page__filter-label">Sort by</p>
-        <select
+        <sort-dropdown
           class="products-page__filter-select"
-          v-model="sortBy"
-          @change="handleFetchSortedProducts"
-        >
-          <option value="Highest Rating">Highest Rating</option>
-          <option value="Low to high">Price: Low to high</option>
-          <option value="High to low">Price: High to low</option>
-          <option value="discount">Discount percentage</option>
-          <option value="brand">Brand</option>
-          <option value="category">Category</option>
-        </select>
+          :sortBy="sortBy"
+          @handleFetchSortedProducts="handleFetchSortedProducts"
+        ></sort-dropdown>
       </div>
     </div>
 
@@ -60,8 +53,9 @@
 
 <script>
 import ProductItem from "@/modules/products/components/ProductItem.vue";
+import SortDropdown from "../components/SortDropdown.vue";
 export default {
-  components: { ProductItem },
+  components: { ProductItem, SortDropdown },
   data() {
     return {
       offset: 0,
@@ -185,7 +179,8 @@ export default {
         category,
       });
     },
-    handleFetchSortedProducts() {
+    handleFetchSortedProducts(value) {
+      this.sortBy = value;
       const category = this.$route.query.category;
       this.getProducts({ limit: 0, skip: 0, category });
     },

@@ -1,7 +1,11 @@
 <template>
   <div>
-    <div class="header__cart-item">
-      <div class="header__cart-item-remove" @click="removeItemFromCart">
+    <div class="header__cart-item" data-test="cart-item">
+      <div
+        class="header__cart-item-remove"
+        data-test="cart-item-remove"
+        @click="removeItemFromCart"
+      >
         <svg
           width="24"
           height="24"
@@ -22,9 +26,13 @@
       <div class="header__cart-item-image">
         <img :src="thumbnail" />
       </div>
-      <p>{{ title }}</p>
+      <p data-test="cart-item-title">{{ title }}</p>
       <div class="header__cart-item-qty">
-        <div class="header__cart-item-increase" @click="increaseCartItemQty">
+        <div
+          class="header__cart-item-increase"
+          data-test="cart-item-increase"
+          @click="increaseCartItemQty"
+        >
           <svg
             width="16"
             height="16"
@@ -39,12 +47,17 @@
           </svg>
         </div>
         <input
+          data-test="cart-item-qty"
           class="header__cart-item-qty-input"
           type="number"
           min="1"
           v-model="itemQty"
         />
-        <div class="header__cart-item-decrease" @click="decreaseCartItemQty">
+        <div
+          class="header__cart-item-decrease"
+          data-test="cart-item-decrease"
+          @click="decreaseCartItemQty"
+        >
           <svg
             width="16"
             height="16"
@@ -59,7 +72,9 @@
           </svg>
         </div>
       </div>
-      <p class="header__cart-item-price">${{ roundedPrice }}</p>
+      <p class="header__cart-item-price" data-test="cart-item-price">
+        ${{ roundedPrice }}
+      </p>
     </div>
   </div>
 </template>
