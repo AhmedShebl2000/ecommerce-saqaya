@@ -70,6 +70,6 @@ export default {
 .breadcrumb__link,
 .breadcrumb__link:visited,
 .breadcrumb__link:hover {
-  color: black;
+  color: rgba(0, 0, 0, 0.5);
 }
 </style>

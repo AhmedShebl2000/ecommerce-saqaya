@@ -1,43 +1,46 @@
 <template>
-  <div class="about">
-    <div class="about__grid">
-      <div class="about__text-container">
-        <div class="about__text">
-          <h1 class="about__text-heading">Our Story</h1>
-          <p>
-            Launced in 2015, Exclusive is South Asia’s premier online shopping
-            makterplace with an active presense in Bangladesh. Supported by wide
-            range of tailored marketing, data and service solutions, Exclusive
-            has 10,500 sallers and 300 brands and serves 3 millioons customers
-            across the region.
-          </p>
-          <p>
-            Exclusive has more than 1 Million products to offer, growing at a
-            very fast. Exclusive offers a diverse assotment in categories
-            ranging from consumer.
-          </p>
+  <div>
+    <base-bread-crumb :items="breadcrumbItems"></base-bread-crumb>
+    <div class="about">
+      <div class="about__grid">
+        <div class="about__text-container">
+          <div class="about__text">
+            <h1 class="about__text-heading">Our Story</h1>
+            <p>
+              Launced in 2015, Exclusive is South Asia’s premier online shopping
+              makterplace with an active presense in Bangladesh. Supported by
+              wide range of tailored marketing, data and service solutions,
+              Exclusive has 10,500 sallers and 300 brands and serves 3 millioons
+              customers across the region.
+            </p>
+            <p>
+              Exclusive has more than 1 Million products to offer, growing at a
+              very fast. Exclusive offers a diverse assotment in categories
+              ranging from consumer.
+            </p>
+          </div>
+        </div>
+        <div class="about__image-container">
+          <img class="about__image" src="/contactImage.png" />
         </div>
       </div>
-      <div class="about__image-container">
-        <img class="about__image" src="/contactImage.png" />
+      <div class="about__cards-container">
+        <base-sales-card
+          v-for="card in cards"
+          :key="card.id"
+          :id="card.id"
+          :amount="card.amount"
+          :subtitle="card.subtitle"
+        >
+          <component :is="card.image"
+        /></base-sales-card>
       </div>
-    </div>
-    <div class="about__cards-container">
-      <base-sales-card
-        v-for="card in cards"
-        :key="card.id"
-        :id="card.id"
-        :amount="card.amount"
-        :subtitle="card.subtitle"
-      >
-        <component :is="card.image"
-      /></base-sales-card>
-    </div>
-    <div class="about__carousel-container">
-      <base-team-carousel :members="teamMembers"></base-team-carousel>
-    </div>
-    <div class="about__service-features">
-      <base-service-features :features="features"></base-service-features>
+      <div class="about__carousel-container">
+        <base-team-carousel :members="teamMembers"></base-team-carousel>
+      </div>
+      <div class="about__service-features">
+        <base-service-features :features="features"></base-service-features>
+      </div>
     </div>
   </div>
 </template>
@@ -148,6 +151,17 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    breadcrumbItems() {
+      return [
+        { id: 1, label: "Home", to: "/" },
+        {
+          id: 2,
+          label: "About",
+        },
+      ];
+    },
   },
 };
 </script>

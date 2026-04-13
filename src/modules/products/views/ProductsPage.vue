@@ -1,54 +1,57 @@
 <template>
-  <section id="explore-out-products" class="products-page">
-    <div class="products-page__header">
-      <h2 class="products-page__title">Explore our products</h2>
-      <div class="products-page__filter">
-        <p class="products-page__filter-label">Sort by</p>
-        <sort-dropdown
-          class="products-page__filter-select"
-          :sortBy="sortBy"
-          @handleFetchSortedProducts="handleFetchSortedProducts"
-        ></sort-dropdown>
+  <div>
+    <base-bread-crumb :items="breadcrumbItems"></base-bread-crumb>
+    <section id="explore-out-products" class="products-page">
+      <div class="products-page__header">
+        <h2 class="products-page__title">Explore our products</h2>
+        <div class="products-page__filter">
+          <p class="products-page__filter-label">Sort by</p>
+          <sort-dropdown
+            class="products-page__filter-select"
+            :sortBy="sortBy"
+            @handleFetchSortedProducts="handleFetchSortedProducts"
+          ></sort-dropdown>
+        </div>
       </div>
-    </div>
 
-    <div v-if="loading" class="products-page__loading">
-      <base-loader size="48px"></base-loader>
-    </div>
-
-    <base-error
-      v-else-if="error"
-      :message="error"
-      @retry="
-        getProducts({ limit: 12, skip: 0, category: $route.query.category })
-      "
-    ></base-error>
-
-    <ul v-else class="products-page__grid">
-      <li
-        v-for="product in products"
-        :key="product.id"
-        class="products-page__item"
-      >
-        <product-item
-          :id="product.id"
-          :images="product.images"
-          :title="product.title"
-          :price="product.price"
-          :rating="product.rating"
-          :ratingCount="product.reviews?.length || 0"
-        ></product-item>
-      </li>
-    </ul>
-    <div class="products-page__button-container">
-      <div class="products-page__load-more">
-        <base-loader v-if="loadingMore" size="32px"></base-loader>
+      <div v-if="loading" class="products-page__loading">
+        <base-loader size="48px"></base-loader>
       </div>
-      <base-button v-if="!disabled" :link="false" @click="handleLoadMore">
-        Load more...
-      </base-button>
-    </div>
-  </section>
+
+      <base-error
+        v-else-if="error"
+        :message="error"
+        @retry="
+          getProducts({ limit: 12, skip: 0, category: $route.query.category })
+        "
+      ></base-error>
+
+      <ul v-else class="products-page__grid">
+        <li
+          v-for="product in products"
+          :key="product.id"
+          class="products-page__item"
+        >
+          <product-item
+            :id="product.id"
+            :images="product.images"
+            :title="product.title"
+            :price="product.price"
+            :rating="product.rating"
+            :ratingCount="product.reviews?.length || 0"
+          ></product-item>
+        </li>
+      </ul>
+      <div class="products-page__button-container">
+        <div class="products-page__load-more">
+          <base-loader v-if="loadingMore" size="32px"></base-loader>
+        </div>
+        <base-button v-if="!disabled" :link="false" @click="handleLoadMore">
+          Load more...
+        </base-button>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -146,6 +149,15 @@ export default {
     disabled() {
       if (!this.totalProducts) return false;
       return this.products.length >= this.totalProducts;
+    },
+    breadcrumbItems() {
+      return [
+        { id: 1, label: "Home", to: "/" },
+        {
+          id: 2,
+          label: "Products",
+        },
+      ];
     },
   },
   methods: {
