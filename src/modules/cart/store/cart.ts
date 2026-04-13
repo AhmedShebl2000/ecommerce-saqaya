@@ -1,3 +1,4 @@
+import { getItem, removeItem, setItem } from "@/modules/shared/utils/storage";
 import { CartType, ProductType } from "@/types";
 
 interface CartState {
@@ -9,7 +10,7 @@ export const cartStore = {
   namespaced: true,
   state() {
     return {
-      cart: {
+      cart: getItem<CartType>("cart") || {
         items: [],
       },
       isOpen: false,
@@ -45,11 +46,15 @@ export const cartStore = {
       } else {
         state.cart.items.push({ product: item, qty: 1 });
       }
+
+      setItem("cart", state.cart);
     },
     REMOVE_FROM_CART(state: CartState, id: number) {
       state.cart.items = state.cart.items.filter(
         (item) => item.product.id !== id
       );
+
+      setItem("cart", state.cart);
     },
     DECREASE_QUANTITY(state: CartState, id: number) {
       const existingItem = state.cart.items.find(
@@ -65,9 +70,11 @@ export const cartStore = {
           (item) => item.product.id !== id
         );
       }
+      setItem("cart", state.cart);
     },
     CLEAR_CART(state: CartState) {
       state.cart.items = [];
+      removeItem("cart");
     },
     TOGGLE_CART(state: CartState) {
       state.isOpen = !state.isOpen;
