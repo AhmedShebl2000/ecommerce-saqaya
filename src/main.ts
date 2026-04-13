@@ -16,6 +16,7 @@ import BaseServiceFeatures from "./modules/shared/components/BaseServiceFeatures
 import BaseTeamCarousel from "./modules/shared/components/BaseTeamCarousel.vue";
 import BaseLoader from "./modules/shared/components/BaseLoader.vue";
 import BaseError from "./modules/shared/components/BaseError.vue";
+import BaseBreadCrumb from "./modules/shared/components/BaseBreadCrumb.vue";
 
 Vue.config.productionTip = false;
 
@@ -29,6 +30,7 @@ Vue.component("base-team-carousel", BaseTeamCarousel);
 Vue.component("base-service-features", BaseServiceFeatures);
 Vue.component("base-loader", BaseLoader);
 Vue.component("base-error", BaseError);
+Vue.component("base-bread-crumb", BaseBreadCrumb);
 
 Vue.use(Toast, {
   position: "top-right",
