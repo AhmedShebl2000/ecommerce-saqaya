@@ -29,10 +29,10 @@ export default {
       intervalId: null,
       slides: [
         "/Hero1.png",
-        "/Hero1.png",
-        "/Hero1.png",
-        "/Hero1.png",
-        "/Hero1.png",
+        "/hero2.jpg",
+        "/hero3.jpg",
+        "/hero4.png",
+        "/hero5.jpg",
       ],
     };
   },
@@ -73,8 +73,9 @@ export default {
 .hero-carousel__image {
   display: block;
   width: 100%;
-  height: 100%;
+  height: 400px;
   object-fit: cover;
+  object-position: center;
 }
 
 .hero-carousel__dots {
