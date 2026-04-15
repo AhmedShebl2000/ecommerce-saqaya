@@ -226,9 +226,48 @@
 </template>
 
 <script>
+import { getProductById } from "@/services/product.service";
 import ProductItem from "../components/ProductItem.vue";
 export default {
   components: { ProductItem },
+  async beforeRouteEnter(to, from, next) {
+    const productId = Number(to.params.productId);
+    console.log(productId);
+
+    if (!productId || Number.isNaN(productId)) {
+      next({ name: "notFound" }); //redirection
+    }
+
+    try {
+      const product = await getProductById(productId);
+
+      next((vm) => {
+        vm.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
+        vm.getProductsOfSameCategory();
+      });
+    } catch (error) {
+      next({ name: "notFound" });
+    }
+  },
+
+  async beforeRouteUpdate(to, from, next) {
+    const productId = Number(to.params.productId);
+    console.log(productId);
+
+    if (!productId || Number.isNaN(productId)) {
+      next({ name: "notFound" }); //redirection
+    }
+
+    try {
+      const product = await getProductById(productId);
+      this.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
+      await this.getProductsOfSameCategory();
+      next();
+    } catch (error) {
+      next({ name: "notFound" });
+    }
+  },
+
   data() {
     return {
       loading: false,
@@ -237,9 +276,6 @@ export default {
   },
   created() {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    console.log(this.selectedProduct);
-    this.getProductsOfSameCategory();
-    console.log(this.sameCategoryProducts);
   },
   computed: {
     selectedProduct() {
