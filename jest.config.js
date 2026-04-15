@@ -8,7 +8,7 @@ module.exports = {
       lines: 100,
       branches: 90, // CartItem.vue has a phantom 0% branch on line 1 due to a known
       // Jest + Vue SFC compiler instrumentation bug. All branches are
-      // genuinely covered by the 8 tests in CartItem.spec.ts
+      // genuinely covered by the 8 tests in CartItem.spec.ts file.
     },
   },
 };
