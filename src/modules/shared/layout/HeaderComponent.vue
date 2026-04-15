@@ -275,9 +275,9 @@ export default {
       this.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
       const slug = slugify(product.title);
 
-      const targetPath = `/products/${slug}`;
+      const targetPath = `/products/${product.id}/${slug}`;
       if (this.$route.path === targetPath) return;
-      this.$router.push(`/products/${slug}`);
+      this.$router.push(`/products/${product.id}/${slug}`);
 
       this.searchQuery = "";
       this.searchResults = [];
