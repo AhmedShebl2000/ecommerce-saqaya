@@ -1,4 +1,7 @@
 import CartComponent from "@/modules/cart/components/CartComponent.vue";
+import CartItem from "@/modules/cart/components/CartItem.vue";
+import CartPayment from "@/modules/cart/components/CartPayment.vue";
+import BaseButton from "@/modules/shared/components/BaseButton.vue";
 import { shallowMount } from "@vue/test-utils";
 
 const $store = {

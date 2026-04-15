@@ -1,6 +1,10 @@
 <template>
-  <div class="spinner" :style="{ width: size, height: size }">
-    <div class="spinner__circle"></div>
+  <div
+    class="spinner"
+    data-test="spinner-container"
+    :style="{ width: size, height: size }"
+  >
+    <div class="spinner__circle" data-test="spinner-circle"></div>
   </div>
 </template>
 

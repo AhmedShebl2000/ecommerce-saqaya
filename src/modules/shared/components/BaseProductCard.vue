@@ -73,8 +73,10 @@
 <script>
 import { removeDecimals } from "@/mixins/removeDecimals";
 import { round } from "@/mixins/round";
+import BaseRatingComponent from "./BaseRatingComponent.vue";
 
 export default {
+  components: { BaseRatingComponent },
   props: {
     id: {
       type: Number,

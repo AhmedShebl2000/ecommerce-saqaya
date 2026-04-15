@@ -1,5 +1,6 @@
 <template>
   <button
+    data-test="button"
     v-if="!link"
     @click="$emit('click')"
     :disabled="disabled"

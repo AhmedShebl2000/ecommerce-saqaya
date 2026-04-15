@@ -98,9 +98,7 @@ export default {
   },
   methods: {
     increaseCartItemQty() {
-      console.log(this.id);
       const item = this.cartItems.find((item) => item.product.id === this.id);
-      console.log(item);
       this.$store.commit("cart/ADD_TO_CART", item.product);
     },
     decreaseCartItemQty() {

@@ -18,6 +18,13 @@ const $store = {
   commit: jest.fn(),
 };
 
+const $emptyStore = {
+  getters: {
+    "cart/cartItems": [],
+  },
+  commit: jest.fn(),
+};
+
 const createWrapper = () =>
   shallowMount(CartItem, {
     propsData: {
@@ -79,5 +86,29 @@ describe("CartItem", () => {
     const wrapper = createWrapper();
     await wrapper.find('[data-test="cart-item-remove"]').trigger("click");
     expect($store.commit).toHaveBeenCalledWith("cart/REMOVE_FROM_CART", 1);
+  });
+  it("returns quantity from store when item exists", () => {
+    const wrapper = createWrapper();
+    const vm = wrapper.vm as any;
+
+    expect(vm.itemQty).toBe(1);
+  });
+
+  it("returns fallback quantity when item is missing", () => {
+    const wrapper = shallowMount(CartItem, {
+      propsData: {
+        id: 999,
+        title: "Missing Item",
+        thumbnail: "image.png",
+        price: 50,
+      },
+      mocks: {
+        $store: $emptyStore,
+      },
+    });
+
+    const vm = wrapper.vm as any;
+
+    expect(vm.itemQty).toBe(1);
   });
 });
