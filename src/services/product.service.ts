@@ -43,3 +43,13 @@ export async function getProductBySearchQuery(search: string) {
     throw new Error("Something went wrong fetching the products!");
   }
 }
+
+export async function getProductById(id: number) {
+  try {
+    const res = await api.get(`/products/${id}`);
+
+    return res.data;
+  } catch (error) {
+    throw new Error("Something went wrong fetching the products!");
+  }
+}
