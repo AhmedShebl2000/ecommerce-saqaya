@@ -228,11 +228,11 @@
 <script>
 import { getProductById } from "@/services/product.service";
 import ProductItem from "../components/ProductItem.vue";
+import { slugify } from "@/mixins/slugify";
 export default {
   components: { ProductItem },
   async beforeRouteEnter(to, from, next) {
     const productId = Number(to.params.productId);
-    console.log(productId);
 
     if (!productId || Number.isNaN(productId)) {
       next({ name: "notFound" }); //redirection
@@ -240,6 +240,20 @@ export default {
 
     try {
       const product = await getProductById(productId);
+      const correctSlug = slugify(product.title);
+      const currentSlug = to.params.productSlug;
+
+      if (currentSlug !== correctSlug) {
+        next({
+          name: "product",
+          params: {
+            productId: product.id,
+            productSlug: correctSlug,
+          },
+          replace: true,
+        });
+        return;
+      }
 
       next((vm) => {
         vm.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
@@ -252,7 +266,6 @@ export default {
 
   async beforeRouteUpdate(to, from, next) {
     const productId = Number(to.params.productId);
-    console.log(productId);
 
     if (!productId || Number.isNaN(productId)) {
       next({ name: "notFound" }); //redirection
@@ -260,6 +273,21 @@ export default {
 
     try {
       const product = await getProductById(productId);
+      const correctSlug = slugify(product.title);
+      const currentSlug = to.params.productSlug;
+
+      if (currentSlug !== correctSlug) {
+        next({
+          name: "product",
+          params: {
+            productId: String(product.id),
+            productSlug: correctSlug,
+          },
+          replace: true,
+        });
+        return;
+      }
+
       this.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
       await this.getProductsOfSameCategory();
       next();
