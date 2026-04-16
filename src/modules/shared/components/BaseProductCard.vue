@@ -74,6 +74,8 @@
 import { removeDecimals } from "@/mixins/removeDecimals";
 import { round } from "@/mixins/round";
 import BaseRatingComponent from "./BaseRatingComponent.vue";
+import { useCartStore } from "@/modules/cart/store/cart";
+import { useToast } from "vue-toastification";
 
 export default {
   components: { BaseRatingComponent },
@@ -110,6 +112,12 @@ export default {
     },
   },
   computed: {
+    cartStore() {
+      return useCartStore();
+    },
+    toast() {
+      return useToast();
+    },
     discount() {
       return removeDecimals(this.discountPercentage);
     },
@@ -125,8 +133,10 @@ export default {
         title: this.title,
         price: this.price,
       };
-      this.$store.commit("cart/ADD_TO_CART", product);
-      this.$toast.success(`${this.title} has been added to cart`, {
+      // this.$store.commit("cart/ADD_TO_CART", product);
+      this.cartStore.addToCart(product);
+
+      this.toast.success(`${this.title} has been added to cart`, {
         position: "top-left",
       });
     },
