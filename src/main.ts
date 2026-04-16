@@ -1,10 +1,9 @@
-import Vue from "vue";
+import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./router/index";
-import store from "./store";
-
+import router from "./router";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import { createPinia } from "pinia";
 
 import BaseArrow from "./modules/shared/components/BaseArrow.vue";
 import BaseProductCard from "./modules/shared/components/BaseProductCard.vue";
@@ -12,34 +11,34 @@ import BaseRatingComponent from "./modules/shared/components/BaseRatingComponent
 import BaseButton from "./modules/shared/components/BaseButton.vue";
 import BaseHeader from "./modules/shared/components/BaseHeader.vue";
 import BaseSalesCard from "./modules/shared/components/BaseSalesCard.vue";
-import BaseServiceFeatures from "./modules/shared/components/BaseServiceFeatures.vue";
 import BaseTeamCarousel from "./modules/shared/components/BaseTeamCarousel.vue";
+import BaseServiceFeatures from "./modules/shared/components/BaseServiceFeatures.vue";
 import BaseLoader from "./modules/shared/components/BaseLoader.vue";
 import BaseError from "./modules/shared/components/BaseError.vue";
 import BaseBreadCrumb from "./modules/shared/components/BaseBreadCrumb.vue";
 
-Vue.config.productionTip = false;
+// Vue.config.productionTip = false;
 
-Vue.component("base-arrow", BaseArrow);
-Vue.component("base-product-card", BaseProductCard);
-Vue.component("base-rating-component", BaseRatingComponent);
-Vue.component("base-button", BaseButton);
-Vue.component("base-header", BaseHeader);
-Vue.component("base-sales-card", BaseSalesCard);
-Vue.component("base-team-carousel", BaseTeamCarousel);
-Vue.component("base-service-features", BaseServiceFeatures);
-Vue.component("base-loader", BaseLoader);
-Vue.component("base-error", BaseError);
-Vue.component("base-bread-crumb", BaseBreadCrumb);
+const pinia = createPinia();
+const app = createApp(App);
 
-Vue.use(Toast, {
+app.component("base-arrow", BaseArrow);
+app.component("base-product-card", BaseProductCard);
+app.component("base-rating-component", BaseRatingComponent);
+app.component("base-button", BaseButton);
+app.component("base-header", BaseHeader);
+app.component("base-sales-card", BaseSalesCard);
+app.component("base-team-carousel", BaseTeamCarousel);
+app.component("base-service-features", BaseServiceFeatures);
+app.component("base-loader", BaseLoader);
+app.component("base-error", BaseError);
+app.component("base-bread-crumb", BaseBreadCrumb);
+
+app.use(pinia);
+app.use(router);
+app.use(Toast, {
   position: "top-right",
   timeout: 3000,
 });
 
-new Vue({
-  router,
-  store,
-
-  render: (h) => h(App),
-}).$mount("#app");
+app.mount("#app");

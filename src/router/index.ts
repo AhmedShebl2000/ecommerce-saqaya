@@ -1,6 +1,3 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-
 import ProductDetailsPage from "@/modules/products/views/ProductDetailsPage.vue";
 import ContactPage from "@/views/ContactPage.vue";
 import NotFoundPage from "@/views/NotFoundPage.vue";
@@ -9,8 +6,7 @@ import EmptyLayout from "@/modules/shared/layout/EmptyLayout.vue";
 import AboutPage from "@/views/AboutPage.vue";
 import HomePage from "@/modules/home/views/HomePage.vue";
 import ProductsPage from "@/modules/products/views/ProductsPage.vue";
-
-Vue.use(VueRouter);
+import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
@@ -35,7 +31,7 @@ const routes = [
       { path: "about", name: "about", component: AboutPage },
       { path: "contact", name: "contact", component: ContactPage },
       {
-        path: "*",
+        path: "/:pathMatch(.*)*",
         component: EmptyLayout,
         children: [
           {
@@ -49,8 +45,8 @@ const routes = [
   },
 ];
 
-const router = new VueRouter({
-  mode: "history",
+const router = createRouter({
+  history: createWebHistory(),
   routes,
 });
 
