@@ -35,26 +35,26 @@ export const useProductsStore = defineStore("products", {
     ) as ProductType | null,
     searchedProducts: [] as ProductType[],
   }),
-  getters: {
-    products(state: ProductsState) {
-      return state.products;
-    },
-    homeProducts(state: ProductsState) {
-      return state.homeProducts;
-    },
-    flashSaleProducts(state: ProductsState) {
-      return state.flashSalesProducts;
-    },
-    totalProducts(state: ProductsState) {
-      return state.totalProducts;
-    },
-    selectedProduct(state: ProductsState) {
-      return state.selectedProduct;
-    },
-    searchedProducts(state: ProductsState) {
-      return state.searchedProducts;
-    },
-  },
+  // getters: {
+  //   products(state: ProductsState) {
+  //     return state.products;
+  //   },
+  //   homeProducts(state: ProductsState) {
+  //     return state.homeProducts;
+  //   },
+  //   flashSaleProducts(state: ProductsState) {
+  //     return state.flashSalesProducts;
+  //   },
+  //   totalProducts(state: ProductsState) {
+  //     return state.totalProducts;
+  //   },
+  //   selectedProduct(state: ProductsState) {
+  //     return state.selectedProduct;
+  //   },
+  //   searchedProducts(state: ProductsState) {
+  //     return state.searchedProducts;
+  //   },
+  // },
   actions: {
     async fetchProducts(payload: FetchProductsPayload) {
       try {

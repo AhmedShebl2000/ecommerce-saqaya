@@ -124,6 +124,9 @@ import HeroComponent from "../components/HeroComponent.vue";
 import BaseIconDelivery from "@/modules/shared/components/icons/BaseIconDelivery.vue";
 import BaseIconSupport from "@/modules/shared/components/icons/BaseIconSupport.vue";
 import BaseIconGuarantee from "@/modules/shared/components/icons/BaseIconGuarantee.vue";
+import { useProductsStore } from "@/modules/products/store/products";
+
+// const productsStore = useProductsStore();
 
 export default {
   components: { ProductItem, BaseCategoryCard, HeroComponent },
@@ -224,22 +227,29 @@ export default {
     this.getFlashSaleProducts();
   },
   computed: {
+    productsStore() {
+      return useProductsStore();
+    },
     products() {
-      return this.$store.getters["products/homeProducts"];
+      // return this.$store.getters["products/homeProducts"];
+      return this.productsStore.homeProducts;
     },
     flashSaleProducts() {
-      return this.$store.getters["products/flashSaleProducts"];
+      // return this.$store.getters["products/flashSaleProducts"];
+      return this.productsStore.flashSalesProducts;
     },
   },
   methods: {
-    getProducts({ limit, skip }) {
-      this.$store.dispatch("products/fetchProducts", { limit, skip });
+    async getProducts({ limit, skip }) {
+      // this.$store.dispatch("products/fetchProducts", { limit, skip });
+      await this.productsStore.fetchProducts({ limit, skip });
     },
     async getHomeProducts() {
       this.homeLoading = true;
       this.homeError = null;
       try {
-        await this.$store.dispatch("products/fetchHomeProducts");
+        // await this.$store.dispatch("products/fetchHomeProducts");
+        await this.productsStore.fetchHomeProducts();
       } catch (error) {
         this.homeError = "Failed to load products. Please try again.";
       } finally {
@@ -250,7 +260,8 @@ export default {
       this.flashLoading = true;
       this.flashError = null;
       try {
-        await this.$store.dispatch("products/fetchFlashSaleProducts");
+        // await this.$store.dispatch("products/fetchFlashSaleProducts");
+        await this.productsStore.fetchFlashSaleProducts();
       } catch (error) {
         this.flashError = "Failed to load flash sales. Please try again.";
       } finally {

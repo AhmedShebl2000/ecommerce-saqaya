@@ -133,6 +133,7 @@
 </template>
 
 <script>
+import { useCartStore } from "../store/cart";
 import CartItem from "./CartItem.vue";
 import CartPayment from "./CartPayment.vue";
 export default {
@@ -147,25 +148,34 @@ export default {
     window.removeEventListener("keydown", this.handleEscape);
   },
   computed: {
+    cartStore() {
+      return useCartStore();
+    },
     cartQuantity() {
-      return this.$store.getters["cart/cartQuantity"];
+      // return this.$store.getters["cart/cartQuantity"];
+      return this.cartStore.cartQuantity;
     },
     cartItems() {
-      return this.$store.getters["cart/cartItems"];
+      // return this.$store.getters["cart/cartItems"];
+      return this.cartStore.cartItems;
     },
     isCartOpen() {
-      return this.$store.getters["cart/isCartOpen"];
+      // return this.$store.getters["cart/isCartOpen"];
+      return this.cartStore.isCartOpen;
     },
   },
   methods: {
     toggleCart() {
-      this.$store.commit("cart/TOGGLE_CART");
+      // this.$store.commit("cart/TOGGLE_CART");
+      this.cartStore.toggleCart();
     },
     closeCart() {
-      this.$store.commit("cart/CLOSE_CART");
+      // this.$store.commit("cart/CLOSE_CART");
+      this.cartStore.closeCart();
     },
     clearCart() {
-      this.$store.commit("cart/CLEAR_CART");
+      // this.$store.commit("cart/CLEAR_CART");
+      this.cartStore.clearCart();
     },
     handleEscape(event) {
       if (event.key === "Escape" && this.isCartOpen === true) {
