@@ -20,11 +20,18 @@
 
 <script>
 import { round } from "@/mixins/round";
+import { useCartStore } from "../store/cart";
 
 export default {
   computed: {
+    cartStore() {
+      return useCartStore();
+    },
     cartTotal() {
-      const total = this.$store.getters["cart/cartTotal"];
+      const total = this.cartStore.cart.items.reduce(
+        (sum, item) => sum + item.product.price * item.qty,
+        0
+      );
       return round(total);
     },
   },

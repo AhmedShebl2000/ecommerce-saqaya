@@ -57,6 +57,7 @@
 <script>
 import ProductItem from "@/modules/products/components/ProductItem.vue";
 import SortDropdown from "../components/SortDropdown.vue";
+import { useProductsStore } from "../store/products";
 export default {
   components: { ProductItem, SortDropdown },
   data() {
@@ -87,6 +88,9 @@ export default {
     },
   },
   computed: {
+    productsStore() {
+      return useProductsStore();
+    },
     products() {
       const products = this.$store.getters["products/products"];
 

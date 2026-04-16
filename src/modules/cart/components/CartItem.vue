@@ -51,7 +51,7 @@
           class="header__cart-item-qty-input"
           type="number"
           min="1"
-          v-model="itemQty"
+          :value="itemQty"
         />
         <div
           class="header__cart-item-decrease"
@@ -81,12 +81,17 @@
 
 <script>
 import { round } from "@/mixins/round";
+import { useCartStore } from "../store/cart";
 
 export default {
   props: ["id", "title", "thumbnail", "price"],
   computed: {
+    cartStore() {
+      return useCartStore();
+    },
     cartItems() {
-      return this.$store.getters["cart/cartItems"];
+      // return this.$store.getters["cart/cartItems"];
+      return this.cartStore.cart.items;
     },
     itemQty() {
       const item = this.cartItems.find((item) => item.product.id === this.id);
@@ -99,13 +104,17 @@ export default {
   methods: {
     increaseCartItemQty() {
       const item = this.cartItems.find((item) => item.product.id === this.id);
-      this.$store.commit("cart/ADD_TO_CART", item.product);
+      if (!item) return;
+      // this.$store.commit("cart/ADD_TO_CART", item.product);
+      this.cartStore.addToCart(item.product);
     },
     decreaseCartItemQty() {
-      this.$store.commit("cart/DECREASE_QUANTITY", this.id);
+      // this.$store.commit("cart/DECREASE_QUANTITY", this.id);
+      this.cartStore.decreaseQuantity(this.id);
     },
     removeItemFromCart() {
-      this.$store.commit("cart/REMOVE_FROM_CART", this.id);
+      // this.$store.commit("cart/REMOVE_FROM_CART", this.id);
+      this.cartStore.removeFromCart(this.id);
     },
   },
 };
