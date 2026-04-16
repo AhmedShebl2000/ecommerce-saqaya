@@ -276,7 +276,6 @@ export default {
       }
     },
     handleSelectResult(product) {
-      // this.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
       this.productsStore.setSelectedProductDirect(product);
 
       const slug = slugify(product.title);

@@ -37,7 +37,6 @@ export default {
     handleOpenProduct() {
       window.scrollTo({ top: 0, behavior: "smooth" });
       const targetPath = `/products/${this.id}/${this.slug}`;
-      // this.$store.commit("products/SET_SELECTED_PRODUCT", this.id);
       this.productsStore.setSelectedProduct(this.id);
 
       if (this.$route.path === targetPath) return;

@@ -90,8 +90,7 @@ export default {
       return useCartStore();
     },
     cartItems() {
-      // return this.$store.getters["cart/cartItems"];
-      return this.cartStore.cart.items;
+      return this.cartStore.cartItems;
     },
     itemQty() {
       const item = this.cartItems.find((item) => item.product.id === this.id);
@@ -105,15 +104,12 @@ export default {
     increaseCartItemQty() {
       const item = this.cartItems.find((item) => item.product.id === this.id);
       if (!item) return;
-      // this.$store.commit("cart/ADD_TO_CART", item.product);
       this.cartStore.addToCart(item.product);
     },
     decreaseCartItemQty() {
-      // this.$store.commit("cart/DECREASE_QUANTITY", this.id);
       this.cartStore.decreaseQuantity(this.id);
     },
     removeItemFromCart() {
-      // this.$store.commit("cart/REMOVE_FROM_CART", this.id);
       this.cartStore.removeFromCart(this.id);
     },
   },

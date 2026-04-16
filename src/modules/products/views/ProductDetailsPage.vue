@@ -258,7 +258,6 @@ export default {
       }
 
       next((vm) => {
-        // vm.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
         vm.productsStore.setSelectedProductDirect(product);
         vm.getProductsOfSameCategory();
       });
@@ -291,7 +290,6 @@ export default {
         return;
       }
 
-      // this.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
       this.productsStore.setSelectedProductDirect(product);
       await this.getProductsOfSameCategory();
       next();
@@ -317,7 +315,6 @@ export default {
       return useCartStore();
     },
     selectedProduct() {
-      // return this.$store.getters["products/selectedProduct"];
       return this.productsStore.selectedProduct;
     },
     ratingCount() {
@@ -330,7 +327,6 @@ export default {
       return (this.selectedProduct.discountPercentage || 0) > 0;
     },
     cartItems() {
-      // return this.$store.getters["cart/cartItems"];
       return this.cartStore.cart.items;
     },
     itemQty() {
@@ -340,7 +336,6 @@ export default {
       return item ? item.qty : 0;
     },
     sameCategoryProducts() {
-      // return this.$store.getters["products/products"];
       return this.productsStore.products;
     },
     breadcrumbItems() {
@@ -360,11 +355,9 @@ export default {
   },
   methods: {
     decreaseItemQty() {
-      // this.$store.commit("cart/DECREASE_QUANTITY", this.selectedProduct.id);
       this.cartStore.decreaseQuantity(this.selectedProduct.id);
     },
     increaseItemQty() {
-      // this.$store.commit("cart/ADD_TO_CART", this.selectedProduct);
       this.cartStore.addToCart(this.selectedProduct);
     },
     async getProductsOfSameCategory() {
@@ -372,11 +365,7 @@ export default {
       try {
         this.loading = true;
         this.error = null;
-        // await this.$store.dispatch("products/fetchProducts", {
-        //   limit: 4,
-        //   skip: 0,
-        //   category,
-        // });
+
         await this.productsStore.fetchProducts({ limit: 4, skip: 0, category });
       } catch (error) {
         this.error = "Failed to load related products.";

@@ -231,24 +231,20 @@ export default {
       return useProductsStore();
     },
     products() {
-      // return this.$store.getters["products/homeProducts"];
       return this.productsStore.homeProducts;
     },
     flashSaleProducts() {
-      // return this.$store.getters["products/flashSaleProducts"];
       return this.productsStore.flashSalesProducts;
     },
   },
   methods: {
     async getProducts({ limit, skip }) {
-      // this.$store.dispatch("products/fetchProducts", { limit, skip });
       await this.productsStore.fetchProducts({ limit, skip });
     },
     async getHomeProducts() {
       this.homeLoading = true;
       this.homeError = null;
       try {
-        // await this.$store.dispatch("products/fetchHomeProducts");
         await this.productsStore.fetchHomeProducts();
       } catch (error) {
         this.homeError = "Failed to load products. Please try again.";
@@ -260,7 +256,6 @@ export default {
       this.flashLoading = true;
       this.flashError = null;
       try {
-        // await this.$store.dispatch("products/fetchFlashSaleProducts");
         await this.productsStore.fetchFlashSaleProducts();
       } catch (error) {
         this.flashError = "Failed to load flash sales. Please try again.";

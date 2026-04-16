@@ -28,10 +28,7 @@ export default {
       return useCartStore();
     },
     cartTotal() {
-      const total = this.cartStore.cart.items.reduce(
-        (sum, item) => sum + item.product.price * item.qty,
-        0
-      );
+      const total = this.cartStore.cartTotal;
       return round(total);
     },
   },

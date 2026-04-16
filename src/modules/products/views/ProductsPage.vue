@@ -92,7 +92,6 @@ export default {
       return useProductsStore();
     },
     products() {
-      // const products = this.$store.getters["products/products"];
       const products = this.productsStore.products;
 
       let filteredProducts;
@@ -147,7 +146,6 @@ export default {
       return filteredProducts;
     },
     totalProducts() {
-      // return this.$store.getters["products/totalProducts"];
       return this.productsStore.totalProducts;
     },
     disabled() {
@@ -173,11 +171,6 @@ export default {
         this.loadingMore = true;
       }
       try {
-        // await this.$store.dispatch("products/fetchProducts", {
-        //   limit,
-        //   skip,
-        //   category,
-        // });
         await this.productsStore.fetchProducts({ limit, skip, category });
       } catch (error) {
         this.error = "Failed to load products. Please try again.";
