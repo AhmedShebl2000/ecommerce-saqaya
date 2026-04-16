@@ -39,7 +39,7 @@ export default {
   mounted() {
     this.startAutoSlide();
   },
-  beforeDestroy() {
+  beforeUnmount() {
     clearInterval(this.intervalId);
   },
   methods: {

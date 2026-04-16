@@ -130,7 +130,7 @@ export default {
     this.updateCardsPerPage();
     window.addEventListener("resize", this.updateCardsPerPage);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener("resize", this.updateCardsPerPage);
   },
   methods: {

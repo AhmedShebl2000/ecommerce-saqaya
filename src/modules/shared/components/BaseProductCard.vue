@@ -133,7 +133,6 @@ export default {
         title: this.title,
         price: this.price,
       };
-      // this.$store.commit("cart/ADD_TO_CART", product);
       this.cartStore.addToCart(product);
 
       this.toast.success(`${this.title} has been added to cart`, {
