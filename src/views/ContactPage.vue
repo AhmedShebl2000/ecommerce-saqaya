@@ -123,6 +123,8 @@
 </template>
 
 <script>
+import { useToast } from "vue-toastification";
+
 export default {
   data() {
     return {
@@ -139,6 +141,9 @@ export default {
     };
   },
   computed: {
+    toast() {
+      return useToast();
+    },
     breadcrumbItems() {
       return [
         { id: 1, label: "Home", to: "/" },
@@ -204,7 +209,7 @@ export default {
       if (!isValid) {
         this.isSuccess = false;
         this.submitMessage = "Please fix the errors in the form.";
-        this.$toast.error(this.submitMessage);
+        this.toast.error(this.submitMessage);
         return;
       }
 
@@ -216,7 +221,7 @@ export default {
 
       this.isSuccess = true;
       this.submitMessage = "Your message has been sent successfully.";
-      this.$toast.success(this.submitMessage);
+      this.toast.success(this.submitMessage);
       this.resetForm();
     },
   },
