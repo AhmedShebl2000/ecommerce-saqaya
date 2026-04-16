@@ -13,6 +13,7 @@
 
 <script>
 import { slugify } from "@/mixins/slugify";
+import { useProductsStore } from "../store/products";
 
 export default {
   props: [
@@ -25,6 +26,9 @@ export default {
     "ratingCount",
   ],
   computed: {
+    productsStore() {
+      return useProductsStore();
+    },
     slug() {
       return slugify(this.title);
     },
@@ -33,7 +37,8 @@ export default {
     handleOpenProduct() {
       window.scrollTo({ top: 0, behavior: "smooth" });
       const targetPath = `/products/${this.id}/${this.slug}`;
-      this.$store.commit("products/SET_SELECTED_PRODUCT", this.id);
+      // this.$store.commit("products/SET_SELECTED_PRODUCT", this.id);
+      this.productsStore.setSelectedProduct(this.id);
 
       if (this.$route.path === targetPath) return;
       this.$router.push(`/products/${this.id}/${this.slug}`);

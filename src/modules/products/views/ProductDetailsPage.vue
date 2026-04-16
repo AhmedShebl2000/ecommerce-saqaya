@@ -229,13 +229,15 @@
 import { getProductById } from "@/services/product.service";
 import ProductItem from "../components/ProductItem.vue";
 import { slugify } from "@/mixins/slugify";
+import { useProductsStore } from "../store/products";
+import { useCartStore } from "@/modules/cart/store/cart";
 export default {
   components: { ProductItem },
   async beforeRouteEnter(to, from, next) {
     const productId = Number(to.params.productId);
 
     if (!productId || Number.isNaN(productId)) {
-      next({ name: "notFound" }); //redirection
+      return next({ name: "notFound" }); //redirection
     }
 
     try {
@@ -256,7 +258,8 @@ export default {
       }
 
       next((vm) => {
-        vm.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
+        // vm.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
+        vm.productsStore.setSelectedProductDirect(product);
         vm.getProductsOfSameCategory();
       });
     } catch (error) {
@@ -268,7 +271,7 @@ export default {
     const productId = Number(to.params.productId);
 
     if (!productId || Number.isNaN(productId)) {
-      next({ name: "notFound" }); //redirection
+      return next({ name: "notFound" }); //redirection
     }
 
     try {
@@ -280,7 +283,7 @@ export default {
         next({
           name: "product",
           params: {
-            productId: String(product.id),
+            productId: product.id,
             productSlug: correctSlug,
           },
           replace: true,
@@ -288,7 +291,8 @@ export default {
         return;
       }
 
-      this.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
+      // this.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
+      this.productsStore.setSelectedProductDirect(product);
       await this.getProductsOfSameCategory();
       next();
     } catch (error) {
@@ -306,8 +310,15 @@ export default {
     window.scrollTo({ top: 0, behavior: "smooth" });
   },
   computed: {
+    productsStore() {
+      return useProductsStore();
+    },
+    cartStore() {
+      return useCartStore();
+    },
     selectedProduct() {
-      return this.$store.getters["products/selectedProduct"];
+      // return this.$store.getters["products/selectedProduct"];
+      return this.productsStore.selectedProduct;
     },
     ratingCount() {
       return this.selectedProduct.reviews?.length || 0;
@@ -319,7 +330,8 @@ export default {
       return (this.selectedProduct.discountPercentage || 0) > 0;
     },
     cartItems() {
-      return this.$store.getters["cart/cartItems"];
+      // return this.$store.getters["cart/cartItems"];
+      return this.cartStore.cart.items;
     },
     itemQty() {
       const item = this.cartItems.find(
@@ -328,7 +340,8 @@ export default {
       return item ? item.qty : 0;
     },
     sameCategoryProducts() {
-      return this.$store.getters["products/products"];
+      // return this.$store.getters["products/products"];
+      return this.productsStore.products;
     },
     breadcrumbItems() {
       return [
@@ -347,21 +360,24 @@ export default {
   },
   methods: {
     decreaseItemQty() {
-      this.$store.commit("cart/DECREASE_QUANTITY", this.selectedProduct.id);
+      // this.$store.commit("cart/DECREASE_QUANTITY", this.selectedProduct.id);
+      this.cartStore.decreaseQuantity(this.selectedProduct.id);
     },
     increaseItemQty() {
-      this.$store.commit("cart/ADD_TO_CART", this.selectedProduct);
+      // this.$store.commit("cart/ADD_TO_CART", this.selectedProduct);
+      this.cartStore.addToCart(this.selectedProduct);
     },
     async getProductsOfSameCategory() {
       const category = this.selectedProduct.category;
       try {
         this.loading = true;
         this.error = null;
-        await this.$store.dispatch("products/fetchProducts", {
-          limit: 4,
-          skip: 0,
-          category,
-        });
+        // await this.$store.dispatch("products/fetchProducts", {
+        //   limit: 4,
+        //   skip: 0,
+        //   category,
+        // });
+        await this.productsStore.fetchProducts({ limit: 4, skip: 0, category });
       } catch (error) {
         this.error = "Failed to load related products.";
       } finally {
