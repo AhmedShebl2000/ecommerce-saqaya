@@ -144,6 +144,7 @@ export default {
   mounted() {
     window.addEventListener("keydown", this.handleEscape);
   },
+  //beforeUnmount later
   beforeDestroy() {
     window.removeEventListener("keydown", this.handleEscape);
   },

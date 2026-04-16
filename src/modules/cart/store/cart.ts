@@ -16,23 +16,23 @@ export const useCartStore = defineStore("cart", {
       } as CartType),
     isOpen: false,
   }),
-  // getters: {
-  //   cartItems(state: CartState) {
-  //     return state.cart.items;
-  //   },
-  //   cartQuantity(state: CartState) {
-  //     return state.cart.items.reduce((sum, item) => sum + item.qty, 0);
-  //   },
-  //   cartTotal(state: CartState) {
-  //     return state.cart.items.reduce(
-  //       (sum, item) => sum + item.product.price * item.qty,
-  //       0
-  //     );
-  //   },
-  //   isCartOpen(state: CartState) {
-  //     return state.isOpen;
-  //   },
-  // },
+  getters: {
+    cartItems(state: CartState) {
+      return state.cart.items;
+    },
+    cartQuantity(state: CartState) {
+      return state.cart.items.reduce((sum, item) => sum + item.qty, 0);
+    },
+    cartTotal(state: CartState) {
+      return state.cart.items.reduce(
+        (sum, item) => sum + item.product.price * item.qty,
+        0
+      );
+    },
+    isCartOpen(state: CartState) {
+      return state.isOpen;
+    },
+  },
   actions: {
     addToCart(item: ProductType) {
       const existingItem = this.cart.items.find(
