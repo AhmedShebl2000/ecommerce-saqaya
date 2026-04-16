@@ -170,6 +170,7 @@
 <script>
 import { slugify } from "@/mixins/slugify";
 import CartComponent from "@/modules/cart/components/CartComponent.vue";
+import { useProductsStore } from "@/modules/products/store/products";
 import { getProductBySearchQuery } from "@/services/product.service";
 import { RouterLink } from "vue-router";
 
@@ -220,6 +221,9 @@ export default {
     },
   },
   computed: {
+    productsStore() {
+      return useProductsStore();
+    },
     showNoResults() {
       return (
         this.searchQuery.trim().length > 0 &&
@@ -272,7 +276,9 @@ export default {
       }
     },
     handleSelectResult(product) {
-      this.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
+      // this.$store.commit("products/SET_SELECTED_PRODUCT_DIRECT", product);
+      this.productsStore.setSelectedProductDirect(product);
+
       const slug = slugify(product.title);
 
       const targetPath = `/products/${product.id}/${slug}`;
