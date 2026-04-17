@@ -1,0 +1,13 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.default-layout__content {
+  max-width: $bp-3xl;
+  margin-inline: auto;
+  margin-top: 66px;
+  min-height: calc(100vh - 147px);
+
+  @include respond-to($bp-3xl) {
+    padding: 0 20px;
+  }
+}

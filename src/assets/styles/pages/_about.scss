@@ -1,0 +1,95 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+  &__text-container {
+    display: flex;
+    align-items: center;
+  }
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 80%;
+  }
+  &__text-heading {
+    font-weight: 600;
+    font-size: 54px;
+    letter-spacing: 6%;
+    line-height: 1.1;
+  }
+  &__image-container {
+    width: 100%;
+  }
+  &__image {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    border-radius: $border-radius-base;
+  }
+  &__cards-container {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 25px;
+  }
+  &__carousel-container {
+    margin-bottom: 40px;
+  }
+  &__service-features {
+    margin-bottom: 40px;
+  }
+
+  @include respond-to($bp-lg) {
+    &__grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    &__text-heading {
+      font-size: 42px;
+    }
+    &__cards-container {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      place-items: center;
+    }
+    &__carousel-container {
+      margin-bottom: 24px;
+    }
+    &__service-features {
+      margin-bottom: 24px;
+    }
+  }
+
+  @include respond-to($bp-md) {
+    gap: 32px;
+    &__text {
+      gap: 20px;
+    }
+    &__text-heading {
+      font-size: 32px;
+    }
+    &__cards-container {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+
+  @include respond-to($bp-sm) {
+    &__text-heading {
+      font-size: 28px;
+    }
+    &__grid {
+      gap: 20px;
+    }
+  }
+}

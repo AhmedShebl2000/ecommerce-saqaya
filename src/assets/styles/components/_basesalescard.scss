@@ -1,0 +1,30 @@
+@use "../abstracts/variables" as *;
+
+.card {
+  width: 338px;
+  height: 230px;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-base;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+
+  &__amount {
+    font-weight: 700;
+    font-size: $font-size-2xl;
+    letter-spacing: 0.04em;
+  }
+
+  &__subtitle {
+    font-weight: 400;
+    font-size: $font-size-md;
+    letter-spacing: 0;
+  }
+
+  &--different-background {
+    background-color: $color-primary;
+    color: $color-white;
+  }
+}

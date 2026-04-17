@@ -17,17 +17,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.default-layout__content {
-  max-width: 1440px;
-  margin-inline: auto;
-  margin-top: 66px;
-  min-height: calc(100vh - 147px);
-}
-
-@media (max-width: 1440px) {
-  .default-layout__content {
-    padding: 0 20px;
-  }
-}
+<style lang="scss" scoped>
+@use "@/assets/styles/layout/default-layout";
 </style>

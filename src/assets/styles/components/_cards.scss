@@ -1,0 +1,88 @@
+@use "../abstracts/variables" as *;
+
+.card {
+  width: 270px;
+  min-height: 322px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: $border-radius-base;
+  cursor: pointer;
+  position: relative;
+
+  &__discount {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    padding: 5px 10px;
+    border-radius: $border-radius-base;
+    background: $color-primary;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $color-white;
+    z-index: 10000;
+  }
+
+  &__wishlist {
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    cursor: pointer;
+    z-index: 999;
+  }
+  &__see {
+    position: absolute;
+    right: 10px;
+    top: 65px;
+    cursor: pointer;
+    z-index: 999;
+  }
+  &__price {
+    color: $color-primary;
+  }
+  &__price-rating {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  &__previous-price {
+    color: grey;
+    text-decoration: line-through;
+  }
+
+  &__image {
+    width: 270px;
+    height: 250px;
+    background-color: $color-bg-light;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    img {
+      width: 270px;
+      height: 250px;
+    }
+
+    &:hover .card__add-to-cart {
+      opacity: 1;
+    }
+  }
+
+  &__add-to-cart {
+    position: absolute;
+    bottom: 0;
+    background: $color-black;
+    width: 100%;
+    height: 41px;
+    color: $color-white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: $font-size-md;
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+  }
+}

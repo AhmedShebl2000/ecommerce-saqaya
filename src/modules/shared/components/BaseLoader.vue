@@ -19,25 +19,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.spinner__circle {
-  width: 100%;
-  height: 100%;
-  border: 3px solid #f5f5f5;
-  border-top-color: #db4444;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
+<style lang="scss" scoped>
+@use "@/assets/styles/components/loader";
 </style>

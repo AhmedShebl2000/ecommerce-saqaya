@@ -55,64 +55,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.hero-carousel {
-  position: relative;
-  width: 100%;
-  height: 400px;
-  max-width: 1440px;
-  margin: 0 auto;
-  background: black;
-  margin-bottom: 100px;
-}
-
-.hero-carousel__slide {
-  cursor: pointer;
-}
-
-.hero-carousel__image {
-  display: block;
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-  object-position: center;
-}
-
-.hero-carousel__dots {
-  position: absolute;
-  left: 50%;
-  bottom: 14px;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.hero-carousel__dot {
-  all: unset;
-  display: block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #808080;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.hero-carousel__dot--active {
-  background: #db4444;
-  box-shadow: 0 0 0 2px white;
-}
-
-@media (max-width: 768px) {
-  .hero-carousel {
-    height: 260px;
-    padding: 30px 10px;
-  }
-}
-@media (max-width: 642px) {
-  .hero-carousel {
-    height: 180px;
-  }
-}
+<style lang="scss" scoped>
+@use "@/assets/styles/components/hero";
 </style>

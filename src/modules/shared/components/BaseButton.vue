@@ -40,40 +40,6 @@ export default {
 };
 </script>
 
-<style scoped>
-button,
-a {
-  display: inline-flex;
-  text-decoration: none;
-  padding: 16px 48px;
-  font: inherit;
-  color: white;
-  cursor: pointer;
-  border-radius: 4px;
-  margin-right: 0.5rem;
-  border: none;
-}
-
-a:hover,
-a:active,
-button:hover,
-button:active {
-  outline: none;
-  border-color: white;
-}
-
-a,
-button {
-  background-color: #db4444;
-}
-
-.disabled {
-  background-color: #fff;
-}
-
-.outline {
-  background-color: white;
-  color: black;
-  border: 1px solid black;
-}
+<style lang="scss" scoped>
+@use "@/assets/styles/components/buttons";
 </style>

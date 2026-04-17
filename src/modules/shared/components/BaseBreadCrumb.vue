@@ -34,42 +34,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.breadcrumb {
-  margin-bottom: 40px;
-}
-
-.breadcrumb__list {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.breadcrumb__item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.breadcrumb__link {
-  text-decoration: none;
-}
-
-.breadcrumb__current {
-  color: black;
-}
-
-.breadcrumb__separator {
-  color: rgba(0, 0, 0, 0.5);
-}
-
-.breadcrumb__link,
-.breadcrumb__link:visited,
-.breadcrumb__link:hover {
-  color: rgba(0, 0, 0, 0.5);
-}
+<style lang="scss" scoped>
+@use "@/assets/styles/components/breadcrumb";
 </style>

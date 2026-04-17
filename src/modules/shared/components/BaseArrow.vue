@@ -43,18 +43,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.arrow-container {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background-color: #f5f5f5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-.arrow-container svg {
-  background: transparent;
-}
+<style lang="scss" scoped>
+@use "@/assets/styles/components/arrow";
 </style>

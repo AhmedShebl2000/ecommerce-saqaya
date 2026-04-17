@@ -1,0 +1,57 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.hero-carousel {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  max-width: $bp-3xl;
+  margin: 0 auto;
+  background: $color-black;
+  margin-bottom: 100px;
+
+  &__slide {
+    cursor: pointer;
+    height: 100%;
+  }
+  &__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &__dots {
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__dot {
+    all: unset;
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #808080;
+    cursor: pointer;
+    flex-shrink: 0;
+    &--active {
+      background: $color-primary;
+      box-shadow: 0 0 0 2px $color-white;
+    }
+  }
+
+  @include respond-to($bp-md) {
+    height: 260px;
+    padding: 30px 10px;
+  }
+  @include respond-to(642px) {
+    height: 180px;
+  }
+}

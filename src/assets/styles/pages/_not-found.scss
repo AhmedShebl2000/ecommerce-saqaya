@@ -1,0 +1,56 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 24px 16px;
+
+  &__title {
+    font-weight: 500;
+    font-size: 110px;
+    margin: 0;
+  }
+  &__text {
+    font-size: $font-size-md;
+    margin: 0;
+    max-width: 500px;
+  }
+  &__button {
+    display: flex;
+    justify-content: center;
+  }
+
+  @include respond-to($bp-lg) {
+    &__title {
+      font-size: 80px;
+    }
+  }
+
+  @include respond-to($bp-md) {
+    min-height: 60vh;
+    gap: 20px;
+    &__title {
+      font-size: 56px;
+    }
+    &__text {
+      font-size: 15px;
+      max-width: 320px;
+    }
+  }
+
+  @include respond-to($bp-sm) {
+    &__title {
+      font-size: 42px;
+    }
+    &__text {
+      font-size: $font-size-base;
+      max-width: 280px;
+    }
+  }
+}

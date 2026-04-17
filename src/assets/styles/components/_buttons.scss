@@ -1,0 +1,31 @@
+@use "../abstracts/variables" as *;
+
+button,
+a {
+  display: inline-flex;
+  text-decoration: none;
+  padding: 16px 48px;
+  font: inherit;
+  color: $color-white;
+  cursor: pointer;
+  border-radius: $border-radius-base;
+  margin-right: 0.5rem;
+  border: none;
+  background-color: $color-primary;
+
+  &:hover,
+  &:active {
+    outline: none;
+    border-color: $color-white;
+  }
+}
+
+.disabled {
+  background-color: $color-white;
+}
+
+.outline {
+  background-color: $color-white;
+  color: $color-black;
+  border: 1px solid $color-black;
+}

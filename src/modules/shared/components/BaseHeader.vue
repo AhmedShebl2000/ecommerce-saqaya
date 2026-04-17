@@ -9,21 +9,23 @@
 export default {};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use "@/assets/styles/abstracts/variables" as *;
+
 .base-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #db4444;
+  color: $color-primary;
   margin-bottom: 20px;
-  font-size: 16px;
+  font-size: $font-size-md;
   font-weight: 600;
-}
 
-.base-header__box {
-  background: #db4444;
-  width: 20px;
-  height: 40px;
-  border-radius: 4px;
+  &__box {
+    background: $color-primary;
+    width: 20px;
+    height: 40px;
+    border-radius: $border-radius-base;
+  }
 }
 </style>

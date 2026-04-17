@@ -35,23 +35,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.header__cart-total-details {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-.header__cart-total-fields {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.header__cart-divider {
-  height: 1px;
-  background-color: black;
-  width: 100%;
-}
+<style lang="scss" scoped>
+@use "@/assets/styles/components/cart-payment";
 </style>

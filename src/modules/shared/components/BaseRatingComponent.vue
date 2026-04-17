@@ -38,44 +38,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.rating {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.stars {
-  display: flex;
-}
-
-.star {
-  position: relative;
-  width: 20px;
-  height: 20px;
-  font-size: 20px;
-  line-height: 18px;
-}
-
-.star-bg,
-.star-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.star-bg {
-  color: #ddd;
-}
-
-.star-fill {
-  color: #f5a623;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.count {
-  font-size: 14px;
-  color: #777;
-}
+<style lang="scss" scoped>
+@use "@/assets/styles/components/rating";
 </style>

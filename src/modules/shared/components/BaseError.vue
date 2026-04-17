@@ -30,19 +30,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.error {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 40px 20px;
-  text-align: center;
-}
-
-.error__message {
-  color: #db4444;
-  font-size: 16px;
-}
+<style lang="scss" scoped>
+@use "@/assets/styles/components/error";
 </style>

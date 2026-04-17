@@ -1,0 +1,96 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.team-carousel {
+  width: 100%;
+
+  &__track-wrapper {
+    overflow: hidden;
+  }
+  &__track {
+    display: flex;
+    transition: transform 0.35s ease;
+  }
+  &__slide {
+    flex: 0 0 calc(100% / 3);
+    box-sizing: border-box;
+    padding: 0 15px;
+  }
+
+  &__image-box {
+    height: 430px;
+    background: $color-bg-light;
+    border-radius: $border-radius-base;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  &__image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  &__name {
+    margin: 0 0 8px;
+    font-size: $font-size-2xl;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  &__role {
+    margin: 0 0 16px;
+    font-size: $font-size-md;
+  }
+  &__socials {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  &__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-black;
+    text-decoration: none;
+  }
+
+  &__dots {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+  &__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #bfbfbf;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    &--active {
+      background: $color-primary;
+      box-shadow: 0 0 0 3px #f3d1d1;
+    }
+  }
+
+  @include respond-to($bp-xl) {
+    &__slide {
+      flex: 0 0 calc(100% / 2);
+    }
+  }
+
+  @include respond-to($bp-md) {
+    &__slide {
+      flex: 0 0 100%;
+    }
+    &__image-box {
+      height: 340px;
+    }
+    &__name {
+      font-size: 26px;
+    }
+  }
+}

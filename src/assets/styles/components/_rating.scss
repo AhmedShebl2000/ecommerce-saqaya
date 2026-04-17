@@ -1,0 +1,37 @@
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stars {
+  display: flex;
+}
+
+.star {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  line-height: 18px;
+
+  &-bg,
+  &-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  &-bg {
+    color: #ddd;
+  }
+  &-fill {
+    color: #f5a623;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+.count {
+  font-size: 14px;
+  color: #777;
+}

@@ -1,0 +1,182 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.footer {
+  width: 100%;
+  margin-inline: auto;
+  margin-bottom: 5rem;
+  color: $color-white;
+  font-size: $font-size-base;
+  background: $color-black;
+  padding-top: 2rem;
+
+  &__inner {
+    max-width: $bp-3xl;
+    margin: 0 auto;
+  }
+
+  &__grid {
+    max-width: $bp-3xl;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+    align-items: start;
+    padding-bottom: 36px;
+    margin-top: 2.5rem;
+  }
+
+  h2 {
+    font-size: $font-size-lg;
+    cursor: pointer;
+  }
+  p {
+    cursor: pointer;
+  }
+
+  &__first-col,
+  &__second-col,
+  &__third-col,
+  &__fourth-col {
+    display: grid;
+    gap: 1.5rem;
+  }
+  &__fifth-col {
+    display: grid;
+    gap: 1rem;
+  }
+
+  &__text--faded-font {
+    font-weight: 200;
+    font-size: $font-size-sm;
+  }
+
+  &__qr-logos {
+    display: grid;
+    grid-template-columns: 0.6fr 1fr;
+    cursor: pointer;
+  }
+
+  &__social-logos {
+    width: 80%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    cursor: pointer;
+  }
+
+  &__copyright-text {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid $color-footer-border;
+    padding: 1rem;
+    font-weight: 100;
+    font-size: $font-size-sm;
+  }
+
+  &__search-box {
+    position: relative;
+    svg {
+      position: absolute;
+      top: 7px;
+      right: 12px;
+      width: 16px;
+    }
+  }
+
+  input {
+    outline: none;
+    background: transparent;
+    border: 2px solid $color-white;
+    width: 190px;
+    color: $color-white;
+    padding: 0.5rem;
+    border-radius: $border-radius-base;
+  }
+
+  @include respond-to($bp-xl) {
+    justify-items: center;
+    &__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5rem;
+      padding: 20px;
+    }
+    &__inner {
+      padding: 0 80px 0 0;
+    }
+    &__third-col {
+      grid-row: span 2;
+    }
+    &__search-box svg {
+      right: 20px;
+    }
+  }
+
+  @include respond-to($bp-md) {
+    &__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    &__inner {
+      padding: 0 80px 0 0;
+    }
+    &__search-box svg {
+      right: 20px;
+    }
+    &__first-col {
+      padding: 0 32px 0 0;
+    }
+    &__fifth-col {
+      grid-column: span 2;
+      justify-items: center;
+    }
+  }
+
+  @include respond-to($bp-sm) {
+    &__grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      gap: 2rem;
+    }
+    &__inner {
+      padding: 0 16px;
+    }
+    h2 {
+      font-size: 22px;
+    }
+    input {
+      width: 100%;
+      max-width: 180px;
+    }
+    &__search-box svg {
+      right: 20px;
+    }
+    &__qr-logos {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    &__social-logos {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      width: 100%;
+    }
+    &__first-col,
+    &__second-col,
+    &__third-col,
+    &__fourth-col,
+    &__fifth-col {
+      max-width: 300px;
+      width: 100%;
+    }
+  }
+
+  @include respond-to(425px) {
+    &__first-col {
+      padding: 0;
+    }
+  }
+}

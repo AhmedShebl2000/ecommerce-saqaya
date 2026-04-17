@@ -1,0 +1,116 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.header__cart {
+  position: relative;
+  cursor: pointer;
+  margin-left: 10px;
+  z-index: 100000;
+
+  &--empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+  }
+
+  &-container {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  &-items-grid {
+    display: grid;
+    height: 85%;
+    align-content: space-between;
+    row-gap: 15px;
+  }
+
+  &-items {
+    overflow-y: auto;
+  }
+
+  &-review {
+    font-size: $font-size-lg;
+    letter-spacing: 2px;
+  }
+
+  &-close {
+    cursor: pointer;
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  &--open {
+    position: fixed;
+    width: 460px;
+    height: 100%;
+    background-color: $color-white;
+    top: 0;
+    right: 0;
+    overflow-y: auto;
+    border: 0.5px solid rgba(0, 0, 0, 0.15);
+    border-radius: $border-radius-base;
+    z-index: 200;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    padding: 20px;
+    pointer-events: none;
+  }
+
+  &-panel--visible {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  &-badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15px;
+    height: 15px;
+    background-color: $color-primary-dark;
+    border-radius: 50%;
+    position: absolute;
+    top: -7px;
+    right: -2px;
+  }
+
+  &-count {
+    font-size: $font-size-xs;
+    color: $color-white;
+  }
+
+  &-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 111;
+    background-color: rgba(0, 0, 0, 0.35);
+  }
+
+  &-items-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @include respond-to($bp-xl) {
+    margin-left: 5px;
+  }
+
+  @include respond-to(450px) {
+    &--open {
+      width: 100%;
+    }
+    &-review {
+      font-size: $font-size-xl;
+    }
+  }
+}

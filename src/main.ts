@@ -4,6 +4,7 @@ import router from "./router";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import { createPinia } from "pinia";
+import "./assets/styles/main.scss";
 
 import BaseArrow from "./modules/shared/components/BaseArrow.vue";
 import BaseProductCard from "./modules/shared/components/BaseProductCard.vue";
