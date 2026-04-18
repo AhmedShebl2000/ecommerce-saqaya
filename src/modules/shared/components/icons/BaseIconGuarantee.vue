@@ -23,8 +23,4 @@
   </svg>
 </template>
 
-<script>
-export default {
-  name: "BaseIconGuarantee",
-};
-</script>
+<script setup></script>
