@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import NotFoundPage from "@/pages/NotFoundPage.vue";
+import NotFoundPage from "@/modules/shared/views/NotFoundPage.vue";
 </script>
 
 <style scoped></style>
