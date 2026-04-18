@@ -1,6 +1,6 @@
 <template>
   <section class="hero-carousel">
-    <div class="hero-carousel__slide" @click="$router.push('/products')">
+    <div class="hero-carousel__slide" @click="router.push('/products')">
       <img
         class="hero-carousel__image"
         :src="slides[currentSlide]"
@@ -21,38 +21,71 @@
   </section>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      currentSlide: 0,
-      intervalId: null,
-      slides: [
-        "/Hero1.png",
-        "/hero2.jpg",
-        "/hero3.jpg",
-        "/hero4.png",
-        "/hero5.jpg",
-      ],
-    };
-  },
-  mounted() {
-    this.startAutoSlide();
-  },
-  beforeUnmount() {
-    clearInterval(this.intervalId);
-  },
-  methods: {
-    goToSlide(index) {
-      this.currentSlide = index;
-    },
-    startAutoSlide() {
-      this.intervalId = setInterval(() => {
-        this.currentSlide = (this.currentSlide + 1) % this.slides.length;
-      }, 3000);
-    },
-  },
-};
+<script setup>
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+onMounted(() => {
+  startAutoSlide();
+});
+
+onBeforeUnmount(() => {
+  clearInterval(intervalId.value);
+});
+
+const currentSlide = ref(0);
+const intervalId = ref(null);
+const slides = ref([
+  "/Hero1.png",
+  "/hero2.jpg",
+  "/hero3.jpg",
+  "/hero4.png",
+  "/hero5.jpg",
+]);
+
+function goToSlide(index) {
+  currentSlide.value = index;
+}
+
+function startAutoSlide() {
+  intervalId.value = setInterval(() => {
+    currentSlide.value = (currentSlide.value + 1) % slides.value.length;
+  }, 3000);
+}
+
+// export default {
+//   data() {
+//     return {
+//       currentSlide: 0,
+//       intervalId: null,
+//       slides: [
+//         "/Hero1.png",
+//         "/hero2.jpg",
+//         "/hero3.jpg",
+//         "/hero4.png",
+//         "/hero5.jpg",
+//       ],
+//     };
+//   },
+//   mounted() {
+//     this.startAutoSlide();
+//   },
+//   beforeUnmount() {
+//     clearInterval(this.intervalId);
+//   },
+//   methods: {
+//     goToSlide(index) {
+//       this.currentSlide = index;
+//     },
+//     startAutoSlide() {
+//       this.intervalId = setInterval(() => {
+//         this.currentSlide = (this.currentSlide + 1) % this.slides.length;
+//       }, 3000);
+//     },
+//   },
+// };
 </script>
 
 <style lang="scss" scoped>
