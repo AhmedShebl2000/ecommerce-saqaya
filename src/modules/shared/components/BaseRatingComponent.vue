@@ -13,29 +13,25 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "BaseRating",
-  props: {
-    rating: {
-      type: Number,
-      required: true,
-    },
-    ratingCount: {
-      type: Number,
-      default: 0,
-    },
+<script setup>
+const props = defineProps({
+  rating: {
+    type: Number,
+    required: true,
   },
-  methods: {
-    getFill(starIndex) {
-      const diff = this.rating - (starIndex - 1);
+  ratingCount: {
+    type: Number,
+    default: 0,
+  },
+});
 
-      if (diff >= 1) return 100;
-      if (diff > 0) return diff * 100;
-      return 0;
-    },
-  },
-};
+function getFill(starIndex) {
+  const diff = props.rating - (starIndex - 1);
+
+  if (diff >= 1) return 100;
+  if (diff > 0) return diff * 100;
+  return 0;
+}
 </script>
 
 <style lang="scss" scoped>
