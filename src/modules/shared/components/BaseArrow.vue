@@ -35,12 +35,11 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    type: { type: String, required: true },
-  },
-};
+<script setup>
+defineProps({
+  type: { type: String, required: true },
+});
+defineEmits(["click"]);
 </script>
 
 <style lang="scss" scoped>
