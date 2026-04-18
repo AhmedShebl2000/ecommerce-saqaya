@@ -122,110 +122,202 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, reactive, ref } from "vue";
 import { useToast } from "vue-toastification";
 
-export default {
-  data() {
-    return {
-      name: "",
-      email: "",
-      message: "",
-      errors: {
-        name: "",
-        email: "",
-        message: "",
-      },
-      submitMessage: "",
-      isSuccess: false,
-    };
-  },
-  computed: {
-    toast() {
-      return useToast();
+const toast = useToast();
+
+const name = ref("");
+const email = ref("");
+const message = ref("");
+const errors = reactive({
+  name: "",
+  email: "",
+  message: "",
+});
+const submitMessage = ref("");
+const isSuccess = ref(false);
+
+const breadcrumbItems = computed(() => {
+  return [
+    { id: 1, label: "Home", to: "/" },
+    {
+      id: 2,
+      label: "Contact",
     },
-    breadcrumbItems() {
-      return [
-        { id: 1, label: "Home", to: "/" },
-        {
-          id: 2,
-          label: "Contact",
-        },
-      ];
-    },
-  },
-  methods: {
-    validateEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    },
+  ];
+});
 
-    validateForm() {
-      this.errors = {
-        name: "",
-        email: "",
-        message: "",
-      };
+function validateEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
-      let isValid = true;
+function validateForm() {
+  errors.name = "";
+  errors.email = "";
+  errors.message = "";
 
-      if (!this.name) {
-        this.errors.name = "Name is required.";
-        isValid = false;
-      } else if (this.name.length < 2) {
-        this.errors.name = "Name must be at least 2 characters.";
-        isValid = false;
-      }
+  let isValid = true;
 
-      if (!this.email) {
-        this.errors.email = "Email is required.";
-        isValid = false;
-      } else if (!this.validateEmail(this.email)) {
-        this.errors.email = "Please enter a valid email address.";
-        isValid = false;
-      }
+  if (!name.value) {
+    errors.name = "Name is required.";
+    isValid = false;
+  } else if (name.value.length < 2) {
+    errors.name = "Name must be at least 2 characters.";
+    isValid = false;
+  }
 
-      if (!this.message) {
-        this.errors.message = "Message is required.";
-        isValid = false;
-      } else if (this.message.length < 10) {
-        this.errors.message = "Message must be at least 10 characters.";
-        isValid = false;
-      }
+  if (!email.value) {
+    errors.email = "Email is required.";
+    isValid = false;
+  } else if (!validateEmail(email.value)) {
+    errors.email = "Please enter a valid email address.";
+    isValid = false;
+  }
 
-      return isValid;
-    },
+  if (!message.value) {
+    errors.message = "Message is required.";
+    isValid = false;
+  } else if (message.value.length < 10) {
+    errors.message = "Message must be at least 10 characters.";
+    isValid = false;
+  }
 
-    resetForm() {
-      this.name = "";
-      this.email = "";
-      this.message = "";
-    },
+  return isValid;
+}
 
-    handleSubmit() {
-      this.submitMessage = "";
+function resetForm() {
+  name.value = "";
+  email.value = "";
+  message.value = "";
+}
 
-      const isValid = this.validateForm();
+function handleSubmit() {
+  submitMessage.value = "";
 
-      if (!isValid) {
-        this.isSuccess = false;
-        this.submitMessage = "Please fix the errors in the form.";
-        this.toast.error(this.submitMessage);
-        return;
-      }
+  const isValid = validateForm();
 
-      console.log({
-        name: this.name,
-        email: this.email,
-        message: this.message,
-      });
+  if (!isValid) {
+    isSuccess.value = false;
+    submitMessage.value = "Please fix the errors in the form.";
+    toast.error(submitMessage.value);
+    return;
+  }
 
-      this.isSuccess = true;
-      this.submitMessage = "Your message has been sent successfully.";
-      this.toast.success(this.submitMessage);
-      this.resetForm();
-    },
-  },
-};
+  console.log({
+    name: name.value,
+    email: email.value,
+    message: message.value,
+  });
+
+  isSuccess.value = true;
+  submitMessage.value = "Your message has been sent successfully.";
+  toast.success(submitMessage.value);
+  resetForm();
+}
+
+// export default {
+//   data() {
+//     return {
+//       name: "",
+//       email: "",
+//       message: "",
+//       errors: {
+//         name: "",
+//         email: "",
+//         message: "",
+//       },
+//       submitMessage: "",
+//       isSuccess: false,
+//     };
+//   },
+//   computed: {
+//     toast() {
+//       return useToast();
+//     },
+//     breadcrumbItems() {
+//       return [
+//         { id: 1, label: "Home", to: "/" },
+//         {
+//           id: 2,
+//           label: "Contact",
+//         },
+//       ];
+//     },
+//   },
+//   methods: {
+//     validateEmail(email) {
+//       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+//     },
+
+//     validateForm() {
+//       this.errors = {
+//         name: "",
+//         email: "",
+//         message: "",
+//       };
+
+//       let isValid = true;
+
+//       if (!this.name) {
+//         this.errors.name = "Name is required.";
+//         isValid = false;
+//       } else if (this.name.length < 2) {
+//         this.errors.name = "Name must be at least 2 characters.";
+//         isValid = false;
+//       }
+
+//       if (!this.email) {
+//         this.errors.email = "Email is required.";
+//         isValid = false;
+//       } else if (!this.validateEmail(this.email)) {
+//         this.errors.email = "Please enter a valid email address.";
+//         isValid = false;
+//       }
+
+//       if (!this.message) {
+//         this.errors.message = "Message is required.";
+//         isValid = false;
+//       } else if (this.message.length < 10) {
+//         this.errors.message = "Message must be at least 10 characters.";
+//         isValid = false;
+//       }
+
+//       return isValid;
+//     },
+
+//     resetForm() {
+//       this.name = "";
+//       this.email = "";
+//       this.message = "";
+//     },
+
+//     handleSubmit() {
+//       this.submitMessage = "";
+
+//       const isValid = this.validateForm();
+
+//       if (!isValid) {
+//         this.isSuccess = false;
+//         this.submitMessage = "Please fix the errors in the form.";
+//         this.toast.error(this.submitMessage);
+//         return;
+//       }
+
+//       console.log({
+//         name: this.name,
+//         email: this.email,
+//         message: this.message,
+//       });
+
+//       this.isSuccess = true;
+//       this.submitMessage = "Your message has been sent successfully.";
+//       this.toast.success(this.submitMessage);
+//       this.resetForm();
+//     },
+//   },
+// };
 </script>
 
 <style lang="scss" scoped>
