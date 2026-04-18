@@ -25,8 +25,4 @@
   </svg>
 </template>
 
-<script>
-export default {
-  name: "BaseIconDelivery",
-};
-</script>
+<script setup></script>
