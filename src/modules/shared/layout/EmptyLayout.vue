@@ -3,7 +3,8 @@
 </template>
 
 <script>
-import NotFoundPage from "@/views/NotFoundPage.vue";
+import NotFoundPage from "@/pages/NotFoundPage.vue";
+
 export default {
   components: { NotFoundPage },
 };
