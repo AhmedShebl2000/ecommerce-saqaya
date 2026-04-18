@@ -22,16 +22,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    items: {
-      type: Array,
-      required: false,
-      default: () => [],
-    },
+<script setup>
+defineProps({
+  items: {
+    type: Array,
+    default: () => [],
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
