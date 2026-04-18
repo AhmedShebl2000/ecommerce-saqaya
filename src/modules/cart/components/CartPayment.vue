@@ -18,21 +18,29 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { round } from "@/mixins/round";
 import { useCartStore } from "../store/cart";
+import { computed } from "vue";
 
-export default {
-  computed: {
-    cartStore() {
-      return useCartStore();
-    },
-    cartTotal() {
-      const total = this.cartStore.cartTotal;
-      return round(total);
-    },
-  },
-};
+const cartStore = useCartStore();
+
+const cartTotal = computed(() => {
+  const total = cartStore.cartTotal;
+  return round(total);
+});
+
+// export default {
+//   computed: {
+//     cartStore() {
+//       return useCartStore();
+//     },
+//     cartTotal() {
+//       const total = this.cartStore.cartTotal;
+//       return round(total);
+//     },
+//   },
+// };
 </script>
 
 <style lang="scss" scoped>
