@@ -132,53 +132,92 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, onBeforeUnmount, onMounted } from "vue";
 import { useCartStore } from "../store/cart";
 import CartItem from "./CartItem.vue";
 import CartPayment from "./CartPayment.vue";
-export default {
-  components: { CartItem, CartPayment },
-  data() {
-    return {};
-  },
-  mounted() {
-    window.addEventListener("keydown", this.handleEscape);
-  },
 
-  beforeUnmount() {
-    window.removeEventListener("keydown", this.handleEscape);
-  },
-  computed: {
-    cartStore() {
-      return useCartStore();
-    },
-    cartQuantity() {
-      return this.cartStore.cartQuantity;
-    },
-    cartItems() {
-      return this.cartStore.cartItems;
-    },
-    isCartOpen() {
-      return this.cartStore.isCartOpen;
-    },
-  },
-  methods: {
-    toggleCart() {
-      this.cartStore.toggleCart();
-    },
-    closeCart() {
-      this.cartStore.closeCart();
-    },
-    clearCart() {
-      this.cartStore.clearCart();
-    },
-    handleEscape(event) {
-      if (event.key === "Escape" && this.isCartOpen === true) {
-        this.closeCart();
-      }
-    },
-  },
-};
+const cartStore = useCartStore();
+
+onMounted(() => {
+  window.addEventListener("keydown", handleEscape);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", handleEscape);
+});
+
+const cartQuantity = computed(() => {
+  return cartStore.cartQuantity;
+});
+
+const cartItems = computed(() => {
+  return cartStore.cartItems;
+});
+
+const isCartOpen = computed(() => {
+  return cartStore.isCartOpen;
+});
+
+function toggleCart() {
+  cartStore.toggleCart();
+}
+function closeCart() {
+  cartStore.closeCart();
+}
+function clearCart() {
+  cartStore.clearCart();
+}
+function handleEscape(event) {
+  if (event.key === "Escape" && isCartOpen.value === true) {
+    closeCart();
+  }
+}
+
+// export default {
+//   components: { CartItem, CartPayment },
+//   data() {
+//     return {};
+//   },
+//   mounted() {
+//     window.addEventListener("keydown", this.handleEscape);
+//   },
+
+//   beforeUnmount() {
+//     window.removeEventListener("keydown", this.handleEscape);
+//   },
+//   computed: {
+//     cartStore() {
+//       return useCartStore();
+//     },
+//     cartQuantity() {
+//       return this.cartStore.cartQuantity;
+//     },
+//     cartItems() {
+//       return this.cartStore.cartItems;
+//     },
+//     isCartOpen() {
+//       return this.cartStore.isCartOpen;
+//     },
+//   },
+//   methods: {
+//     toggleCart() {
+//       this.cartStore.toggleCart();
+//     },
+//     closeCart() {
+//       this.cartStore.closeCart();
+//     },
+//     clearCart() {
+//       this.cartStore.clearCart();
+//     },
+//     handleEscape(event) {
+//       if (event.key === "Escape" && this.isCartOpen === true) {
+//         this.closeCart();
+//       }
+//     },
+//   },
+// };
 </script>
 
 <style lang="scss" scoped>
