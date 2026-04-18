@@ -12,22 +12,21 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import BaseButton from "./BaseButton.vue";
-export default {
-  components: { BaseButton },
-  props: {
-    message: {
-      type: String,
-      default: "Something went wrong. Please try again.",
-    },
-    retryable: {
-      type: Boolean,
-      default: true,
-    },
+
+defineProps({
+  message: {
+    type: String,
+    default: "Something went wrong. Please try again.",
   },
-  emits: ["retry"],
-};
+  retryable: {
+    type: Boolean,
+    default: true,
+  },
+});
+
+defineEmits(["retry"]);
 </script>
 
 <style lang="scss" scoped>
