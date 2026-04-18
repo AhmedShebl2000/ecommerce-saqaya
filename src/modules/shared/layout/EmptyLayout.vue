@@ -2,12 +2,8 @@
   <not-found-page></not-found-page>
 </template>
 
-<script>
+<script setup>
 import NotFoundPage from "@/pages/NotFoundPage.vue";
-
-export default {
-  components: { NotFoundPage },
-};
 </script>
 
 <style scoped></style>
