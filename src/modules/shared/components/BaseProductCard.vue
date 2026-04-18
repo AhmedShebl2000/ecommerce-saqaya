@@ -1,5 +1,5 @@
 <template>
-  <div class="card" data-test="product-card" @click="$emit('click')">
+  <div class="card" data-test="product-card" @click="emit('click')">
     <div
       v-if="discount > 0"
       class="card__discount"
@@ -70,77 +70,139 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { removeDecimals } from "@/mixins/removeDecimals";
 import { round } from "@/mixins/round";
 import BaseRatingComponent from "./BaseRatingComponent.vue";
 import { useCartStore } from "@/modules/cart/store/cart";
 import { useToast } from "vue-toastification";
+import { computed } from "vue";
 
-export default {
-  components: { BaseRatingComponent },
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
-    image: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    discountPercentage: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    rating: {
-      type: Number,
-      required: true,
-    },
-    ratingCount: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-  },
-  computed: {
-    cartStore() {
-      return useCartStore();
-    },
-    toast() {
-      return useToast();
-    },
-    discount() {
-      return removeDecimals(this.discountPercentage);
-    },
-    previousPrice() {
-      return round(this.price + this.price * (this.discountPercentage / 100));
-    },
-  },
-  methods: {
-    handleAddToCart() {
-      const product = {
-        id: this.id,
-        thumbnail: this.image,
-        title: this.title,
-        price: this.price,
-      };
-      this.cartStore.addToCart(product);
+const toast = useToast();
+const cartStore = useCartStore();
 
-      this.toast.success(`${this.title} has been added to cart`, {
-        position: "top-left",
-      });
-    },
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
   },
-};
+  image: {
+    type: String,
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  discountPercentage: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+  rating: {
+    type: Number,
+    required: true,
+  },
+  ratingCount: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+});
+const emit = defineEmits(["click"]);
+
+const discount = computed(() => {
+  return removeDecimals(props.discountPercentage);
+});
+
+const previousPrice = computed(() => {
+  return round(props.price + props.price * (props.discountPercentage / 100));
+});
+
+function handleAddToCart() {
+  const { id, image, title, price } = props;
+
+  const product = {
+    id,
+    thumbnail: image,
+    title,
+    price,
+  };
+  cartStore.addToCart(product);
+
+  toast.success(`${props.title} has been added to cart`, {
+    position: "top-left",
+  });
+}
+
+// export default {
+//   components: { BaseRatingComponent },
+//   props: {
+//     id: {
+//       type: Number,
+//       required: true,
+//     },
+//     image: {
+//       type: String,
+//       required: true,
+//     },
+//     title: {
+//       type: String,
+//       required: true,
+//     },
+//     price: {
+//       type: Number,
+//       required: true,
+//     },
+//     discountPercentage: {
+//       type: Number,
+//       required: false,
+//       default: 0,
+//     },
+//     rating: {
+//       type: Number,
+//       required: true,
+//     },
+//     ratingCount: {
+//       type: Number,
+//       required: false,
+//       default: 0,
+//     },
+//   },
+//   computed: {
+//     cartStore() {
+//       return useCartStore();
+//     },
+//     toast() {
+//       return useToast();
+//     },
+//     discount() {
+//       return removeDecimals(this.discountPercentage);
+//     },
+//     previousPrice() {
+//       return round(this.price + this.price * (this.discountPercentage / 100));
+//     },
+//   },
+//   methods: {
+//     handleAddToCart() {
+//       const product = {
+//         id: this.id,
+//         thumbnail: this.image,
+//         title: this.title,
+//         price: this.price,
+//       };
+//       this.cartStore.addToCart(product);
+
+//       this.toast.success(`${this.title} has been added to cart`, {
+//         position: "top-left",
+//       });
+//     },
+//   },
+// };
 </script>
 
 <style lang="scss" scoped>
