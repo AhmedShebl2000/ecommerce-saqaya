@@ -1,6 +1,8 @@
 <template>
   <div
     class="spinner"
+    role="status"
+    aria-label="Loading"
     data-test="spinner-container"
     :style="{ width: size, height: size }"
   >
@@ -8,15 +10,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    size: {
-      type: String,
-      default: "40px",
-    },
+<script setup>
+defineProps({
+  size: {
+    type: String,
+    default: "40px",
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
