@@ -79,41 +79,71 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { round } from "@/mixins/round";
 import { useCartStore } from "../store/cart";
+import { computed } from "vue";
 
-export default {
-  props: ["id", "title", "thumbnail", "price"],
-  computed: {
-    cartStore() {
-      return useCartStore();
-    },
-    cartItems() {
-      return this.cartStore.cartItems;
-    },
-    itemQty() {
-      const item = this.cartItems.find((item) => item.product.id === this.id);
-      return item ? item.qty : 1;
-    },
-    roundedPrice() {
-      return round(this.price * this.itemQty);
-    },
-  },
-  methods: {
-    increaseCartItemQty() {
-      const item = this.cartItems.find((item) => item.product.id === this.id);
-      if (!item) return;
-      this.cartStore.addToCart(item.product);
-    },
-    decreaseCartItemQty() {
-      this.cartStore.decreaseQuantity(this.id);
-    },
-    removeItemFromCart() {
-      this.cartStore.removeFromCart(this.id);
-    },
-  },
-};
+const cartStore = useCartStore();
+
+const props = defineProps(["id", "title", "thumbnail", "price"]);
+
+const cartItems = computed(() => {
+  return cartStore.cartItems;
+});
+
+const itemQty = computed(() => {
+  const item = cartItems.value.find((item) => item.product.id === props.id);
+  return item ? item.qty : 1;
+});
+
+const roundedPrice = computed(() => {
+  return round(props.price * itemQty.value);
+});
+
+function increaseCartItemQty() {
+  const item = cartItems.value.find((item) => item.product.id === props.id);
+  if (!item) return;
+  cartStore.addToCart(item.product);
+}
+function decreaseCartItemQty() {
+  cartStore.decreaseQuantity(props.id);
+}
+function removeItemFromCart() {
+  cartStore.removeFromCart(props.id);
+}
+
+// export default {
+//   props: ["id", "title", "thumbnail", "price"],
+//   computed: {
+//     cartStore() {
+//       return useCartStore();
+//     },
+//     cartItems() {
+//       return this.cartStore.cartItems;
+//     },
+//     itemQty() {
+//       const item = this.cartItems.find((item) => item.product.id === this.id);
+//       return item ? item.qty : 1;
+//     },
+//     roundedPrice() {
+//       return round(this.price * this.itemQty);
+//     },
+//   },
+//   methods: {
+//     increaseCartItemQty() {
+//       const item = this.cartItems.find((item) => item.product.id === this.id);
+//       if (!item) return;
+//       this.cartStore.addToCart(item.product);
+//     },
+//     decreaseCartItemQty() {
+//       this.cartStore.decreaseQuantity(this.id);
+//     },
+//     removeItemFromCart() {
+//       this.cartStore.removeFromCart(this.id);
+//     },
+//   },
+// };
 </script>
 
 <style lang="scss" scoped>
