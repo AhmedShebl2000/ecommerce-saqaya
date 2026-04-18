@@ -225,156 +225,299 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { getProductById } from "@/services/product.service";
 import ProductItem from "../components/ProductItem.vue";
 import { slugify } from "@/mixins/slugify";
 import { useProductsStore } from "../store/products";
 import { useCartStore } from "@/modules/cart/store/cart";
-export default {
-  components: { ProductItem },
-  async beforeRouteEnter(to, from, next) {
-    const productId = Number(to.params.productId);
+import { computed, onMounted, ref } from "vue";
+import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 
-    if (!productId || Number.isNaN(productId)) {
-      return next({ name: "notFound" }); //redirection
-    }
+const productsStore = useProductsStore();
+const cartStore = useCartStore();
 
-    try {
-      const product = await getProductById(productId);
-      const correctSlug = slugify(product.title);
-      const currentSlug = to.params.productSlug;
+const route = useRoute();
+const router = useRouter();
 
-      if (currentSlug !== correctSlug) {
-        next({
-          name: "product",
-          params: {
-            productId: product.id,
-            productSlug: correctSlug,
-          },
-          replace: true,
-        });
-        return;
-      }
+onMounted(() => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  loadProduct();
+});
 
-      next((vm) => {
-        vm.productsStore.setSelectedProductDirect(product);
-        vm.getProductsOfSameCategory();
+async function loadProduct() {
+  const productId = Number(route.params.productId);
+
+  if (!productId || Number.isNaN(productId)) {
+    return router.replace({ name: "notFound" }); //redirection
+  }
+
+  try {
+    const product = await getProductById(productId);
+    const correctSlug = slugify(product.title);
+    const currentSlug = route.params.productSlug;
+
+    if (currentSlug !== correctSlug) {
+      return router.replace({
+        name: "product",
+        params: {
+          productId: product.id,
+          productSlug: correctSlug,
+        },
+        replace: true,
       });
-    } catch (error) {
-      next({ name: "notFound" });
-    }
-  },
-
-  async beforeRouteUpdate(to, from, next) {
-    const productId = Number(to.params.productId);
-
-    if (!productId || Number.isNaN(productId)) {
-      return next({ name: "notFound" }); //redirection
     }
 
-    try {
-      const product = await getProductById(productId);
-      const correctSlug = slugify(product.title);
-      const currentSlug = to.params.productSlug;
+    productsStore.setSelectedProductDirect(product);
+    await getProductsOfSameCategory();
+  } catch (error) {
+    router.replace({ name: "notFound" });
+  }
+}
 
-      if (currentSlug !== correctSlug) {
-        next({
-          name: "product",
-          params: {
-            productId: product.id,
-            productSlug: correctSlug,
-          },
-          replace: true,
-        });
-        return;
-      }
+onBeforeRouteUpdate(async (to) => {
+  const productId = Number(to.params.productId);
 
-      this.productsStore.setSelectedProductDirect(product);
-      await this.getProductsOfSameCategory();
-      next();
-    } catch (error) {
-      next({ name: "notFound" });
-    }
-  },
+  if (!productId || Number.isNaN(productId)) {
+    return router.replace({ name: "notFound" }); //redirection
+  }
 
-  data() {
-    return {
-      loading: false,
-      error: null,
-    };
-  },
-  created() {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  },
-  computed: {
-    productsStore() {
-      return useProductsStore();
-    },
-    cartStore() {
-      return useCartStore();
-    },
-    selectedProduct() {
-      return this.productsStore.selectedProduct;
-    },
-    ratingCount() {
-      return this.selectedProduct.reviews?.length || 0;
-    },
-    inStock() {
-      return this.selectedProduct.stock > 0;
-    },
-    hasDiscountPercentage() {
-      return (this.selectedProduct.discountPercentage || 0) > 0;
-    },
-    cartItems() {
-      return this.cartStore.cart.items;
-    },
-    itemQty() {
-      const item = this.cartItems.find(
-        (item) => item.product.id === this.selectedProduct.id
-      );
-      return item ? item.qty : 0;
-    },
-    sameCategoryProducts() {
-      return this.productsStore.products;
-    },
-    breadcrumbItems() {
-      return [
-        { id: 1, label: "Home", to: "/" },
-        {
-          id: 2,
-          label: "Products",
-          to: "/products",
+  try {
+    const product = await getProductById(productId);
+    const correctSlug = slugify(product.title);
+    const currentSlug = to.params.productSlug;
+
+    if (currentSlug !== correctSlug) {
+      return router.replace({
+        name: "product",
+        params: {
+          productId: product.id,
+          productSlug: correctSlug,
         },
-        {
-          id: 3,
-          label: this.selectedProduct?.title || "product",
-        },
-      ];
-    },
-  },
-  methods: {
-    decreaseItemQty() {
-      this.cartStore.decreaseQuantity(this.selectedProduct.id);
-    },
-    increaseItemQty() {
-      this.cartStore.addToCart(this.selectedProduct);
-    },
-    async getProductsOfSameCategory() {
-      const category = this.selectedProduct.category;
-      try {
-        this.loading = true;
-        this.error = null;
+      });
+    }
 
-        await this.productsStore.fetchProducts({ limit: 4, skip: 0, category });
-      } catch (error) {
-        this.error = "Failed to load related products.";
-      } finally {
-        this.loading = false;
-      }
+    productsStore.setSelectedProductDirect(product);
+    await getProductsOfSameCategory();
+  } catch (error) {
+    router.replace({ name: "notFound" });
+  }
+});
+
+const loading = ref(false);
+const error = ref(null);
+
+const selectedProduct = computed(() => {
+  return productsStore.selectedProduct;
+});
+
+const ratingCount = computed(() => {
+  return selectedProduct.value.reviews?.length || 0;
+});
+
+const inStock = computed(() => {
+  return selectedProduct.value.stock > 0;
+});
+
+const hasDiscountPercentage = computed(() => {
+  return (selectedProduct.value.discountPercentage || 0) > 0;
+});
+
+const cartItems = computed(() => {
+  return cartStore.cart.items;
+});
+
+const itemQty = computed(() => {
+  const item = cartItems.value.find(
+    (item) => item.product.id === selectedProduct.value.id
+  );
+  return item ? item.qty : 0;
+});
+
+const sameCategoryProducts = computed(() => {
+  return productsStore.products;
+});
+
+const breadcrumbItems = computed(() => {
+  return [
+    { id: 1, label: "Home", to: "/" },
+    {
+      id: 2,
+      label: "Products",
+      to: "/products",
     },
-  },
-};
+    {
+      id: 3,
+      label: selectedProduct.value?.title || "product",
+    },
+  ];
+});
+
+function decreaseItemQty() {
+  cartStore.decreaseQuantity(selectedProduct.value.id);
+}
+function increaseItemQty() {
+  cartStore.addToCart(selectedProduct.value);
+}
+
+async function getProductsOfSameCategory() {
+  const category = selectedProduct.value.category;
+  try {
+    loading.value = true;
+    error.value = null;
+
+    await productsStore.fetchProducts({ limit: 4, skip: 0, category });
+  } catch (error) {
+    error.value = "Failed to load related products.";
+  } finally {
+    loading.value = false;
+  }
+}
+
+// export default {
+//   components: { ProductItem },
+//   async beforeRouteEnter(to, from, next) {
+//     const productId = Number(to.params.productId);
+
+//     if (!productId || Number.isNaN(productId)) {
+//       return next({ name: "notFound" }); //redirection
+//     }
+
+//     try {
+//       const product = await getProductById(productId);
+//       const correctSlug = slugify(product.title);
+//       const currentSlug = to.params.productSlug;
+
+//       if (currentSlug !== correctSlug) {
+//         next({
+//           name: "product",
+//           params: {
+//             productId: product.id,
+//             productSlug: correctSlug,
+//           },
+//           replace: true,
+//         });
+//         return;
+//       }
+
+//       next((vm) => {
+//         vm.productsStore.setSelectedProductDirect(product);
+//         vm.getProductsOfSameCategory();
+//       });
+//     } catch (error) {
+//       next({ name: "notFound" });
+//     }
+//   },
+
+//   async beforeRouteUpdate(to, from, next) {
+//     const productId = Number(to.params.productId);
+
+//     if (!productId || Number.isNaN(productId)) {
+//       return next({ name: "notFound" }); //redirection
+//     }
+
+//     try {
+//       const product = await getProductById(productId);
+//       const correctSlug = slugify(product.title);
+//       const currentSlug = to.params.productSlug;
+
+//       if (currentSlug !== correctSlug) {
+//         next({
+//           name: "product",
+//           params: {
+//             productId: product.id,
+//             productSlug: correctSlug,
+//           },
+//           replace: true,
+//         });
+//         return;
+//       }
+
+//       this.productsStore.setSelectedProductDirect(product);
+//       await this.getProductsOfSameCategory();
+//       next();
+//     } catch (error) {
+//       next({ name: "notFound" });
+//     }
+//   },
+
+//   data() {
+//     return {
+//       loading: false,
+//       error: null,
+//     };
+//   },
+//   created() {
+//     window.scrollTo({ top: 0, behavior: "smooth" });
+//   },
+//   computed: {
+//     productsStore() {
+//       return useProductsStore();
+//     },
+//     cartStore() {
+//       return useCartStore();
+//     },
+//     selectedProduct() {
+//       return this.productsStore.selectedProduct;
+//     },
+//     ratingCount() {
+//       return this.selectedProduct.reviews?.length || 0;
+//     },
+//     inStock() {
+//       return this.selectedProduct.stock > 0;
+//     },
+//     hasDiscountPercentage() {
+//       return (this.selectedProduct.discountPercentage || 0) > 0;
+//     },
+//     cartItems() {
+//       return this.cartStore.cart.items;
+//     },
+//     itemQty() {
+//       const item = this.cartItems.find(
+//         (item) => item.product.id === this.selectedProduct.id
+//       );
+//       return item ? item.qty : 0;
+//     },
+//     sameCategoryProducts() {
+//       return this.productsStore.products;
+//     },
+//     breadcrumbItems() {
+//       return [
+//         { id: 1, label: "Home", to: "/" },
+//         {
+//           id: 2,
+//           label: "Products",
+//           to: "/products",
+//         },
+//         {
+//           id: 3,
+//           label: this.selectedProduct?.title || "product",
+//         },
+//       ];
+//     },
+//   },
+//   methods: {
+//     decreaseItemQty() {
+//       this.cartStore.decreaseQuantity(this.selectedProduct.id);
+//     },
+//     increaseItemQty() {
+//       this.cartStore.addToCart(this.selectedProduct);
+//     },
+//     async getProductsOfSameCategory() {
+//       const category = this.selectedProduct.category;
+//       try {
+//         this.loading = true;
+//         this.error = null;
+
+//         await this.productsStore.fetchProducts({ limit: 4, skip: 0, category });
+//       } catch (error) {
+//         this.error = "Failed to load related products.";
+//       } finally {
+//         this.loading = false;
+//       }
+//     },
+//   },
+// };
 </script>
 
 <style lang="scss" scoped>
