@@ -167,129 +167,244 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { slugify } from "@/mixins/slugify";
 import CartComponent from "@/modules/cart/components/CartComponent.vue";
 import { useProductsStore } from "@/modules/products/store/products";
 import { getProductBySearchQuery } from "@/services/product.service";
-import { RouterLink } from "vue-router";
+import { computed, nextTick, ref, watch } from "vue";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 
-export default {
-  components: {
-    RouterLink,
-    CartComponent,
+const route = useRoute();
+const router = useRouter();
+
+const productsStore = useProductsStore();
+
+const navLinks = [
+  {
+    id: 1,
+    to: "/",
+    name: "Home",
+    exact: true,
   },
-  data() {
-    return {
-      searchLoading: false,
-      navLinks: [
-        {
-          id: 1,
-          to: "/",
-          name: "Home",
-          exact: true,
-        },
-        {
-          id: 2,
-          to: "/contact",
-          name: "Contact",
-        },
-        {
-          id: 3,
-          to: "/products",
-          name: "Products",
-        },
-        {
-          id: 4,
-          to: "/about",
-          name: "About",
-        },
-      ],
-      isMenuOpen: false,
-      isSearchOpen: false,
-      searchQuery: "",
-      searchResults: [],
-      searchTimeout: null,
-    };
+  {
+    id: 2,
+    to: "/contact",
+    name: "Contact",
   },
-  watch: {
-    $route() {
-      this.isMenuOpen = false;
-      this.isSearchOpen = false;
-      this.searchQuery = "";
-      this.searchResults = [];
-    },
+  {
+    id: 3,
+    to: "/products",
+    name: "Products",
   },
-  computed: {
-    productsStore() {
-      return useProductsStore();
-    },
-    showNoResults() {
-      return (
-        this.searchQuery.trim().length > 0 &&
-        !this.searchLoading &&
-        this.searchResults.length === 0
+  {
+    id: 4,
+    to: "/about",
+    name: "About",
+  },
+];
+
+const searchLoading = ref(false);
+const isMenuOpen = ref(false);
+const isSearchOpen = ref(false);
+const searchQuery = ref("");
+const searchResults = ref([]);
+const searchTimeout = ref(null);
+
+watch(
+  () => route.fullPath,
+  () => {
+    isMenuOpen.value = false;
+    isSearchOpen.value = false;
+    searchQuery.value = "";
+    searchResults.value = [];
+  }
+);
+
+const showNoResults = computed(() => {
+  return (
+    searchQuery.value.trim().length > 0 &&
+    !searchLoading.value &&
+    searchResults.value.length === 0
+  );
+});
+
+function toggleMenu() {
+  isMenuOpen.value = !isMenuOpen.value;
+}
+
+const mobileSearch = ref(null);
+function openSearch() {
+  isSearchOpen.value = true;
+  nextTick(() => {
+    mobileSearch.value?.focus();
+  });
+}
+
+function closeSearch() {
+  isSearchOpen.value = false;
+  searchQuery.value = "";
+}
+
+function handleSearchInput() {
+  clearTimeout(searchTimeout.value);
+
+  if (!searchQuery.value.trim()) {
+    searchResults.value = [];
+    return;
+  }
+
+  searchTimeout.value = setTimeout(async () => {
+    searchLoading.value = true;
+    try {
+      const { currentProducts } = await getProductBySearchQuery(
+        searchQuery.value
       );
-    },
-  },
-  methods: {
-    toggleMenu() {
-      this.isMenuOpen = !this.isMenuOpen;
-    },
-    openSearch() {
-      this.isSearchOpen = true;
-      this.$nextTick(() => {
-        this.$refs.mobileSearch?.focus();
-      });
-    },
-    closeSearch() {
-      this.isSearchOpen = false;
-      this.searchQuery = "";
-    },
-    handleSearchInput() {
-      clearTimeout(this.searchTimeout);
+      searchResults.value = currentProducts.slice(0, 6);
+    } catch (error) {
+      searchResults.value = [];
+    } finally {
+      searchLoading.value = false;
+    }
+  }, 300);
+}
 
-      if (!this.searchQuery.trim()) {
-        this.searchResults = [];
-        return;
-      }
+function handleSearch() {
+  if (searchResults.value.length > 0) {
+    handleSelectResult(searchResults.value[0]);
+  }
+}
 
-      this.searchTimeout = setTimeout(async () => {
-        this.searchLoading = true;
-        try {
-          const { currentProducts } = await getProductBySearchQuery(
-            this.searchQuery
-          );
-          console.log("results:", currentProducts);
+function handleSelectResult(product) {
+  productsStore.setSelectedProductDirect(product);
 
-          this.searchResults = currentProducts.slice(0, 6);
-        } catch (error) {
-          this.searchResults = [];
-        } finally {
-          this.searchLoading = false;
-        }
-      }, 300);
-    },
-    handleSearch() {
-      if (this.searchResults.length > 0) {
-        this.handleSelectResult(this.searchResults[0]);
-      }
-    },
-    handleSelectResult(product) {
-      this.productsStore.setSelectedProductDirect(product);
+  const slug = slugify(product.title);
 
-      const slug = slugify(product.title);
+  const targetPath = `/products/${product.id}/${slug}`;
+  if (route.path === targetPath) return;
+  router.push(`/products/${product.id}/${slug}`);
 
-      const targetPath = `/products/${product.id}/${slug}`;
-      if (this.$route.path === targetPath) return;
-      this.$router.push(`/products/${product.id}/${slug}`);
+  searchQuery.value = "";
+  searchResults.value = [];
+  isSearchOpen.value = false;
+}
 
-      this.searchQuery = "";
-      this.searchResults = [];
-      this.isSearchOpen = false;
-    },
-  },
-};
+// export default {
+//   components: {
+//     RouterLink,
+//     CartComponent,
+//   },
+//   data() {
+//     return {
+//       searchLoading: false,
+//       navLinks: [
+//         {
+//           id: 1,
+//           to: "/",
+//           name: "Home",
+//           exact: true,
+//         },
+//         {
+//           id: 2,
+//           to: "/contact",
+//           name: "Contact",
+//         },
+//         {
+//           id: 3,
+//           to: "/products",
+//           name: "Products",
+//         },
+//         {
+//           id: 4,
+//           to: "/about",
+//           name: "About",
+//         },
+//       ],
+//       isMenuOpen: false,
+//       isSearchOpen: false,
+//       searchQuery: "",
+//       searchResults: [],
+//       searchTimeout: null,
+//     };
+//   },
+//   watch: {
+//     $route() {
+//       this.isMenuOpen = false;
+//       this.isSearchOpen = false;
+//       this.searchQuery = "";
+//       this.searchResults = [];
+//     },
+//   },
+//   computed: {
+//     productsStore() {
+//       return useProductsStore();
+//     },
+//     showNoResults() {
+//       return (
+//         this.searchQuery.trim().length > 0 &&
+//         !this.searchLoading &&
+//         this.searchResults.length === 0
+//       );
+//     },
+//   },
+//   methods: {
+//     toggleMenu() {
+//       this.isMenuOpen = !this.isMenuOpen;
+//     },
+//     openSearch() {
+//       this.isSearchOpen = true;
+//       this.$nextTick(() => {
+//         this.$refs.mobileSearch?.focus();
+//       });
+//     },
+//     closeSearch() {
+//       this.isSearchOpen = false;
+//       this.searchQuery = "";
+//     },
+//     handleSearchInput() {
+//       clearTimeout(this.searchTimeout);
+
+//       if (!this.searchQuery.trim()) {
+//         this.searchResults = [];
+//         return;
+//       }
+
+//       this.searchTimeout = setTimeout(async () => {
+//         this.searchLoading = true;
+//         try {
+//           const { currentProducts } = await getProductBySearchQuery(
+//             this.searchQuery
+//           );
+//           console.log("results:", currentProducts);
+
+//           this.searchResults = currentProducts.slice(0, 6);
+//         } catch (error) {
+//           this.searchResults = [];
+//         } finally {
+//           this.searchLoading = false;
+//         }
+//       }, 300);
+//     },
+//     handleSearch() {
+//       if (this.searchResults.length > 0) {
+//         this.handleSelectResult(this.searchResults[0]);
+//       }
+//     },
+//     handleSelectResult(product) {
+//       this.productsStore.setSelectedProductDirect(product);
+
+//       const slug = slugify(product.title);
+
+//       const targetPath = `/products/${product.id}/${slug}`;
+//       if (this.$route.path === targetPath) return;
+//       this.$router.push(`/products/${product.id}/${slug}`);
+
+//       this.searchQuery = "";
+//       this.searchResults = [];
+//       this.isSearchOpen = false;
+//     },
+//   },
+// };
 </script>
 
 <style lang="scss" scoped>
