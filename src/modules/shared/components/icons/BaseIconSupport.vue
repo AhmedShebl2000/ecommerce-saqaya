@@ -37,8 +37,4 @@
   </svg>
 </template>
 
-<script>
-export default {
-  name: "BaseIconSupport",
-};
-</script>
+<script setup></script>
