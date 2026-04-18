@@ -7,26 +7,34 @@
         Your visited page was not found. You may go to home page.
       </p>
       <div class="not-found__button">
-        <base-button link to="/">Back top home page</base-button>
+        <base-button link to="/">Back to home page</base-button>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  computed: {
-    breadcrumbItems() {
-      return [
-        { id: 1, label: "Home", to: "/" },
-        {
-          id: 2,
-          label: "404 Error",
-        },
-      ];
-    },
+<script setup>
+const breadcrumbItems = [
+  { id: 1, label: "Home", to: "/" },
+  {
+    id: 2,
+    label: "404 Error",
   },
-};
+];
+
+// export default {
+//   computed: {
+//     breadcrumbItems() {
+//       return [
+//         { id: 1, label: "Home", to: "/" },
+//         {
+//           id: 2,
+//           label: "404 Error",
+//         },
+//       ];
+//     },
+//   },
+// };
 </script>
 
 <style lang="scss" scoped>
