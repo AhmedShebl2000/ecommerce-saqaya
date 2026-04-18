@@ -17,17 +17,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "BaseServiceFeatures",
-  props: {
-    features: {
-      type: Array,
-      required: true,
-      default: () => [],
-    },
+<script setup>
+defineProps({
+  features: {
+    type: Array,
+    required: true,
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
