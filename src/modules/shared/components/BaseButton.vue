@@ -13,31 +13,27 @@
   </router-link>
 </template>
 
-<script>
-export default {
-  props: {
-    link: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    to: {
-      type: String,
-      required: false,
-      default: "/",
-    },
-    disabled: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    type: {
-      type: String,
-      required: false,
-      default: "normal",
-    },
+<script setup>
+defineProps({
+  link: {
+    type: Boolean,
+    default: false,
   },
-};
+  to: {
+    type: String,
+    default: "/",
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  type: {
+    type: String,
+    default: "normal",
+  },
+});
+
+defineEmits(["click"]);
 </script>
 
 <style lang="scss" scoped>
