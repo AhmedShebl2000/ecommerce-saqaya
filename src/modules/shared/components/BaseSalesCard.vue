@@ -8,15 +8,12 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: ["id", "amount", "subtitle"],
-  data() {
-    return {
-      targetId: 2,
-    };
-  },
-};
+<script setup>
+import { ref } from "vue";
+
+defineProps(["id", "amount", "subtitle"]);
+
+const targetId = ref(2);
 </script>
 
 <style lang="scss" scoped>
