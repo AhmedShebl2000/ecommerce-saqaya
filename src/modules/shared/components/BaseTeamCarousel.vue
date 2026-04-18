@@ -100,58 +100,55 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "TeamCarousel",
-  props: {
-    members: {
-      type: Array,
-      required: true,
-      default: () => [],
-    },
-  },
-  data() {
-    return {
-      currentPage: 0,
-      cardsPerPage: 3,
-    };
-  },
-  computed: {
-    pageCount() {
-      return Math.ceil(this.members.length / this.cardsPerPage) || 1;
-    },
-    trackStyle() {
-      return {
-        transform: `translateX(-${this.currentPage * 100}%)`,
-      };
-    },
-  },
-  mounted() {
-    this.updateCardsPerPage();
-    window.addEventListener("resize", this.updateCardsPerPage);
-  },
-  beforeUnmount() {
-    window.removeEventListener("resize", this.updateCardsPerPage);
-  },
-  methods: {
-    goToPage(page) {
-      this.currentPage = page;
-    },
-    updateCardsPerPage() {
-      if (window.innerWidth <= 768) {
-        this.cardsPerPage = 1;
-      } else if (window.innerWidth <= 1024) {
-        this.cardsPerPage = 2;
-      } else {
-        this.cardsPerPage = 3;
-      }
+<script setup>
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 
-      if (this.currentPage > this.pageCount - 1) {
-        this.currentPage = this.pageCount - 1;
-      }
-    },
+const props = defineProps({
+  members: {
+    type: Array,
+    default: () => [],
   },
-};
+});
+
+onMounted(() => {
+  updateCardsPerPage();
+  window.addEventListener("resize", updateCardsPerPage);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateCardsPerPage);
+});
+
+const currentPage = ref(0);
+const cardsPerPage = ref(3);
+
+const pageCount = computed(() => {
+  return Math.ceil(props.members?.length / cardsPerPage.value) || 1;
+});
+
+const trackStyle = computed(() => {
+  return {
+    transform: `translateX(-${currentPage.value * 100}%)`,
+  };
+});
+
+function goToPage(page) {
+  currentPage.value = page;
+}
+
+function updateCardsPerPage() {
+  if (window.innerWidth <= 768) {
+    cardsPerPage.value = 1;
+  } else if (window.innerWidth <= 1024) {
+    cardsPerPage.value = 2;
+  } else {
+    cardsPerPage.value = 3;
+  }
+
+  if (currentPage.value > pageCount.value - 1) {
+    currentPage.value = pageCount.value - 1;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
