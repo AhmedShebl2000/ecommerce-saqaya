@@ -174,50 +174,6 @@ function handleEscape(event) {
     closeCart();
   }
 }
-
-// export default {
-//   components: { CartItem, CartPayment },
-//   data() {
-//     return {};
-//   },
-//   mounted() {
-//     window.addEventListener("keydown", this.handleEscape);
-//   },
-
-//   beforeUnmount() {
-//     window.removeEventListener("keydown", this.handleEscape);
-//   },
-//   computed: {
-//     cartStore() {
-//       return useCartStore();
-//     },
-//     cartQuantity() {
-//       return this.cartStore.cartQuantity;
-//     },
-//     cartItems() {
-//       return this.cartStore.cartItems;
-//     },
-//     isCartOpen() {
-//       return this.cartStore.isCartOpen;
-//     },
-//   },
-//   methods: {
-//     toggleCart() {
-//       this.cartStore.toggleCart();
-//     },
-//     closeCart() {
-//       this.cartStore.closeCart();
-//     },
-//     clearCart() {
-//       this.cartStore.clearCart();
-//     },
-//     handleEscape(event) {
-//       if (event.key === "Escape" && this.isCartOpen === true) {
-//         this.closeCart();
-//       }
-//     },
-//   },
-// };
 </script>
 
 <style lang="scss" scoped>

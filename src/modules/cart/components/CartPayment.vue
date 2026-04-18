@@ -29,18 +29,6 @@ const cartTotal = computed(() => {
   const total = cartStore.cartTotal;
   return round(total);
 });
-
-// export default {
-//   computed: {
-//     cartStore() {
-//       return useCartStore();
-//     },
-//     cartTotal() {
-//       const total = this.cartStore.cartTotal;
-//       return round(total);
-//     },
-//   },
-// };
 </script>
 
 <style lang="scss" scoped>

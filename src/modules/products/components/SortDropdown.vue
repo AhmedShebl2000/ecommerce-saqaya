@@ -29,16 +29,6 @@ const emits = defineEmits(["handleFetchSortedProducts"]);
 function onChange(event) {
   emits("handleFetchSortedProducts", event.target.value);
 }
-
-// export default {
-//   props: ["sortBy"],
-//   emits: ["handleFetchSortedProducts"],
-//   methods: {
-//     onChange(event) {
-//       this.$emit("handleFetchSortedProducts", event.target.value);
-//     },
-//   },
-// };
 </script>
 
 <style lang="scss" scoped></style>

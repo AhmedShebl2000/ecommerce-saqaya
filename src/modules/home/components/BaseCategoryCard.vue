@@ -15,15 +15,6 @@ const props = defineProps(["image", "title", "category"]);
 function handleGetProductsByCategory() {
   router.push(`/products?category=${props.category}`);
 }
-
-// export default {
-//   props: ["image", "title", "category"],
-//   methods: {
-//     handleGetProductsByCategory() {
-//       this.$router.push(`/products?category=${this.category}`);
-//     },
-//   },
-// };
 </script>
 
 <style lang="scss" scoped>

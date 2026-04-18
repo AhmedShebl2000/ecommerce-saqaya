@@ -54,38 +54,6 @@ function startAutoSlide() {
     currentSlide.value = (currentSlide.value + 1) % slides.value.length;
   }, 3000);
 }
-
-// export default {
-//   data() {
-//     return {
-//       currentSlide: 0,
-//       intervalId: null,
-//       slides: [
-//         "/Hero1.png",
-//         "/hero2.jpg",
-//         "/hero3.jpg",
-//         "/hero4.png",
-//         "/hero5.jpg",
-//       ],
-//     };
-//   },
-//   mounted() {
-//     this.startAutoSlide();
-//   },
-//   beforeUnmount() {
-//     clearInterval(this.intervalId);
-//   },
-//   methods: {
-//     goToSlide(index) {
-//       this.currentSlide = index;
-//     },
-//     startAutoSlide() {
-//       this.intervalId = setInterval(() => {
-//         this.currentSlide = (this.currentSlide + 1) % this.slides.length;
-//       }, 3000);
-//     },
-//   },
-// };
 </script>
 
 <style lang="scss" scoped>

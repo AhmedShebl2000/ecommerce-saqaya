@@ -44,36 +44,6 @@ function handleOpenProduct() {
   if (route.path === targetPath) return;
   router.push(`/products/${props.id}/${slug.value}`);
 }
-
-// export default {
-//   props: [
-//     "id",
-//     "images",
-//     "title",
-//     "price",
-//     "discountPercentage",
-//     "rating",
-//     "ratingCount",
-//   ],
-//   computed: {
-//     productsStore() {
-//       return useProductsStore();
-//     },
-//     slug() {
-//       return slugify(this.title);
-//     },
-//   },
-//   methods: {
-//     handleOpenProduct() {
-//       window.scrollTo({ top: 0, behavior: "smooth" });
-//       const targetPath = `/products/${this.id}/${this.slug}`;
-//       this.productsStore.setSelectedProduct(this.id);
-
-//       if (this.$route.path === targetPath) return;
-//       this.$router.push(`/products/${this.id}/${this.slug}`);
-//     },
-//   },
-// };
 </script>
 
 <style lang="scss" scoped></style>

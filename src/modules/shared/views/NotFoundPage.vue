@@ -21,20 +21,6 @@ const breadcrumbItems = [
     label: "404 Error",
   },
 ];
-
-// export default {
-//   computed: {
-//     breadcrumbItems() {
-//       return [
-//         { id: 1, label: "Home", to: "/" },
-//         {
-//           id: 2,
-//           label: "404 Error",
-//         },
-//       ];
-//     },
-//   },
-// };
 </script>
 
 <style lang="scss" scoped>
