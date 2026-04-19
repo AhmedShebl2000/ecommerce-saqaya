@@ -203,7 +203,7 @@ const cards = ref([
     category: "home-decoration",
   },
 ]);
-const features = ref([
+const features = [
   {
     id: 1,
     icon: BaseIconDelivery,
@@ -222,7 +222,7 @@ const features = ref([
     title: "MONEY BACK GUARANTEE",
     subtitle: "We return money within 30 days",
   },
-]);
+];
 
 const slider = ref(null);
 

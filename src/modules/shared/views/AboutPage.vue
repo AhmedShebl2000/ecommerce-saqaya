@@ -53,9 +53,9 @@ import BaseIconShop from "@/modules/shared/components/icons/BaseIconShop.vue";
 import BaseIconDelivery from "@/modules/shared/components/icons/BaseIconDelivery.vue";
 import BaseIconSupport from "@/modules/shared/components/icons/BaseIconSupport.vue";
 import BaseIconGuarantee from "@/modules/shared/components/icons/BaseIconGuarantee.vue";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
-const cards = ref([
+const cards = [
   {
     id: 1,
     image: BaseIconShop,
@@ -80,8 +80,8 @@ const cards = ref([
     amount: 25,
     subtitle: "Annual gross sale in out site",
   },
-]);
-const teamMembers = ref([
+];
+const teamMembers = [
   {
     id: 1,
     name: "Tom Cruise",
@@ -127,8 +127,8 @@ const teamMembers = ref([
     instagram: "#",
     linkedin: "#",
   },
-]);
-const features = ref([
+];
+const features = [
   {
     id: 1,
     icon: BaseIconDelivery,
@@ -147,7 +147,7 @@ const features = ref([
     title: "MONEY BACK GUARANTEE",
     subtitle: "We return money within 30 days",
   },
-]);
+];
 
 const breadcrumbItems = computed(() => {
   return [
