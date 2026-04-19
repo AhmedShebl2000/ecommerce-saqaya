@@ -3,19 +3,22 @@ import { useCartStore } from "@/modules/cart/store/cart";
 import { shallowMount } from "@vue/test-utils";
 import { createPinia, setActivePinia } from "pinia";
 
-const setupStore = (
-  items = [
-    {
-      product: {
-        id: 1,
-        title: "Item 1",
-        thumbnail: "image.png",
-        price: 50,
-      } as any,
-      qty: 1,
-    },
-  ]
-) => {
+const makeItem = (qty = 1) => ({
+  product: {
+    id: 1,
+    title: "Item 1",
+    thumbnail: "image.png",
+    price: 50,
+  } as any,
+  qty,
+});
+
+const defaultItem = {
+  product: { id: 1, title: "Item 1", thumbnail: "image.png", price: 50 } as any,
+  qty: 1,
+};
+
+const setupStore = (items = [makeItem()]) => {
   const pinia = createPinia();
   setActivePinia(pinia);
   const cartStore = useCartStore();
@@ -83,8 +86,8 @@ describe("CartItem", () => {
       },
     ]);
     const wrapper = createWrapper();
-    await wrapper.find('[data-test="cart-item-remove"]').trigger("click");
-    expect(cartStore.cart.items).toHaveLength(0);
+    await wrapper.find('[data-test="cart-item-decrease"]').trigger("click");
+    expect(cartStore.cart.items[0].qty).toBe(1);
   });
 
   it("commits removeFromCart when remove button is clicked", async () => {

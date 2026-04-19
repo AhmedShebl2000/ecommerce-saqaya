@@ -14,7 +14,7 @@ describe("SortDropdown", () => {
   });
   it("emits event on selection change", async () => {
     const wrapper = shallowMount(SortDropdown, {
-      propsData: {
+      props: {
         sortBy: "Highest Rating",
       },
     });
@@ -25,7 +25,7 @@ describe("SortDropdown", () => {
   });
   it("emits correct value on selection change", async () => {
     const wrapper = shallowMount(SortDropdown, {
-      propsData: {
+      props: {
         sortBy: "Highest Rating",
       },
     });

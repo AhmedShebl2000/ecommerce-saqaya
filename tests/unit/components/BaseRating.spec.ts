@@ -4,7 +4,7 @@ import { shallowMount } from "@vue/test-utils";
 describe("BaseRatingComponent", () => {
   it("renders 5 stars", () => {
     const wrapper = shallowMount(BaseRatingComponent, {
-      propsData: {
+      props: {
         rating: 4,
       },
     });
@@ -14,7 +14,7 @@ describe("BaseRatingComponent", () => {
 
   it("shows rating count when ratingCount is provided", () => {
     const wrapper = shallowMount(BaseRatingComponent, {
-      propsData: {
+      props: {
         rating: 4,
         ratingCount: 25,
       },
@@ -26,7 +26,7 @@ describe("BaseRatingComponent", () => {
 
   it("does not show rating count when ratingCount is 0", () => {
     const wrapper = shallowMount(BaseRatingComponent, {
-      propsData: {
+      props: {
         rating: 4,
         ratingCount: 0,
       },
@@ -37,7 +37,7 @@ describe("BaseRatingComponent", () => {
 
   it("returns 100 for a fully filled star", () => {
     const wrapper = shallowMount(BaseRatingComponent, {
-      propsData: {
+      props: {
         rating: 4,
       },
     });
@@ -47,7 +47,7 @@ describe("BaseRatingComponent", () => {
 
   it("returns partial fill for a partially filled star", () => {
     const wrapper = shallowMount(BaseRatingComponent, {
-      propsData: {
+      props: {
         rating: 3.5,
       },
     });
@@ -57,7 +57,7 @@ describe("BaseRatingComponent", () => {
 
   it("returns 0 for an empty star", () => {
     const wrapper = shallowMount(BaseRatingComponent, {
-      propsData: {
+      props: {
         rating: 2,
       },
     });
