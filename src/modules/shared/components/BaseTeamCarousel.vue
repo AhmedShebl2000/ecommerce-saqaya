@@ -101,22 +101,14 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { useWindowResize } from "@/composables/useWindowResize";
+import { computed, ref } from "vue";
 
 const props = defineProps({
   members: {
     type: Array,
     default: () => [],
   },
-});
-
-onMounted(() => {
-  updateCardsPerPage();
-  window.addEventListener("resize", updateCardsPerPage);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("resize", updateCardsPerPage);
 });
 
 const currentPage = ref(0);
@@ -149,6 +141,8 @@ function updateCardsPerPage() {
     currentPage.value = pageCount.value - 1;
   }
 }
+
+useWindowResize(updateCardsPerPage);
 </script>
 
 <style lang="scss" scoped>
