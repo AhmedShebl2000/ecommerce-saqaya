@@ -69,11 +69,13 @@ describe("CartComponent", () => {
     cartStore.cart.items = [cartItemFixture];
 
     const wrapper = shallowMount(CartComponent, {
-      stubs: {
-        CartItem: true,
-        CartPayment: true,
-        BaseButton: {
-          template: "<button @click=\"$emit('click')\"><slot /></button>",
+      global: {
+        stubs: {
+          CartItem: true,
+          CartPayment: true,
+          BaseButton: {
+            template: "<button @click=\"$emit('click')\"><slot /></button>",
+          },
         },
       },
     });
