@@ -168,17 +168,22 @@
 </template>
 
 <script setup>
-import { slugify } from "@/composables/slugify";
+import { useSearch } from "@/composables/useSearch";
 import CartComponent from "@/modules/cart/components/CartComponent.vue";
-import { useProductsStore } from "@/modules/products/store/products";
-import { getProductBySearchQuery } from "@/services/product.service";
-import { computed, nextTick, ref, watch } from "vue";
-import { RouterLink, useRoute, useRouter } from "vue-router";
+import { nextTick, ref, watch } from "vue";
+import { RouterLink, useRoute } from "vue-router";
 
 const route = useRoute();
-const router = useRouter();
 
-const productsStore = useProductsStore();
+const {
+  showNoResults,
+  handleSearchInput,
+  handleSearch,
+  handleSelectResult,
+  searchLoading,
+  searchQuery,
+  searchResults,
+} = useSearch();
 
 const navLinks = [
   {
@@ -204,30 +209,16 @@ const navLinks = [
   },
 ];
 
-const searchLoading = ref(false);
 const isMenuOpen = ref(false);
 const isSearchOpen = ref(false);
-const searchQuery = ref("");
-const searchResults = ref([]);
-const searchTimeout = ref(null);
 
 watch(
   () => route.fullPath,
   () => {
     isMenuOpen.value = false;
     isSearchOpen.value = false;
-    searchQuery.value = "";
-    searchResults.value = [];
   }
 );
-
-const showNoResults = computed(() => {
-  return (
-    searchQuery.value.trim().length > 0 &&
-    !searchLoading.value &&
-    searchResults.value.length === 0
-  );
-});
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;
@@ -244,49 +235,6 @@ function openSearch() {
 function closeSearch() {
   isSearchOpen.value = false;
   searchQuery.value = "";
-}
-
-function handleSearchInput() {
-  clearTimeout(searchTimeout.value);
-
-  if (!searchQuery.value.trim()) {
-    searchResults.value = [];
-    return;
-  }
-
-  searchTimeout.value = setTimeout(async () => {
-    searchLoading.value = true;
-    try {
-      const { currentProducts } = await getProductBySearchQuery(
-        searchQuery.value
-      );
-      searchResults.value = currentProducts.slice(0, 6);
-    } catch (error) {
-      searchResults.value = [];
-    } finally {
-      searchLoading.value = false;
-    }
-  }, 300);
-}
-
-function handleSearch() {
-  if (searchResults.value.length > 0) {
-    handleSelectResult(searchResults.value[0]);
-  }
-}
-
-function handleSelectResult(product) {
-  productsStore.setSelectedProductDirect(product);
-
-  const slug = slugify(product.title);
-
-  const targetPath = `/products/${product.id}/${slug}`;
-  if (route.path === targetPath) return;
-  router.push(`/products/${product.id}/${slug}`);
-
-  searchQuery.value = "";
-  searchResults.value = [];
-  isSearchOpen.value = false;
 }
 </script>
 
