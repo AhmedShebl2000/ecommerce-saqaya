@@ -168,7 +168,7 @@
 </template>
 
 <script setup>
-import { slugify } from "@/mixins/slugify";
+import { slugify } from "@/composables/slugify";
 import CartComponent from "@/modules/cart/components/CartComponent.vue";
 import { useProductsStore } from "@/modules/products/store/products";
 import { getProductBySearchQuery } from "@/services/product.service";

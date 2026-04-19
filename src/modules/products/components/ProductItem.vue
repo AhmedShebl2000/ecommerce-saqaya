@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import { slugify } from "@/mixins/slugify";
+import { slugify } from "@/composables/slugify";
 import { useProductsStore } from "../store/products";
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";

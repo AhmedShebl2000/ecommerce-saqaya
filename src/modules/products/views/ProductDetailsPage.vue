@@ -228,7 +228,7 @@
 <script setup>
 import { getProductById } from "@/services/product.service";
 import ProductItem from "../components/ProductItem.vue";
-import { slugify } from "@/mixins/slugify";
+import { slugify } from "@/composables/slugify";
 import { useProductsStore } from "../store/products";
 import { useCartStore } from "@/modules/cart/store/cart";
 import { computed, onMounted, ref } from "vue";

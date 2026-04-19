@@ -6,7 +6,7 @@ import {
   getProductBySearchQuery,
   getProductsByCategory,
 } from "@/services/product.service";
-import { shuffle } from "@/mixins/shuffle";
+import { shuffle } from "@/composables/shuffle";
 import { getItem, removeItem, setItem } from "@/modules/shared/utils/storage";
 
 interface ProductsState {

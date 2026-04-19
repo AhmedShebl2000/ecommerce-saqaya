@@ -71,8 +71,8 @@
 </template>
 
 <script setup>
-import { removeDecimals } from "@/mixins/removeDecimals";
-import { round } from "@/mixins/round";
+import { removeDecimals } from "@/composables/removeDecimals";
+import { round } from "@/composables/round";
 import BaseRatingComponent from "./BaseRatingComponent.vue";
 import { useCartStore } from "@/modules/cart/store/cart";
 import { useToast } from "vue-toastification";

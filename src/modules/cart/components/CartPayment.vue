@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { round } from "@/mixins/round";
+import { round } from "@/composables/round";
 import { useCartStore } from "../store/cart";
 import { computed } from "vue";
 
