@@ -13,11 +13,6 @@ const makeItem = (qty = 1) => ({
   qty,
 });
 
-const defaultItem = {
-  product: { id: 1, title: "Item 1", thumbnail: "image.png", price: 50 } as any,
-  qty: 1,
-};
-
 const setupStore = (items = [makeItem()]) => {
   const pinia = createPinia();
   setActivePinia(pinia);
