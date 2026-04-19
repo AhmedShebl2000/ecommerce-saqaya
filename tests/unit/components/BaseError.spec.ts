@@ -47,11 +47,13 @@ describe("BaseError", () => {
       props: {
         retryable: true,
       },
-      stubs: {
-        BaseButton: {
-          name: "BaseButton",
-          template:
-            '<button data-test="retry-button" @click="$emit(\'click\')"><slot /></button>',
+      global: {
+        stubs: {
+          BaseButton: {
+            name: "BaseButton",
+            template:
+              '<button data-test="retry-button" @click="$emit(\'click\')"><slot /></button>',
+          },
         },
       },
     });

@@ -1,7 +1,5 @@
-// import { cartStore } from "@/modules/cart/store/cart";
-
 //mocking local storage because real browser storage is not needed
-//to keep testd predictable
+//to keep tests predictable
 jest.mock("@/modules/shared/utils/storage", () => ({
   getItem: jest.fn(() => null),
   setItem: jest.fn(),
@@ -27,8 +25,6 @@ const product2 = {
 } as ProductType;
 
 //return a new store each time so mutations don't affect each other
-// const createState = () => (cartStore.state as () => any)();
-
 describe("cart store", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
