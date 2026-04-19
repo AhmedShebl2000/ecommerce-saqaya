@@ -1,5 +1,18 @@
 module.exports = {
-  preset: "@vue/cli-plugin-unit-jest/presets/typescript-and-babel",
+  testEnvironment: "jsdom",
+  testEnvironmentOptions: {
+    customExportConditions: ["node", "node-addons"],
+  },
+  transform: {
+    "^.+\\.vue$": "@vue/vue3-jest",
+    "^.+\\.(ts|tsx)$": "ts-jest",
+    "^.+\\.(js|jsx)$": "babel-jest",
+  },
+  moduleFileExtensions: ["vue", "ts", "tsx", "js", "jsx", "json"],
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1",
+  },
+  testMatch: ["**/tests/unit/**/*.spec.[jt]s?(x)"],
   coverageProvider: "babel",
   collectCoverageFrom: [
     "src/modules/cart/components/CartComponent.vue",
@@ -17,9 +30,7 @@ module.exports = {
       statements: 100,
       functions: 100,
       lines: 100,
-      branches: 90, // CartItem.vue has a phantom 0% branch on line 1 due to a known
-      // Jest + Vue SFC compiler instrumentation bug. All branches are
-      // genuinely covered by the 8 tests in CartItem.spec.ts file.
+      branches: 90,
     },
   },
 };

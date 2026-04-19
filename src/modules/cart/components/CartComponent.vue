@@ -122,8 +122,8 @@
         data-test="cart-actions"
       >
         <base-button>Place Order</base-button>
-        <div data-test="clear-cart">
-          <base-button type="outline" @click="clearCart"
+        <div>
+          <base-button data-test="clear-cart" type="outline" @click="clearCart"
             >Clear Cart</base-button
           >
         </div>
@@ -137,6 +137,7 @@ import { computed, onBeforeUnmount, onMounted } from "vue";
 import { useCartStore } from "../store/cart";
 import CartItem from "./CartItem.vue";
 import CartPayment from "./CartPayment.vue";
+import BaseButton from "@/modules/shared/components/BaseButton.vue";
 
 const cartStore = useCartStore();
 

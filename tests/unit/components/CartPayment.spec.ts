@@ -1,55 +1,68 @@
 import CartPayment from "@/modules/cart/components/CartPayment.vue";
+import { useCartStore } from "@/modules/cart/store/cart";
 import { shallowMount } from "@vue/test-utils";
-
-const $store = {
-  getters: {
-    "cart/cartTotal": 1200,
-  },
-};
-const $storeWithRounded = {
-  getters: {
-    "cart/cartTotal": 1200.53,
-  },
-};
+import { createPinia, setActivePinia } from "pinia";
 
 describe("CartPayment", () => {
-  it("renders subtotal", () => {
-    const wrapper = shallowMount(CartPayment, {
-      mocks: {
-        $store,
-      },
-    });
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
 
+  it("renders subtotal", () => {
+    const cartStore = useCartStore();
+    cartStore.cart.items = [
+      {
+        product: {
+          id: 1,
+          thumbnail: "img.png",
+          title: "Item 1",
+          price: 1200,
+        } as any,
+        qty: 1,
+      },
+    ];
+    const wrapper = shallowMount(CartPayment, {});
     expect(wrapper.find('[data-test="cart-subtotal"]').text()).toContain(
       "$1200"
     );
   });
   it("renders shipping as free", () => {
-    const wrapper = shallowMount(CartPayment, {
-      mocks: {
-        $store,
-      },
-    });
-
+    const wrapper = shallowMount(CartPayment);
     expect(wrapper.find('[data-test="cart-shipping"]').text()).toContain(
       "Free"
     );
   });
   it("renders total", () => {
-    const wrapper = shallowMount(CartPayment, {
-      mocks: {
-        $store,
+    const cartStore = useCartStore();
+    cartStore.cart.items = [
+      {
+        product: {
+          id: 1,
+          thumbnail: "img.png",
+          title: "Item 1",
+          price: 1200,
+        } as any,
+        qty: 1,
       },
-    });
+    ];
+    const wrapper = shallowMount(CartPayment);
 
     expect(wrapper.find('[data-test="cart-total"]').text()).toContain("$1200");
   });
   it("renders rounded total from store", () => {
-    const wrapper = shallowMount(CartPayment, {
-      mocks: {
-        $store: $storeWithRounded,
+    const cartStore = useCartStore();
+    cartStore.cart.items = [
+      {
+        product: {
+          id: 1,
+          thumbnail: "img.png",
+          title: "Item 1",
+          price: 1200,
+        } as any,
+        qty: 1,
       },
-    });
+    ];
+    const wrapper = shallowMount(CartPayment);
 
     expect(wrapper.find('[data-test="cart-total"]').text()).toContain("$1200");
   });

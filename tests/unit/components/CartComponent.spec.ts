@@ -1,55 +1,25 @@
 import CartComponent from "@/modules/cart/components/CartComponent.vue";
 import CartItem from "@/modules/cart/components/CartItem.vue";
 import CartPayment from "@/modules/cart/components/CartPayment.vue";
+import { useCartStore } from "@/modules/cart/store/cart";
 import BaseButton from "@/modules/shared/components/BaseButton.vue";
 import { shallowMount } from "@vue/test-utils";
-
-const $store = {
-  getters: {
-    "cart/cartItems": [],
-    "cart/cartQuantity": 0,
-    "cart/cartTotal": 0,
-    "cart/isCartOpen": true,
-  },
-  commit: jest.fn(),
-};
-
-const $storeWithItems = {
-  getters: {
-    "cart/cartItems": [
-      {
-        product: {
-          id: 1,
-          thumbnail: "image.png",
-          title: "Item 1",
-          price: 50,
-        },
-        qty: 1,
-      },
-    ],
-    "cart/cartQuantity": 1,
-    "cart/cartTotal": 1200,
-    "cart/isCartOpen": true,
-  },
-  commit: jest.fn(),
-};
+import { createPinia, setActivePinia } from "pinia";
 
 const stubs = {
   CartItem: true,
   CartPayment: true,
   BaseButton: true,
+  "base-button": true,
 };
 
 describe("CartComponent", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    setActivePinia(createPinia());
   });
 
   it("renders title", () => {
     const wrapper = shallowMount(CartComponent, {
-      mocks: {
-        $store,
-      },
       stubs,
     });
     expect(wrapper.find('[data-test="cart-title"]').text()).toContain(
@@ -58,9 +28,6 @@ describe("CartComponent", () => {
   });
   it("renders empty cart", () => {
     const wrapper = shallowMount(CartComponent, {
-      mocks: {
-        $store,
-      },
       stubs,
     });
     expect(wrapper.find('[data-test="cart-empty"]').text()).toContain(
@@ -68,39 +35,69 @@ describe("CartComponent", () => {
     );
   });
   it("renders cart with items", () => {
-    const wrapper = shallowMount(CartComponent, {
-      mocks: {
-        $store: $storeWithItems,
+    const pinia = createPinia();
+    setActivePinia(pinia);
+    const cartStore = useCartStore();
+    cartStore.cart.items = [
+      {
+        product: {
+          id: 1,
+          thumbnail: "img.png",
+          title: "Item 1",
+          price: 50,
+        } as any,
+        qty: 1,
       },
+    ];
+
+    const wrapper = shallowMount(CartComponent, {
       stubs,
     });
     expect(wrapper.findComponent({ name: "CartItem" }).exists()).toBe(true);
   });
+
   it("close cart when button is clicked", async () => {
+    const pinia = createPinia();
+    setActivePinia(pinia);
+    const cartStore = useCartStore();
+    cartStore.isOpen = true;
+
     const wrapper = shallowMount(CartComponent, {
-      mocks: {
-        $store,
-      },
       stubs,
     });
     await wrapper.find('[data-test="cart-close"]').trigger("click");
-    expect($store.commit).toHaveBeenCalledWith("cart/CLOSE_CART");
+    expect(cartStore.isOpen).toBe(false);
   });
+
   it("toggles cart when cart icon is clicked", async () => {
+    const pinia = createPinia();
+    setActivePinia(pinia);
+    const cartStore = useCartStore();
+    cartStore.isOpen = false;
+
     const wrapper = shallowMount(CartComponent, {
-      mocks: {
-        $store,
-      },
       stubs,
     });
     await wrapper.find('[data-test="cart-icon"]').trigger("click");
-    expect($store.commit).toHaveBeenCalledWith("cart/TOGGLE_CART");
+    expect(cartStore.isOpen).toBe(true);
   });
   it("clears cart when cart clear cart is clicked", async () => {
-    const wrapper = shallowMount(CartComponent, {
-      mocks: {
-        $store: $storeWithItems,
+    const pinia = createPinia();
+    setActivePinia(pinia);
+    const cartStore = useCartStore();
+    cartStore.cart.items = [
+      {
+        product: {
+          id: 1,
+          thumbnail: "img.png",
+          title: "Item 1",
+          price: 50,
+        } as any,
+        qty: 1,
       },
+    ];
+
+    const wrapper = shallowMount(CartComponent, {
       stubs: {
         CartItem: true,
         CartPayment: true,
@@ -109,23 +106,32 @@ describe("CartComponent", () => {
         },
       },
     });
-    await wrapper.find('[data-test="clear-cart"] button').trigger("click");
-    expect($storeWithItems.commit).toHaveBeenCalledWith("cart/CLEAR_CART");
+    await wrapper.find('[data-test="clear-cart"]').trigger("click");
+    expect(cartStore.cart.items).toHaveLength(0);
   });
   it("does not render cart payment when cart is empty", () => {
     const wrapper = shallowMount(CartComponent, {
-      mocks: {
-        $store,
-      },
       stubs,
     });
     expect(wrapper.findComponent({ name: "CartPayment" }).exists()).toBe(false);
   });
   it("renders cart payment when cart has items", () => {
-    const wrapper = shallowMount(CartComponent, {
-      mocks: {
-        $store: $storeWithItems,
+    const pinia = createPinia();
+    setActivePinia(pinia);
+    const cartStore = useCartStore();
+    cartStore.cart.items = [
+      {
+        product: {
+          id: 1,
+          thumbnail: "img.png",
+          title: "Item 1",
+          price: 50,
+        } as any,
+        qty: 1,
       },
+    ];
+
+    const wrapper = shallowMount(CartComponent, {
       stubs,
     });
 
