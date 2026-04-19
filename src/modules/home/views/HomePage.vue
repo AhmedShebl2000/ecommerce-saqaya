@@ -124,55 +124,20 @@ import HeroComponent from "../components/HeroComponent.vue";
 import BaseIconDelivery from "@/modules/shared/components/icons/BaseIconDelivery.vue";
 import BaseIconSupport from "@/modules/shared/components/icons/BaseIconSupport.vue";
 import BaseIconGuarantee from "@/modules/shared/components/icons/BaseIconGuarantee.vue";
-import { useProductsStore } from "@/modules/products/store/products";
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
+import { useFetchHomeProducts } from "@/composables/useFetchHomeProducts";
+import { useFetchFlashsaleProducts } from "@/composables/useFetchFlashsaleProducts";
 
-const productsStore = useProductsStore();
+const { getHomeProducts, homeError, homeLoading, products } =
+  useFetchHomeProducts();
+
+const { getFlashSaleProducts, flashError, flashLoading, flashSaleProducts } =
+  useFetchFlashsaleProducts();
 
 onMounted(() => {
   getHomeProducts();
   getFlashSaleProducts();
 });
-
-//FLASH PRODUCTS
-const flashLoading = ref(false);
-const flashError = ref(null);
-
-const flashSaleProducts = computed(() => {
-  return productsStore.flashSalesProducts;
-});
-
-async function getFlashSaleProducts() {
-  flashLoading.value = true;
-  flashError.value = null;
-  try {
-    await productsStore.fetchFlashSaleProducts();
-  } catch (error) {
-    flashError.value = "Failed to load flash sales. Please try again.";
-  } finally {
-    flashLoading.value = false;
-  }
-}
-
-//HOME PRODUCTS
-const homeLoading = ref(false);
-const homeError = ref(null);
-
-const products = computed(() => {
-  return productsStore.homeProducts;
-});
-
-async function getHomeProducts() {
-  homeLoading.value = true;
-  homeError.value = null;
-  try {
-    await productsStore.fetchHomeProducts();
-  } catch (error) {
-    homeError.value = "Failed to load products. Please try again.";
-  } finally {
-    homeLoading.value = false;
-  }
-}
 
 const cards = ref([
   {
