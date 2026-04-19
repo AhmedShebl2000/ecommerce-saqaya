@@ -21,9 +21,7 @@
       <base-error
         v-else-if="error"
         :message="error"
-        @retry="
-          getProducts({ limit: 12, skip: 0, category: route.query.category })
-        "
+        @retry="handleRetry"
       ></base-error>
 
       <ul v-else class="products-page__grid">
@@ -54,82 +52,29 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import ProductItem from "@/modules/products/components/ProductItem.vue";
 import SortDropdown from "../components/SortDropdown.vue";
 import { useProductsStore } from "../store/products";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useFetchProducts } from "@/composables/useFetchProducts";
+import { useProductsSorting } from "@/composables/useProductsSorting";
 
 const route = useRoute();
 
 const productsStore = useProductsStore();
 
+const { loading, loadingMore, error, offset, getProducts, handleLoadMore } =
+  useFetchProducts();
+
+const { products, sortBy } = useProductsSorting();
+
 onMounted(() => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 
-  const category = route.query.category;
+  const category = route.query.category as string | undefined;
   getProducts({ limit: 12, skip: 0, category });
-});
-
-const offset = ref(0);
-const sortBy = ref("");
-const loading = ref(false);
-const loadingMore = ref(false);
-const error = ref(null);
-
-const products = computed(() => {
-  const products = productsStore.products;
-
-  let filteredProducts;
-  switch (sortBy.value) {
-    case "Highest Rating": {
-      filteredProducts = products
-        .slice()
-        .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
-      break;
-    }
-    case "Low to high": {
-      filteredProducts = products
-        .slice()
-        .sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
-      break;
-    }
-    case "High to low": {
-      filteredProducts = products
-        .slice()
-        .sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
-      break;
-    }
-    case "discount": {
-      filteredProducts = products
-        .slice()
-        .sort(
-          (a, b) => (b.discountPercentage ?? 0) - (a.discountPercentage ?? 0)
-        );
-      break;
-    }
-    case "brand": {
-      filteredProducts = products.slice().sort((a, b) => {
-        const brandA = a.brand ?? "";
-        const brandB = b.brand ?? "";
-        return brandA.localeCompare(brandB);
-      });
-      break;
-    }
-    case "category": {
-      filteredProducts = products.slice().sort((a, b) => {
-        const categoryA = a.category ?? "";
-        const categoryB = b.category ?? "";
-        return categoryA.localeCompare(categoryB);
-      });
-      break;
-    }
-    default:
-      filteredProducts = products;
-  }
-
-  return filteredProducts;
 });
 
 const totalProducts = computed(() => {
@@ -140,6 +85,14 @@ const disabled = computed(() => {
   if (!totalProducts.value) return false;
   return products.value.length >= totalProducts.value;
 });
+
+function handleRetry() {
+  getProducts({
+    limit: 12,
+    skip: 0,
+    category: route.query.category as string | undefined,
+  });
+}
 
 const breadcrumbItems = [
   { id: 1, label: "Home", to: "/" },
@@ -155,41 +108,17 @@ watch(
     offset.value = 0;
     sortBy.value = "";
     window.scrollTo({ top: 0, behavior: "smooth" });
-    getProducts({ limit: 12, skip: 0, category: newCategory });
+    getProducts({
+      limit: 12,
+      skip: 0,
+      category: newCategory as string | undefined,
+    });
   }
 );
 
-async function getProducts({ limit, skip, category }) {
-  if (skip === 0) {
-    loading.value = true;
-    error.value = null;
-  } else {
-    loadingMore.value = true;
-  }
-  try {
-    await productsStore.fetchProducts({ limit, skip, category });
-  } catch (error) {
-    error.value = "Failed to load products. Please try again.";
-  } finally {
-    loading.value = false;
-    loadingMore.value = false;
-  }
-}
-
-function handleLoadMore() {
-  const category = route.query.category;
-
-  offset.value++;
-  getProducts({
-    limit: 12,
-    skip: 12 * offset.value,
-    category,
-  });
-}
-
-function handleFetchSortedProducts(value) {
+function handleFetchSortedProducts(value: string) {
   sortBy.value = value;
-  const category = route.query.category;
+  const category = route.query.category as string | undefined;
   getProducts({ limit: 0, skip: 0, category });
 }
 </script>
