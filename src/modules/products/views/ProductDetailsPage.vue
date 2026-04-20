@@ -225,7 +225,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { getProductById } from "@/services/product.service";
 import ProductItem from "../components/ProductItem.vue";
 import { slugify } from "@/composables/slugify";
@@ -305,22 +305,22 @@ onBeforeRouteUpdate(async (to) => {
 });
 
 const loading = ref(false);
-const error = ref(null);
+const error = ref<string | null>(null);
 
 const selectedProduct = computed(() => {
   return productsStore.selectedProduct;
 });
 
 const ratingCount = computed(() => {
-  return selectedProduct.value.reviews?.length || 0;
+  return selectedProduct.value?.reviews?.length || 0;
 });
 
 const inStock = computed(() => {
-  return selectedProduct.value.stock > 0;
+  return (selectedProduct.value?.stock ?? 0) > 0;
 });
 
 const hasDiscountPercentage = computed(() => {
-  return (selectedProduct.value.discountPercentage || 0) > 0;
+  return (selectedProduct.value?.discountPercentage || 0) > 0;
 });
 
 const cartItems = computed(() => {
@@ -328,8 +328,9 @@ const cartItems = computed(() => {
 });
 
 const itemQty = computed(() => {
+  if (!selectedProduct.value) return 0;
   const item = cartItems.value.find(
-    (item) => item.product.id === selectedProduct.value.id
+    (item) => item.product.id === selectedProduct.value!.id
   );
   return item ? item.qty : 0;
 });
@@ -354,20 +355,23 @@ const breadcrumbItems = computed(() => {
 });
 
 function decreaseItemQty() {
+  if (!selectedProduct.value) return;
   cartStore.decreaseQuantity(selectedProduct.value.id);
 }
 function increaseItemQty() {
+  if (!selectedProduct.value) return;
   cartStore.addToCart(selectedProduct.value);
 }
 
 async function getProductsOfSameCategory() {
+  if (!selectedProduct.value) return;
   const category = selectedProduct.value.category;
   try {
     loading.value = true;
     error.value = null;
 
     await productsStore.fetchProducts({ limit: 4, skip: 0, category });
-  } catch (error) {
+  } catch (err) {
     error.value = "Failed to load related products.";
   } finally {
     loading.value = false;

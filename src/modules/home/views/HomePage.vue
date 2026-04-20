@@ -117,7 +117,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import ProductItem from "@/modules/products/components/ProductItem.vue";
 import BaseCategoryCard from "../components/BaseCategoryCard.vue";
 import HeroComponent from "../components/HeroComponent.vue";
@@ -139,7 +139,7 @@ onMounted(() => {
   getFlashSaleProducts();
 });
 
-const cards = ref([
+const cards = [
   {
     id: 1,
     image: `<svg width="50" height="50" viewBox="0 0 50 50" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -202,7 +202,7 @@ const cards = ref([
     title: "Home Accessories",
     category: "home-decoration",
   },
-]);
+];
 const features = [
   {
     id: 1,
@@ -224,7 +224,7 @@ const features = [
   },
 ];
 
-const slider = ref(null);
+const slider = ref<HTMLUListElement | null>(null);
 
 function scrollLeft() {
   slider.value?.scrollBy({

@@ -20,7 +20,6 @@ api.interceptors.request.use(
 //INTERCEPTOR RESPONSE
 api.interceptors.response.use(
   function onFulfilled(response) {
-    console.log("Response: ", response.status, response.config.url);
     return response;
   },
   function onRejected(error) {

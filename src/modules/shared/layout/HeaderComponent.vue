@@ -167,7 +167,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useSearch } from "@/composables/useSearch";
 import CartComponent from "@/modules/cart/components/CartComponent.vue";
 import { nextTick, ref, watch } from "vue";
@@ -224,7 +224,7 @@ function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;
 }
 
-const mobileSearch = ref(null);
+const mobileSearch = ref<HTMLInputElement | null>(null);
 function openSearch() {
   isSearchOpen.value = true;
   nextTick(() => {

@@ -18,8 +18,6 @@ import BaseLoader from "./modules/shared/components/BaseLoader.vue";
 import BaseError from "./modules/shared/components/BaseError.vue";
 import BaseBreadCrumb from "./modules/shared/components/BaseBreadCrumb.vue";
 
-// Vue.config.productionTip = false;
-
 const pinia = createPinia();
 const app = createApp(App);
 

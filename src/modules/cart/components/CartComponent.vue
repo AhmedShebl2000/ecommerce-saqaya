@@ -132,12 +132,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted } from "vue";
 import { useCartStore } from "../store/cart";
 import CartItem from "./CartItem.vue";
 import CartPayment from "./CartPayment.vue";
-import BaseButton from "@/modules/shared/components/BaseButton.vue";
 
 const cartStore = useCartStore();
 
@@ -170,7 +169,7 @@ function closeCart() {
 function clearCart() {
   cartStore.clearCart();
 }
-function handleEscape(event) {
+function handleEscape(event: KeyboardEvent) {
   if (event.key === "Escape" && isCartOpen.value === true) {
     closeCart();
   }
