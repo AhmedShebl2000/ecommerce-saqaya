@@ -1,6 +1,7 @@
 import { ProductsResponse } from "@/types";
 import api from "./http";
 
+/** Fetches a paginated list of all products */
 export async function getAllProducts(limit = 0, skip = 0) {
   try {
     const res = await api.get<ProductsResponse>("/products", {
@@ -13,6 +14,7 @@ export async function getAllProducts(limit = 0, skip = 0) {
   }
 }
 
+/** Fetches products filtered by category with pagination */
 export async function getProductsByCategory(
   limit = 0,
   skip = 0,
@@ -32,6 +34,7 @@ export async function getProductsByCategory(
   }
 }
 
+/** Searches products by a query string */
 export async function getProductBySearchQuery(search: string) {
   try {
     const res = await api.get<ProductsResponse>("/products/search", {
@@ -44,6 +47,7 @@ export async function getProductBySearchQuery(search: string) {
   }
 }
 
+/** Fetches a single product by its numeric ID */
 export async function getProductById(id: number) {
   try {
     const res = await api.get(`/products/${id}`);

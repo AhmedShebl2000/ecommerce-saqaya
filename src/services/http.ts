@@ -1,3 +1,11 @@
+/**
+ * Axios HTTP client instance
+ *
+ * Pre-configured with the DummyJSON base URL and a 10s timeout.
+ * Includes request and response interceptors for centralized
+ * error logging.
+ */
+
 import axios from "axios";
 
 const api = axios.create({

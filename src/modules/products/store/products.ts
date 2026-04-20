@@ -1,3 +1,27 @@
+/**
+ * Products Store
+ *
+ * Manages all product data fetched from the DummyJSON API.
+ * Handles product listings, home page products, flash sale products,
+ * search results, and the currently selected product detail.
+ *
+ * State:
+ *  - products: ProductType[] — paginated product list for /products page
+ *  - homeProducts: ProductType[] — featured products shown on homepage
+ *  - flashSalesProducts: ProductType[] — random products for flash sale
+ *  - totalProducts: number — total count for pagination
+ *  - selectedProduct: ProductType | null — product being viewed in detail
+ *  - searchedProducts: ProductType[] — results from search queries
+ *
+ * Actions:
+ *  - fetchProducts(payload) — fetches paginated/filtered product list
+ *  - fetchHomeProducts() — fetches 8 products for the homepage
+ *  - fetchFlashSaleProducts() — fetches 50 and picks 10 randomly
+ *  - fetchSearchedProduct(payload) — searches products by query string
+ *  - setSelectedProduct(id) — finds product from existing state by id
+ *  - setSelectedProductDirect(product) — sets product directly from API response
+ */
+
 import { ProductType } from "@/types";
 import { defineStore } from "pinia";
 

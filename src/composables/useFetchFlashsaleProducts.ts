@@ -1,3 +1,16 @@
+/**
+ * useFetchFlashsaleProducts composable
+ *
+ * Handles fetching flash sale products,
+ * including loading state and error handling.
+ *
+ * Returns:
+ *  - flashLoading: Ref<boolean> — true while fetching flash sale products
+ *  - flashError: Ref<string | null> — error message if fetch fails
+ *  - flashSaleProducts: ComputedRef<ProductType[]> — list of flash sale products
+ *  - getFlashSaleProducts() — triggers fetching flash sale products
+ */
+
 import { useProductsStore } from "@/modules/products/store/products";
 import { computed, ref } from "vue";
 

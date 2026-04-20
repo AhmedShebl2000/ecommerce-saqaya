@@ -1,3 +1,20 @@
+/**
+ * useSearch composable
+ *
+ * Handles the header search bar logic including debounced API calls,
+ * result display, and navigation to the selected product page.
+ * Automatically clears results when the route changes.
+ *
+ * Returns:
+ *  - searchQuery: Ref<string> — bound to the search input
+ *  - searchResults: Ref<ProductType[]> — list of matching products
+ *  - searchLoading: Ref<boolean> — true while API call is in progress
+ *  - showNoResults: ComputedRef<boolean> — true when query has no matches
+ *  - handleSearchInput() — debounced function called on every keystroke
+ *  - handleSearch() — navigates to first result on Enter key
+ *  - handleSelectResult(product) — navigates to a specific product
+ */
+
 import { useProductsStore } from "@/modules/products/store/products";
 import { getProductBySearchQuery } from "@/services/product.service";
 import { computed, ref, watch } from "vue";

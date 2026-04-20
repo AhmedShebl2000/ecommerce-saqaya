@@ -1,3 +1,14 @@
+/**
+ * useProductsSorting composable
+ *
+ * Provides client-side sorting of the products list from the store.
+ * Sorting is applied reactively whenever sortBy changes.
+ *
+ * Returns:
+ *  - products: ComputedRef<ProductType[]> — sorted product array
+ *  - sortBy: Ref<string> — current sort key, set from SortDropdown
+ */
+
 import { useProductsStore } from "@/modules/products/store/products";
 import { computed, ref } from "vue";
 

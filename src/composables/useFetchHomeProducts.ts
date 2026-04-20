@@ -1,3 +1,16 @@
+/**
+ * useFetchHomeProducts composable
+ *
+ * Handles fetching products for the home page,
+ * including loading state and error handling.
+ *
+ * Returns:
+ *  - products: ComputedRef<ProductType[]> — list of home page products
+ *  - homeLoading: Ref<boolean> — true while fetching home products
+ *  - homeError: Ref<string | null> — error message if fetch fails
+ *  - getHomeProducts() — triggers fetching home products
+ */
+
 import { useProductsStore } from "@/modules/products/store/products";
 import { computed, ref } from "vue";
 

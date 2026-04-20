@@ -1,3 +1,18 @@
+/**
+ * useFetchProducts composable
+ *
+ * Handles fetching paginated products for the products page,
+ * including loading states, error handling, and load-more pagination.
+ *
+ * Returns:
+ *  - loading: Ref<boolean> — true on initial/reset fetch
+ *  - loadingMore: Ref<boolean> — true when loading additional pages
+ *  - error: Ref<string | null> — error message if fetch fails
+ *  - offset: Ref<number> — current pagination page offset
+ *  - getProducts(params) — fetches products with given limit/skip/category
+ *  - handleLoadMore() — increments offset and fetches next page
+ */
+
 import { useProductsStore } from "@/modules/products/store/products";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
