@@ -41,7 +41,7 @@ const slides = ref([
   "/Hero1.png",
   "/hero2.jpg",
   "/hero3.jpg",
-  "/hero4.png",
+  "/hero4.jpg",
   "/hero5.jpg",
 ]);
 
