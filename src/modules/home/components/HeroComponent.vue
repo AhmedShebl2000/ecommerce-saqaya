@@ -38,11 +38,11 @@ onBeforeUnmount(() => {
 const currentSlide = ref(0);
 const intervalId = ref(null);
 const slides = ref([
-  "/Hero1.png",
-  "/hero2.jpg",
-  "/hero3.jpg",
-  "/hero4.jpg",
-  "/hero5.jpg",
+  "/hero1.webp",
+  "/hero2.webp",
+  "/hero3.webp",
+  "/hero4.webp",
+  "/hero5.webp",
 ]);
 
 function goToSlide(index) {
