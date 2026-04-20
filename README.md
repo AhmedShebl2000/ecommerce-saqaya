@@ -21,24 +21,27 @@ A fully featured e-commerce storefront built with Vue 3, Pinia, TypeScript, and 
 
 ## Project Structure
 
+```
 src/
-├── assets/styles/ # SCSS 7-1 architecture
-│ ├── abstracts/ # Variables and mixins
-│ ├── base/ # Reset and typography
-│ ├── components/ # Per-component styles
-│ ├── layout/ # Header, footer, layout styles
-│ └── pages/ # Page-level styles
+├── assets/styles/        # SCSS 7-1 architecture
+│   ├── abstracts/        # Variables and mixins
+│   ├── base/             # Reset and typography
+│   ├── components/       # Per-component styles
+│   ├── layout/           # Header, footer, layout styles
+│   └── pages/            # Page-level styles
 │
-├── composables/ # Reusable logic (useSearch, useFetchProducts, etc.)
-├── modules/ # Feature-based modules
-│ ├── cart/ # Cart components and Pinia store
-│ ├── home/ # Homepage view and components
-│ ├── products/ # Products/detail views, components, store
-│ └── shared/ # Global components, layouts, views, utils
+├── composables/          # Reusable logic (useSearch, useFetchProducts, etc.)
 │
-├── router/ # Vue Router configuration
-├── services/ # Axios HTTP client and API service functions
-└── types/ # TypeScript interfaces and types
+├── modules/              # Feature-based modules
+│   ├── cart/             # Cart components and Pinia store
+│   ├── home/             # Homepage view and components
+│   ├── products/         # Products/detail views, components, store
+│   └── shared/           # Global components, layouts, views, utils
+│
+├── router/               # Vue Router configuration
+├── services/             # Axios HTTP client and API service functions
+└── types/                # TypeScript interfaces and types
+```
 
 ---
 
