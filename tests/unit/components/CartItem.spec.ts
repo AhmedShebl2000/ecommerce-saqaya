@@ -115,4 +115,12 @@ describe("CartItem", () => {
 
     expect(vm.itemQty).toBe(1);
   });
+
+  it("does nothing when increasing quantity of item not in store", async () => {
+    setupStore([]);
+    const wrapper = createWrapper();
+    await wrapper.find('[data-test="cart-item-increase"]').trigger("click");
+    const cartStore = useCartStore();
+    expect(cartStore.cart.items).toHaveLength(0);
+  });
 });
