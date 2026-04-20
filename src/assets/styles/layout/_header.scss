@@ -30,9 +30,6 @@
   &__nav-link {
     text-decoration: none;
     color: inherit;
-    &.router-link-active {
-      border-bottom: 1px solid $color-text-muted;
-    }
   }
 
   &__actions {
@@ -228,6 +225,10 @@
     width: 24px;
     height: 24px;
     cursor: pointer;
+  }
+
+  .active-link {
+    border-bottom: 1px solid $color-text-muted;
   }
 
   @include respond-to($bp-xl) {

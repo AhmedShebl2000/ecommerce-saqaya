@@ -82,7 +82,8 @@
             <RouterLink
               class="header__nav-link"
               :to="link.to"
-              :exact="link.exact"
+              :exact-active-class="link.exact ? 'active-link' : undefined"
+              active-class="active-link"
               >{{ link.name }}</RouterLink
             >
           </li>
