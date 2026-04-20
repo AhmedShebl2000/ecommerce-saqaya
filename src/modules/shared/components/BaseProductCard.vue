@@ -71,6 +71,16 @@
 </template>
 
 <script setup>
+/**
+ * BaseProductCard
+ *
+ * Reusable product card displayed in grids throughout the app.
+ * Shows product image, title, price, discount badge, and rating.
+ * Handles add-to-cart with a toast notification.
+ *
+ * Props: id, image, title, price, discountPercentage, rating, ratingCount
+ * Emits: click
+ */
 import { removeDecimals } from "@/composables/removeDecimals";
 import { round } from "@/composables/round";
 import BaseRatingComponent from "./BaseRatingComponent.vue";

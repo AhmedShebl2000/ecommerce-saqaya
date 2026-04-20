@@ -133,6 +133,14 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * CartComponent
+ *
+ * Renders the cart sidebar panel with a list of cart items,
+ * total payment summary, and cart controls (clear, close).
+ * Also shows a badge with item count on the cart icon.
+ * Listens for Escape key to close the panel.
+ */
 import { computed, onBeforeUnmount, onMounted } from "vue";
 import { useCartStore } from "../store/cart";
 import CartItem from "./CartItem.vue";

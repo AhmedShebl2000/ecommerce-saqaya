@@ -118,6 +118,22 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Home page
+ *
+ * Displays the landing page sections including flash sales,
+ * category browsing, featured home products, and service highlights.
+ *
+ * Responsibilities:
+ *  - fetches home page products on mount
+ *  - fetches flash sale products on mount
+ *  - renders loading and error states for both sections
+ *  - provides horizontal slider controls for the flash sales list
+ *  - exposes static category cards and service feature metadata
+ *
+ * Local state:
+ *  - slider: ref to the flash sale list element used for horizontal scrolling
+ */
 import ProductItem from "@/modules/products/components/ProductItem.vue";
 import BaseCategoryCard from "../components/BaseCategoryCard.vue";
 import HeroComponent from "../components/HeroComponent.vue";

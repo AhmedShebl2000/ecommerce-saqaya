@@ -168,6 +168,24 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Header component
+ *
+ * Renders the main site navigation, desktop and mobile search inputs,
+ * mobile menu, and cart access.
+ *
+ * Responsibilities:
+ *  - displays navigation links for main routes
+ *  - integrates the product search composable
+ *  - opens and closes the mobile menu
+ *  - opens the mobile search overlay and focuses the input
+ *  - resets menu/search UI state when the route changes
+ *
+ * Local state:
+ *  - isMenuOpen: controls the mobile navigation drawer
+ *  - isSearchOpen: controls the mobile search overlay
+ *  - mobileSearch: input ref used to focus the mobile search field
+ */
 import { useSearch } from "@/composables/useSearch";
 import CartComponent from "@/modules/cart/components/CartComponent.vue";
 import { nextTick, ref, watch } from "vue";

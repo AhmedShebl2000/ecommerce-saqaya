@@ -80,6 +80,14 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * CartItem
+ *
+ * Renders a single item in the cart with its image, title,
+ * price, and quantity controls (increase, decrease, remove).
+ *
+ * Props: id, title, thumbnail, price
+ */
 import { round } from "@/composables/round";
 import { useCartStore } from "../store/cart";
 import { computed } from "vue";

@@ -226,6 +226,35 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * Product details page
+ *
+ * Displays a single product, validates route params and slug correctness,
+ * syncs the selected product into the products store, and loads related
+ * products from the same category.
+ *
+ * Responsibilities:
+ *  - loads the product from the route productId
+ *  - redirects to notFound for invalid or missing products
+ *  - normalizes the product slug and redirects when the URL slug is incorrect
+ *  - updates product data when the route changes
+ *  - derives product UI state such as stock, rating count, discount, and item quantity
+ *  - allows increasing and decreasing product quantity in the cart
+ *  - fetches related products from the same category
+ *
+ * Local state:
+ *  - loading: true while related products are loading
+ *  - error: related products fetch error message
+ *
+ * Computed values:
+ *  - selectedProduct
+ *  - ratingCount
+ *  - inStock
+ *  - hasDiscountPercentage
+ *  - itemQty
+ *  - sameCategoryProducts
+ *  - breadcrumbItems
+ */
 import { getProductById } from "@/services/product.service";
 import ProductItem from "../components/ProductItem.vue";
 import { slugify } from "@/composables/slugify";

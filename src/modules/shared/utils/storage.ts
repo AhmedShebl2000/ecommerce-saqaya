@@ -1,3 +1,14 @@
+/**
+ * Storage utilities
+ *
+ * Wraps browser localStorage read, write, and remove operations
+ * to keep persistence logic reusable and isolated from stores.
+ *
+ * Responsibilities:
+ *  - serialize and persist values
+ *  - deserialize stored values safely
+ *  - remove persisted keys when needed
+ */
 export function setItem<T>(key: string, value: T) {
   localStorage.setItem(key, JSON.stringify(value));
 }
